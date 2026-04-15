@@ -7,6 +7,14 @@ Implementation of the collision attacks from:
 > [DOI: 10.1007/978-3-540-89754-5_8](https://doi.org/10.1007/978-3-540-89754-5_8)
 > [ePrint: 2008/271](https://eprint.iacr.org/2008/271)
 
+## Attack model
+
+Both attacks target the SHA-256 compression function reduced to 22 or 24 steps, starting from the standard IV. The attacker constructs both messages — there is no fixed input message. Each run produces a different colliding pair $(M, M')$ such that:
+
+$$H_{22}(\text{IV}, M) = H_{22}(\text{IV}, M') \quad \text{and} \quad H_{24}(\text{IV}, M) = H_{24}(\text{IV}, M')$$
+
+where $H_n$ denotes the SHA-256 compression function reduced to $n$ steps.
+
 ## Attacks
 
 ### 22-step collision (deterministic)
@@ -14,16 +22,18 @@ Implementation of the collision attacks from:
 Uses a 9-step local collision at steps 7–15 (Column II of the SS local collision). The attack sets register values deterministically via message word selection, producing a collision in a single shot.
 
 - **Complexity**: instant (deterministic, no search)
-- **Differential**: dW[7] = +1, dW[15] = −1
+- **Differential**: $\Delta W_7 = +1$, $\Delta W_{15} = -1$
 
 ### 24-step collision (probabilistic)
 
-Uses a 9-step local collision at steps 10–18 (Column I, u=1). Extends the 22-step attack with additional probabilistic conditions on σ₁(W₁₇) and σ₁(W₁₈).
+Uses a 9-step local collision at steps 10–18 (Column I, $u=1$). Extends the 22-step attack with additional probabilistic conditions on $\sigma_1(W_{17})$ and $\sigma_1(W_{18})$.
 
-- **Complexity**: ~2^28.5 reduced-round evaluations (~30–120 seconds on modern hardware)
-- **Differential**: dW[10] = +1, dW[11] = −1, dW[12] = 0x00006000, dW[13] = 0xff006001, dW[17] = +1, dW[18] = −1
+- **Complexity**: ${\sim}2^{28.5}$ reduced-round evaluations (~30–120 seconds on modern hardware)
+- **Differential**:
 
-Includes the guess-then-determine algorithm from Appendix B.1 for efficiently solving the non-linear constraint D = σ₀(W₁) − W₁.
+$$\Delta W_{10} = +1, \quad \Delta W_{11} = -1, \quad \Delta W_{12} = \mathtt{0x00006000}, \quad \Delta W_{13} = \mathtt{0xff006001}, \quad \Delta W_{17} = +1, \quad \Delta W_{18} = -1$$
+
+Includes the guess-then-determine algorithm from Appendix B.1 for efficiently solving the non-linear constraint $D = \sigma_0(W_1) - W_1$.
 
 ## Build and run
 
