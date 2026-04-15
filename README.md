@@ -1,6 +1,6 @@
-# Publications
+# Lab
 
-Research publications: code, papers, and results.
+Code artifacts from research paper implementations.
 
 ## Cryptanalysis
 
