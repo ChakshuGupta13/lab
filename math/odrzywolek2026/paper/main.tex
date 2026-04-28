@@ -1,0 +1,684 @@
+\documentclass[sigconf]{acmart}
+\setcopyright{none}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\settopmatter{printacmref=false, printfolios=true}
+\acmYear{2026}
+
+% acmart loads amsmath, amssymb, hyperref, natbib, xcolor, geometry,
+% booktabs, graphicx internally
+
+% Custom commands
+\newcommand{\eml}{\mathrm{eml}}
+\newcommand{\sml}{\mathrm{sml}}
+\newcommand{\rml}{\mathrm{rml}}
+\newcommand{\op}{\mathrm{op}}
+
+\title{Why Architecture Choice Matters in Symbolic Regression}
+
+\author{Chakshu Gupta}
+\email{cgupta65@gatech.edu}
+\affiliation{%
+  \institution{Georgia Institute of Technology}
+  \city{Khurja}
+  \country{India}
+}
+
+\begin{document}
+\fancyhead{}  % suppress running headers
+
+\begin{abstract}
+Symbolic regression discovers mathematical formulas from data.
+Some methods fix a tree of operators, assign learnable weights, and
+train by gradient descent.  The tree's structure, which determines
+what operators and variables appear at each position, is chosen once
+and applied to every target.  This paper tests whether that choice
+affects which targets are actually recovered.  Three structures are
+compared, all sharing the same operator and target language but
+differing in how variables enter the tree; one is strictly more
+expressive.  Across over 12{,}700 training runs, one structure
+recovers a target at 100\% while another scores~0\%, and the ranking
+reverses on a different target.  Expressiveness guarantees that a
+solution exists in the search space, but not that gradient descent
+finds it: the most expressive structure fails on targets that a
+restricted alternative solves reliably.  Switching the operator
+changes which targets succeed; reversing its gradient profile
+collapses recovery entirely.  Balanced (non-chain) tree shapes are
+never recovered.  These findings show that the optimization landscape,
+not expressiveness alone, determines what gradient-based symbolic
+regression recovers.
+\end{abstract}
+
+\maketitle
+
+
+%% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+%% ===================================================================
+
+Symbolic regression (SR) discovers mathematical formulas from
+data~\citep{LaCava2021srbench, Dong2025survey, Makke2024survey}.  One
+family of methods parameterizes a formula as a tree of operators
+whose inputs are controlled by learnable weights, and recovers the
+target by training those weights with gradient
+descent~\citep{Sahoo2018eql, Dong2024eeql}.  The tree's
+structure, which determines what operators and variables are available
+at each position, is its \emph{architecture}: a design choice made
+once and applied to every target.
+
+Prior work has compared SR methods that differ in architecture,
+grammar, and search simultaneously: SRBench~\citep{LaCava2021srbench}
+tests 14 methods on 252 problems but cannot isolate architecture
+effects.  Gradient-based methods such as
+EQL~\citep{Sahoo2018eql} and eEQL~\citep{Dong2024eeql} each use a
+single fixed architecture without studying how architecture interacts
+with targets.  MetaSymNet~\citep{Li2025metasymnet} meta-learns the
+architecture but does not explain why fixed ones fail.
+Reinforcement-learning approaches~\citep{Petersen2021dsr,
+Landajuela2022udsr, Biggio2021nsrs} avoid fixed-architecture
+landscapes entirely.  On the EML side,
+Odrzywolek~\citep{Odrzywolek2026eml} demonstrated SR with one
+architecture, and Ipek~\citep{Ipek2026hardware, Ipek2026battery}
+applied EML to hardware and battery models without interaction
+analysis.  No prior study has varied architecture
+while holding the target set constant.
+
+This paper isolates the architecture variable by using the EML
+(Exp-Minus-Log) operator~\citep{Odrzywolek2026eml}, a single
+binary operation from which all elementary functions can be
+constructed.  Because every node in an EML tree computes the same
+operation, targets differ only in tree shape and variable placement,
+making it possible to compare architectures that share the same
+target language.  Three architectures are tested across more than
+12{,}700 training runs; the results show that a target's
+recoverability depends on architecture, not just on whether the
+architecture can express it.
+
+
+%% ===================================================================
+\section{Background}
+\label{sec:background}
+%% ===================================================================
+
+The EML operator~\citep{Odrzywolek2026eml} computes
+$\eml(a,b) = e^a - \ln b$.
+Its two inputs receive asymmetric gradients: the left input is
+exponentially amplified ($\partial\eml/\partial a = e^a$) while
+the right is attenuated ($\partial\eml/\partial b = -1/b$).  EML
+is a Sheffer operator: with only the constant~$1$, binary trees of
+EML nodes can express every elementary function ($+$, $-$, $\times$,
+$/$, $\exp$, $\ln$, trigonometric, and
+more)~\citep{Odrzywolek2026eml}.  For instance, $e^x = \eml(x,1)$
+and $e = \eml(1,1)$.
+
+A depth-$n$ EML tree is a perfect binary tree with $2^n - 1$
+operator nodes (depth~3 gives 7~nodes with 8~leaf positions).
+At depth~3, five distinct shapes exist.
+Four are \emph{chains}, in which one branch at each level carries the
+computation while the other is a leaf.  Chains are classified by which
+EML input (Left or Right) carries the active branch:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Shape & Template & Active-branch path \\
+\midrule
+LR & $\eml(\eml(1,\eml(\cdot,\cdot)),1)$ & Left at root, Right at depth~1 \\
+RL & $\eml(1,\eml(\eml(\cdot,\cdot),1))$ & Right at root, Left at depth~1 \\
+RR & $\eml(1,\eml(1,\eml(\cdot,\cdot)))$ & Right at both levels \\
+LL & $\eml(\eml(\eml(\cdot,\cdot),1),1)$ & Left at both levels \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The fifth shape is \emph{balanced}: both root branches are full
+subtrees, giving $\eml(\eml(\cdot,\cdot), \eml(\cdot,\cdot))$.
+The LL chain produces double exponentiation ($e^{e^a}$), which
+overflows on the training domain and is excluded from experiments.
+
+Three architectures are tested, summarized in
+Table~\ref{tab:archs}.  All three can represent any depth-3 EML tree
+with $\{1, x, y\}$ at the leaves; one is strictly more expressive.
+\textbf{Eq.\,6} is the architecture described in Equation~6 of
+Odrzywolek~\citep{Odrzywolek2026eml}: at each internal node a
+softmax selects among $\{1, x, f_{\text{child}}\}$, giving
+variable~$x$ access to every level of the tree.  Because its input
+set at internal nodes is a strict superset of V16's, Eq.\,6 is
+strictly more expressive.
+\textbf{V16} is variant~16 in the released source
+code\footnote{Code: \url{https://github.com/aodrzywolek/EML}}
+accompanying~\citet{Odrzywolek2026eml}: a sigmoid at each internal
+node selects between $\{1, f_{\text{child}}\}$, and variables $x$
+and $y$ enter only at the leaves through a 3-way softmax, making
+them symmetric.
+\textbf{Hybrid} uses V16's sigmoid at all internal nodes except the
+root, where a 4-way softmax adds $x$ and $y$ as additional options;
+the name reflects its combination of V16's body with partial variable
+access at the root.
+
+\begin{table}[t]
+\centering
+\caption{Architectures at depth~3.}
+\label{tab:archs}
+\begin{tabular}{@{}llrl@{}}
+\toprule
+Name & Internal selection & Params & Variable routing \\
+\midrule
+Eq.\,6  & softmax $\{1,x,f\}$ & 42 & $x$ at all nodes; $y$ leaves only \\
+V16     & sigmoid $\{1,f\}$    & 38 & $x,y$ leaves only (symmetric) \\
+Hybrid  & V16 + root 4-way     & 44 & $x,y$ root and leaves \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+%% ===================================================================
+\section{Methodology}
+\label{sec:setup}
+%% ===================================================================
+
+To test whether the architecture--target interaction is specific to
+EML or general to operators with gradient asymmetry, two additional
+operators are introduced:
+\begin{align}
+  \sml(a,b) &= \sinh(a) - \arctan(b), \label{eq:sml} \\
+  \rml(a,b) &= \arctan(a) - \sinh(b). \label{eq:rml}
+\end{align}
+SML shares EML's gradient direction: the left input receives
+unbounded gradients ($\partial\sml/\partial a = \cosh a$, which
+grows exponentially) while the right is bounded
+($\partial\sml/\partial b = -1/(1+b^2)$).  RML reverses this
+asymmetry.  Neither SML nor RML is known to be universal; target
+trees are evaluated numerically.
+
+Each node's inputs are weighted combinations of the available terms,
+with weights controlled by learnable parameters.  Training minimizes
+mean squared error using Adam~\citep{Kingma2015adam} (learning
+rate 0.01) on a $21 \times 21$ grid over $[-3,3]^2$ (441~points;
+targets with numerical overflow are filtered, leaving
+$n_{\text{train}} \geq 378$).  A two-phase schedule is used:
+a \emph{search phase} (6{,}000 iterations at temperature
+$\tau = 2.5$, keeping softmax/sigmoid weights soft) followed by a
+\emph{hardening phase} (2{,}000 iterations; $\tau$ anneals from
+2.5 to 0.01 with entropy and binarity penalties, then snaps to
+one-hot selections).  After hardening each node selects exactly one
+input, producing a concrete expression tree.
+
+Each combination of architecture, operator, tree shape, and leaf
+assignment is tested with 256 independent trials
+(64 seeds $\times$ 4 initializations) for V16 and Hybrid, or 64
+trials (one initialization) for Eq.\,6; Eq.\,6 uses a single
+initialization because the original paper specifies one, and adding
+V16-style strategies to Eq.\,6 would confound the comparison.
+Non-extreme rates (e.g., 17\%, 39.5\%) carry 95\%
+Clopper--Pearson intervals of roughly $\pm 5$\,pp at $n = 256$.
+A trial counts as
+\emph{exact recovery} if the hardened tree matches the target
+formula, verified on 500 random points (RMSE $< 10^{-6}$).
+Replacing V16's initialization with Eq.\,6's
+(randn $\times$ 0.1, no bias) yielded 0/64 recoveries, confirming
+that the architecture differences reported below are not explained
+by initialization.
+
+
+%% ===================================================================
+\section{Results}
+\label{sec:results}
+%% ===================================================================
+
+\subsection{Architecture--Target Interaction}
+\label{sec:results-interaction}
+
+Table~\ref{tab:d3matrix} shows that
+recovery depends on the combination of architecture and target, not
+on either factor alone.  Eq.\,6 acts as a specialist: 100\% recovery
+(64/64) on exactly two targets and 0\% (0/64) on three others.  V16
+is a generalist with nonzero recovery on all four chain shapes
+(16--99.6\%) and $x \leftrightarrow y$ symmetry from its leaf-only
+variable design.  Hybrid is an RL specialist (95--96\% on RL targets,
+near 0\% elsewhere).  No single architecture dominates: Eq.\,6
+scores 100\% where V16 scores 17\%, yet V16 scores 99.6\% where
+Eq.\,6 scores 0\%.  Expressiveness does not explain this pattern
+because Eq.\,6 is strictly more expressive than V16 yet fails on
+targets V16 recovers.  The difference lies in how each architecture's
+variable routing interacts with the optimization landscape for a given
+target.
+
+\begin{table}[t]
+\centering
+\caption{EML recovery rates (\%, exact match).}
+\label{tab:d3matrix}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Target & Shape & Eq.\,6 & V16 & Hybrid \\
+\midrule
+Paper (yx) & LR & \textbf{100} (64/64) & 17 & 0.4 \\
+T1 (xy)    & RL & 0 (0/64) & \textbf{99.6} & \textbf{96} \\
+T4 (xy)    & RR & 0 (0/64) & 39.5 & 0 \\
+T8 (xy)    & LR & 1.6 & 16   & 0.4 \\
+T1\_yx     & RL & 0   & ---  & \textbf{95.3} \\
+T4\_yx     & RR & \textbf{100} (64/64) & --- & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Operator Swap Reverses Shape Preferences}
+\label{sec:results-operators}
+
+Switching from EML to SML (Table~\ref{tab:sml},
+Figure~\ref{fig:heatmap}) inverts Eq.\,6's shape preferences: its best shape under EML is LR (100\%), but
+under SML it shifts to RL and RR (100\%) while LR drops to 0\%
+(Fisher exact $p < 10^{-15}$).  Both operators amplify the left
+input, so the reversal traces to differences in right-side
+attenuation ($-1/(1+b^2)$ for SML versus $-1/b$ for EML), which
+saturate differently on the $[-3,3]^2$ domain.  Despite the shape
+reversal, qualitative profiles persist: Eq.\,6 remains a specialist,
+V16 a generalist (83--100\% on all chains), and Hybrid an RL
+specialist.  These profiles likely reflect structural properties of
+variable routing rather than artifacts of one operator.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.82\textwidth]{fig_odrzywolek2026_heatmap.pdf}
+\Description{Heatmap showing recovery rates for three operators across architectures and tree shapes.}
+\caption{Recovery by architecture, shape, and operator (--- = inferred by symmetry).}
+\label{fig:heatmap}
+\end{figure*}
+
+\begin{table}[t]
+\centering
+\caption{SML recovery rates (\%, exact match).}
+\label{tab:sml}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Target & Shape & Eq.\,6 & V16 & Hybrid \\
+\midrule
+S\_LR (yx)    & LR & 0            & 84           & 0.8 \\
+S\_LR\_xy     & LR & 0            & 83           & 0.8 \\
+S\_RL (xy)    & RL & \textbf{100} & \textbf{100} & \textbf{100} \\
+S\_RL\_yx     & RL & 0            & \textbf{100} & \textbf{100} \\
+S\_RR (xy)    & RR & \textbf{100} & 99.6         & 89.8 \\
+S\_RR\_yx     & RR & \textbf{100} & 98.8         & 88.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+V16 dominates under SML, recovering all chain targets at 83\% or
+above.  Replacing EML with the right-amplified RML collapses all
+rates: Eq.\,6 scores 0\% on every target, V16's best nominal
+rate is 2.0\% (5/256, not significantly different from 0\%;
+Fisher exact $p = 0.06$), and Hybrid's RL preference vanishes.  RR and balanced shapes
+were not tested under RML because the collapse on chain targets,
+which are easier to recover than balanced shapes, made further
+experiments uninformative.
+
+
+\subsection{Balanced Trees Are Universally Hard}
+\label{sec:results-balanced}
+
+The balanced depth-3 shape is tested with four leaf-placement
+variants per architecture--operator combination
+(Table~\ref{tab:balanced}).  Every architecture scores 0\% on every
+balanced variant (0/3{,}776 trials; Clopper--Pearson 95\% upper
+bound 0.10\%).  The failure persists across 6 training
+configurations varying learning rate (0.01, 0.05), iteration budget
+(6{,}000, 12{,}000), and temperature (1.0, 2.5): 0/192.  The
+contrast with chain shapes is stark: V16 recovers 83--100\% of SML
+chains yet scores exactly 0\% on balanced variants of the same
+operator.  A plausible explanation is that balanced branching splits
+gradient signal roughly equally between the two root subtrees,
+preventing the concentration along a single path that drives chain
+recovery; gradient measurements for balanced shapes were not
+collected, and verifying this hypothesis is future work.
+
+\begin{table}[t]
+\centering
+\caption{Balanced recovery: 0\% across all combinations.}
+\label{tab:balanced}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Operator & Eq.\,6 & V16 & Hybrid & Total \\
+\midrule
+SML (4 variants)  & 0/256  & 0/1024 & 0/1024 & 0/2{,}304 \\
+EML (4 variants)  & 0/256  & 0/1024 & ---    & 0/1{,}280 \\
+HP sensitivity    & ---    & 0/192  & ---    & 0/192 \\
+\midrule
+\textbf{Total}    &        &        &        & \textbf{0/3{,}776} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Gradient Measurements}
+\label{sec:results-gradient}
+
+To investigate the mechanism behind the architecture--target
+interaction, gradient norms at leaf parameters are measured at
+iteration~1000 across 10 seeds (Table~\ref{tab:gradients}).
+For Eq.\,6, the ratio tracks recovery: when $x/y < 1$
+(variable~$y$ receives stronger gradients), recovery is 100\%; when
+$x/y > 1$ ($y$ is gradient-starved), recovery is 0\%.  Swapping EML
+for SML on the same shape (LR) flips the ratio from 0.67 to 1.78,
+consistent with the observed preference reversal.  V16 shows narrower
+ratios across targets (0.77--2.00), consistent with its symmetric
+design preventing either variable from dominating the gradient
+landscape.
+
+\begin{table}[t]
+\centering
+\caption{Leaf gradient ratio $\|\nabla_x\|/\|\nabla_y\|$ at iteration~1000
+(10-seed mean $\pm$ s.e.).}
+\label{tab:gradients}
+\begin{tabular}{@{}llcrc@{}}
+\toprule
+Arch.\ & Target & Op.\ & $x/y$ ratio & Rec.\ \\
+\midrule
+Eq.\,6 & LR (yx) & EML & $0.67 \pm 0.03$ & 100\% \\
+Eq.\,6 & RL (xy) & EML & $1.58 \pm 0.04$ & 0\% \\
+Eq.\,6 & LR (yx) & SML & $1.78 \pm 0.12$ & 0\% \\
+Eq.\,6 & RL (xy) & SML & $1.19 \pm 0.11$ & 100\% \\
+\midrule
+V16    & LR (yx) & EML & $0.77 \pm 0.05$ & 17\% \\
+V16    & RL (xy) & EML & $2.00 \pm 0.08$ & 99.6\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The gradient trajectory during training (Figure~\ref{fig:gradient})
+reveals the mechanism more clearly.  On the 100\% EML target the
+ratio undergoes a brief reversal, from 1.45 at iteration~100 to
+0.14 at iteration~500, then settling at 0.67 by iteration~1000;
+this temporary window in which $y$ dominates correlates with
+convergence to the correct formula.  On the 0\% target the ratio
+remains above 1.15 at every measured iteration, and $y$ never
+receives sufficient gradient signal.  These measurements establish a
+gradient-level correlate of the architecture--target interaction; the
+question of causation is addressed in Section~\ref{sec:limitations}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_odrzywolek2026_gradient.pdf}
+\Description{Line plot showing gradient ratio trajectories diverging for recovered vs unrecovered targets.}
+\caption{Gradient ratio $\|\nabla_x\|/\|\nabla_y\|$ during training
+(Eq.\,6, 10-seed mean $\pm$ s.e.).}
+\label{fig:gradient}
+\end{figure}
+
+
+%% ===================================================================
+\section{Discussion}
+\label{sec:discussion}
+%% ===================================================================
+
+Selecting a single architecture for all targets, as current
+gradient-based SR methods do~\citep{Sahoo2018eql, Dong2024eeql,
+Odrzywolek2026eml}, can yield 0\% recovery on targets that a
+different architecture recovers at 100\%.  Neural architecture search
+(NAS) also studies architecture--task interaction, but NAS
+architectures typically differ in
+expressiveness~\citep{Elsken2019nas}; here all architectures share
+the same target language, so recovery differences arise purely from
+optimization landscape geometry, a condition rarely met in benchmarks
+where methods differ simultaneously in grammar, search, and
+architecture~\citep{LaCava2021srbench}.
+
+The cross-operator results point to four interacting factors that
+determine recovery: variable routing, tree shape, leaf assignment,
+and gradient direction.  Four predictions were formulated before the
+RML and balanced experiments.  One was confirmed (V16 preferences
+invert under RML); three were falsified (balanced trees were
+predicted to vary by architecture but proved universally hard;
+Eq.\,6 and Hybrid were predicted to reverse preferences under RML
+but collapsed instead).  Gradient direction interacts with variable
+routing more strongly than a simple reordering model predicts.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+All three operators share the subtraction form $f(a) - g(b)$;
+whether the interaction extends to multiplicative or compositional
+operators is untested.  The full three-architecture comparison exists
+only at depth~3; limited depth-4 experiments with V16 show the
+generalist profile collapses (RL drops from 99.6\% to 0.8\%), but a
+complete depth-4 matrix remains future work.
+
+The controlled-expressiveness design requires all targets to lie
+within the EML grammar, preventing direct comparison with standard SR
+benchmarks (SRBench, Feynman equations) that would require
+exponential-depth EML trees.  SML targets have narrower output range
+than EML targets on $[-3,3]^2$, which may partly explain V16's
+higher SML rates (83--100\% versus 16--99.6\%).  The shape-specific
+patterns (Eq.\,6 under SML: LR 0\%, RL 100\%) cannot be explained by
+conditioning alone, since better conditioning would raise all shapes
+uniformly.
+
+The gradient measurements establish correlation, not causation.  A
+mechanistic account via loss-landscape analysis would strengthen the
+framework but is beyond the scope of this study.
+
+
+%% ===================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%% ===================================================================
+
+The optimization landscape, not expressiveness alone, determines what
+gradient-based symbolic regression recovers.  This motivates two
+practical directions: multi-architecture ensembles that run several
+structures in parallel and select the best result, and
+architecture-aware search that adapts variable routing to the target
+during optimization.  The universal failure on balanced trees points
+to a deeper constraint that warrants direct investigation via
+loss-landscape analysis.  Extending the interaction analysis to
+multiplicative operators, deeper trees, and standard SR benchmarks
+would test how far these findings generalize.
+
+
+%% ===================================================================
+%% Bibliography (pre-compiled .bbl inlined for arXiv)
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{14}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Biggio et~al\mbox{.}(2021)]%
+        {Biggio2021nsrs}
+\bibfield{author}{\bibinfo{person}{Luca Biggio}, \bibinfo{person}{Tommaso
+  Bendinelli}, \bibinfo{person}{Alexander Neitz}, \bibinfo{person}{Aurelien
+  Lucchi}, {and} \bibinfo{person}{Giambattista Parascandolo}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Neural Symbolic Regression that Scales}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 38th International Conference on
+  Machine Learning (ICML)}}. \bibinfo{pages}{936--945}.
+\newblock
+
+
+\bibitem[Cava et~al\mbox{.}(2021)]%
+        {LaCava2021srbench}
+\bibfield{author}{\bibinfo{person}{William~La Cava}, \bibinfo{person}{Patryk
+  Orzechowski}, \bibinfo{person}{Bogdan Burlacu},
+  \bibinfo{person}{Fabr{\'\i}cio~Olivetti de Fran{\c{c}}a},
+  \bibinfo{person}{Marco Virgolin}, \bibinfo{person}{Ying Jin},
+  \bibinfo{person}{Michael Kommenda}, {and} \bibinfo{person}{Jason~H. Moore}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Contemporary Symbolic Regression Methods and their
+  Relative Performance}. In \bibinfo{booktitle}{\emph{Advances in Neural
+  Information Processing Systems (NeurIPS)}}, Vol.~\bibinfo{volume}{34}.
+\newblock
+
+
+\bibitem[Dong and Zhong(2024)]%
+        {Dong2024eeql}
+\bibfield{author}{\bibinfo{person}{Hao Dong} {and} \bibinfo{person}{Jiangjun
+  Zhong}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Extended Equation Learner Solves Symbolic
+  Regression Tasks with Evolutionary Components}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Evolutionary
+  Computation}} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Dong and Zhong(2025)]%
+        {Dong2025survey}
+\bibfield{author}{\bibinfo{person}{Hao Dong} {and} \bibinfo{person}{Jiangjun
+  Zhong}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{A Survey on Symbolic Regression}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2211.10873}}
+  (\bibinfo{year}{2025}).
+\newblock
+
+
+\bibitem[Elsken et~al\mbox{.}(2019)]%
+        {Elsken2019nas}
+\bibfield{author}{\bibinfo{person}{Thomas Elsken}, \bibinfo{person}{Jan~Hendrik
+  Metzen}, {and} \bibinfo{person}{Frank Hutter}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Neural Architecture Search: A Survey}.
+\newblock \bibinfo{journal}{\emph{Journal of Machine Learning Research}}
+  \bibinfo{volume}{20}, \bibinfo{number}{55} (\bibinfo{year}{2019}),
+  \bibinfo{pages}{1--21}.
+\newblock
+
+
+\bibitem[Ipek(2026a)]%
+        {Ipek2026battery}
+\bibfield{author}{\bibinfo{person}{Sinan Ipek}.}
+  \bibinfo{year}{2026}\natexlab{a}.
+\newblock \showarticletitle{Evaluating the Exp-Minus-Log Sheffer Operator for
+  Battery Characterization}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2604.13873}}
+  (\bibinfo{year}{2026}).
+\newblock
+
+
+\bibitem[Ipek(2026b)]%
+        {Ipek2026hardware}
+\bibfield{author}{\bibinfo{person}{Sinan Ipek}.}
+  \bibinfo{year}{2026}\natexlab{b}.
+\newblock \showarticletitle{Hardware-Efficient Neuro-Symbolic Networks with the
+  Exp-Minus-Log Operator}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2604.13871}}
+  (\bibinfo{year}{2026}).
+\newblock
+
+
+\bibitem[Kingma and Ba(2015)]%
+        {Kingma2015adam}
+\bibfield{author}{\bibinfo{person}{Diederik~P. Kingma} {and}
+  \bibinfo{person}{Jimmy Ba}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Adam: A Method for Stochastic Optimization}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the International Conference
+  on Learning Representations (ICLR)}} (\bibinfo{year}{2015}).
+\newblock
+
+
+\bibitem[Landajuela et~al\mbox{.}(2022)]%
+        {Landajuela2022udsr}
+\bibfield{author}{\bibinfo{person}{Mikel Landajuela},
+  \bibinfo{person}{Chak~Shing Lee}, \bibinfo{person}{Jiachen Yang},
+  \bibinfo{person}{Ruben Glatt}, \bibinfo{person}{Claudio~P. Santiago},
+  \bibinfo{person}{Ignacio Aravena}, \bibinfo{person}{Terrell Mundhenk},
+  \bibinfo{person}{Garrett Mulcahy}, {and} \bibinfo{person}{Brenden~K.
+  Petersen}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{A Unified Framework for Deep Symbolic Regression}.
+  In \bibinfo{booktitle}{\emph{Advances in Neural Information Processing
+  Systems (NeurIPS)}}, Vol.~\bibinfo{volume}{35}.
+\newblock
+
+
+\bibitem[Li et~al\mbox{.}(2025)]%
+        {Li2025metasymnet}
+\bibfield{author}{\bibinfo{person}{Wenqiang Li}, \bibinfo{person}{Weijun Li},
+  \bibinfo{person}{Lina Yu}, \bibinfo{person}{Min Wu}, \bibinfo{person}{Linjun
+  Sun}, \bibinfo{person}{Jingyi Liu}, \bibinfo{person}{Yanjie Li}, {and}
+  \bibinfo{person}{Songsong Tian}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{MetaSymNet}: A Dynamic Symbolic Regression Network
+  Capable of Evolving into Arbitrary Formulas}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}}.
+\newblock
+
+
+\bibitem[Makke and Chawla(2024)]%
+        {Makke2024survey}
+\bibfield{author}{\bibinfo{person}{Nour Makke} {and} \bibinfo{person}{Sanjay
+  Chawla}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Interpretable Scientific Discovery with Symbolic
+  Regression: A Review}.
+\newblock \bibinfo{journal}{\emph{Artificial Intelligence Review}}
+  \bibinfo{volume}{57}, \bibinfo{number}{2} (\bibinfo{year}{2024}).
+\newblock
+
+
+\bibitem[Odrzywolek(2026)]%
+        {Odrzywolek2026eml}
+\bibfield{author}{\bibinfo{person}{Andrzej Odrzywolek}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \showarticletitle{All Elementary Functions from a Single Operator}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2603.21852v2}}
+  (\bibinfo{year}{2026}).
+\newblock
+\newblock
+\shownote{Institute of Theoretical Physics, Jagiellonian University}.
+
+
+\bibitem[Petersen et~al\mbox{.}(2021)]%
+        {Petersen2021dsr}
+\bibfield{author}{\bibinfo{person}{Brenden~K. Petersen}, \bibinfo{person}{Mikel
+  Landajuela}, \bibinfo{person}{T.~Nathan Mundhenk},
+  \bibinfo{person}{Claudio~P. Santiago}, \bibinfo{person}{Soo~K. Kim}, {and}
+  \bibinfo{person}{Joanne~T. Kim}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Deep Symbolic Regression: Recovering Mathematical
+  Expressions from Data via Risk-Seeking Policy Gradients}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the International Conference on
+  Learning Representations (ICLR)}}.
+\newblock
+
+
+\bibitem[Sahoo et~al\mbox{.}(2018)]%
+        {Sahoo2018eql}
+\bibfield{author}{\bibinfo{person}{Subham Sahoo}, \bibinfo{person}{Christoph
+  Lampert}, {and} \bibinfo{person}{Georg Martius}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Learning Equations for Extrapolation and Control}.
+  In \bibinfo{booktitle}{\emph{Proceedings of the 35th International Conference
+  on Machine Learning (ICML)}}. \bibinfo{pages}{4442--4450}.
+\newblock
+
+
+\end{thebibliography}
+
+\end{document}

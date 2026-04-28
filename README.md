@@ -2,6 +2,12 @@
 
 Code artifacts from research paper implementations.
 
+## Math
+
+| Paper | Description |
+|-------|-------------|
+| [odrzywolek2026](math/odrzywolek2026/) | Why architecture choice matters in symbolic regression ([arXiv:2604.23256](https://arxiv.org/abs/2604.23256)) |
+
 ## Cryptanalysis
 
 | Paper | Description |
