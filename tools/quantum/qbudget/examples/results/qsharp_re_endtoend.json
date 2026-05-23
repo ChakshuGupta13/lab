@@ -1,0 +1,82 @@
+{
+  "description": "Direct Q# RE end-to-end measurement of structural Grover oracle skeletons. Confirms \u03c1 = 2.000 exactly without composite-derivation caveat.",
+  "qsharp_version": "unknown",
+  "vchain_widths": [
+    {
+      "label": "V-chain ApplyAnd n_inputs=8",
+      "qubits": 15,
+      "ccz": 7,
+      "measurements": 7,
+      "t": 0,
+      "rotations": 0,
+      "n_inputs": 8,
+      "expected_ccz": 7,
+      "match": true
+    },
+    {
+      "label": "V-chain ApplyAnd n_inputs=32",
+      "qubits": 63,
+      "ccz": 31,
+      "measurements": 31,
+      "t": 0,
+      "rotations": 0,
+      "n_inputs": 32,
+      "expected_ccz": 31,
+      "match": true
+    }
+  ],
+  "oracles_endtoend": [
+    {
+      "label": "oracle AES BP11 (N_and=34, W=8)",
+      "qubits": 109,
+      "ccz": 41,
+      "measurements": 41,
+      "t": 0,
+      "rotations": 0,
+      "cipher_ands": 34,
+      "w_marker": 8,
+      "expected_ccz": 41,
+      "expected_t": 164,
+      "match": true
+    },
+    {
+      "label": "oracle SM4 Fermat (N_and=384, W=8)",
+      "qubits": 1159,
+      "ccz": 391,
+      "measurements": 391,
+      "t": 0,
+      "rotations": 0,
+      "cipher_ands": 384,
+      "w_marker": 8,
+      "expected_ccz": 391,
+      "expected_t": 1564,
+      "match": true
+    },
+    {
+      "label": "oracle SHA-256 Ch32 (N_and=32, W=32)",
+      "qubits": 127,
+      "ccz": 63,
+      "measurements": 63,
+      "t": 0,
+      "rotations": 0,
+      "cipher_ands": 32,
+      "w_marker": 32,
+      "expected_ccz": 63,
+      "expected_t": 252,
+      "match": true
+    },
+    {
+      "label": "oracle SHA-256 Maj32 (N_and=32, W=32)",
+      "qubits": 127,
+      "ccz": 63,
+      "measurements": 63,
+      "t": 0,
+      "rotations": 0,
+      "cipher_ands": 32,
+      "w_marker": 32,
+      "expected_ccz": 63,
+      "expected_t": 252,
+      "match": true
+    }
+  ]
+}

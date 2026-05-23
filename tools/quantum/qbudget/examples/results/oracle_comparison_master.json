@@ -1,0 +1,116 @@
+{
+  "description": "Apples-to-apples oracle T-count comparison: Qiskit default MCXGate vs Qiskit V-chain Jones AND, and Q# stdlib Controlled X vs Q# manual V-chain ApplyAnd. Q# numbers grounded in Q# Resource Estimator measurements (qsharp_re_validation.json).",
+  "qsharp_re_source": "results/qsharp_re_validation.json",
+  "qsharp_re_endtoend_source": "results/qsharp_re_endtoend.json",
+  "qsharp_vchain_ccz_by_W": {
+    "8": 7,
+    "16": 15,
+    "32": 31
+  },
+  "qsharp_stdlib_ccz_by_n_marker": {
+    "7": 11,
+    "15": 27,
+    "31": 59
+  },
+  "qsharp_endtoend_T_measured": {
+    "AES BP11 S-box|W=8|N_and=34": 164,
+    "SM4 Fermat S-box (ST)|W=8|N_and=384": 1564,
+    "SHA-256 Ch32 (ST)|W=32|N_and=32": 252,
+    "SHA-256 Maj32 (ST)|W=32|N_and=32": 252
+  },
+  "jones_cost_model": "1 CCZ = 4 T forward, 0 T uncompute (Jones 2013, validated by Q# RE: AND_pair = 1 CCZ + 1 measurement)",
+  "oracles": [
+    {
+      "label": "AES BP11 S-box",
+      "W": 8,
+      "n_marker": 7,
+      "cipher_fwd_T": 136,
+      "qiskit_T": {
+        "default_mcx": 356,
+        "vchain_jones": 328
+      },
+      "qsharp_T_model": {
+        "stock_stdlib": 180,
+        "best_practice_manual_vchain": 164
+      },
+      "qsharp_T_endtoend_measured": 164,
+      "qsharp_T_endtoend_matches_derived": true,
+      "in_oracle_library_tax_pct": 8.536585365853659,
+      "rho": {
+        "stock_qiskit_vs_best_qsharp": 2.1707317073170733,
+        "best_qiskit_vs_best_qsharp": 2.0,
+        "stock_qiskit_vs_stock_qsharp": 1.9777777777777779,
+        "best_qiskit_vs_stock_qsharp": 1.8222222222222222
+      }
+    },
+    {
+      "label": "SM4 Fermat S-box (ST)",
+      "W": 8,
+      "n_marker": 7,
+      "cipher_fwd_T": 1536,
+      "qiskit_T": {
+        "default_mcx": 3119,
+        "vchain_jones": 3128
+      },
+      "qsharp_T_model": {
+        "stock_stdlib": 1580,
+        "best_practice_manual_vchain": 1564
+      },
+      "qsharp_T_endtoend_measured": 1564,
+      "qsharp_T_endtoend_matches_derived": true,
+      "in_oracle_library_tax_pct": -0.2877237851662404,
+      "rho": {
+        "stock_qiskit_vs_best_qsharp": 1.9942455242966752,
+        "best_qiskit_vs_best_qsharp": 2.0,
+        "stock_qiskit_vs_stock_qsharp": 1.9740506329113925,
+        "best_qiskit_vs_stock_qsharp": 1.9797468354430379
+      }
+    },
+    {
+      "label": "SHA-256 Ch32 (ST)",
+      "W": 32,
+      "n_marker": 31,
+      "cipher_fwd_T": 128,
+      "qiskit_T": {
+        "default_mcx": 724,
+        "vchain_jones": 504
+      },
+      "qsharp_T_model": {
+        "stock_stdlib": 364,
+        "best_practice_manual_vchain": 252
+      },
+      "qsharp_T_endtoend_measured": 252,
+      "qsharp_T_endtoend_matches_derived": true,
+      "in_oracle_library_tax_pct": 43.65079365079365,
+      "rho": {
+        "stock_qiskit_vs_best_qsharp": 2.873015873015873,
+        "best_qiskit_vs_best_qsharp": 2.0,
+        "stock_qiskit_vs_stock_qsharp": 1.989010989010989,
+        "best_qiskit_vs_stock_qsharp": 1.3846153846153846
+      }
+    },
+    {
+      "label": "SHA-256 Maj32 (ST)",
+      "W": 32,
+      "n_marker": 31,
+      "cipher_fwd_T": 128,
+      "qiskit_T": {
+        "default_mcx": 724,
+        "vchain_jones": 504
+      },
+      "qsharp_T_model": {
+        "stock_stdlib": 364,
+        "best_practice_manual_vchain": 252
+      },
+      "qsharp_T_endtoend_measured": 252,
+      "qsharp_T_endtoend_matches_derived": true,
+      "in_oracle_library_tax_pct": 43.65079365079365,
+      "rho": {
+        "stock_qiskit_vs_best_qsharp": 2.873015873015873,
+        "best_qiskit_vs_best_qsharp": 2.0,
+        "stock_qiskit_vs_stock_qsharp": 1.989010989010989,
+        "best_qiskit_vs_stock_qsharp": 1.3846153846153846
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "description": "V-chain MCX with Jones AND vs Qiskit default MCXGate. Implied Q#/ProjectQ MCX cost = forward-only V-chain T (AND-dagger is 0T in those frameworks).",
+  "basis_gates": [
+    "cx",
+    "h",
+    "t",
+    "tdg",
+    "s",
+    "sdg",
+    "x",
+    "z"
+  ],
+  "measurements": [
+    {
+      "n_controls": 7,
+      "default_mcx": {
+        "qubits": 8,
+        "t_opt0": 17650,
+        "t_opt1": 17622,
+        "t_opt2": 17357,
+        "t_opt3": 17357
+      },
+      "vchain_jones_with_uncompute": {
+        "qubits": 20,
+        "t_opt0": 48,
+        "t_opt1": 48,
+        "t_opt2": 48,
+        "t_opt3": 48
+      },
+      "vchain_jones_forward_only_QSHARP_EQUIV": {
+        "qubits": 20,
+        "t_opt0": 24,
+        "t_opt1": 24
+      }
+    },
+    {
+      "n_controls": 15,
+      "default_mcx": {
+        "qubits": 16,
+        "t_opt0": 56462,
+        "t_opt1": 56458,
+        "t_opt2": 56159,
+        "t_opt3": 56159
+      },
+      "vchain_jones_with_uncompute": {
+        "qubits": 44,
+        "t_opt0": 112,
+        "t_opt1": 112,
+        "t_opt2": 112,
+        "t_opt3": 112
+      },
+      "vchain_jones_forward_only_QSHARP_EQUIV": {
+        "qubits": 44,
+        "t_opt0": 56,
+        "t_opt1": 56
+      }
+    },
+    {
+      "n_controls": 31,
+      "default_mcx": {
+        "qubits": 32,
+        "t_opt0": 16638,
+        "t_opt1": 16638,
+        "t_opt2": 16270,
+        "t_opt3": 16270
+      },
+      "vchain_jones_with_uncompute": {
+        "qubits": 92,
+        "t_opt0": 240,
+        "t_opt1": 240,
+        "t_opt2": 240,
+        "t_opt3": 240
+      },
+      "vchain_jones_forward_only_QSHARP_EQUIV": {
+        "qubits": 92,
+        "t_opt0": 120,
+        "t_opt1": 120
+      }
+    }
+  ]
+}

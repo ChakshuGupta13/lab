@@ -1,0 +1,54 @@
+{
+  "description": "Q# Resource Estimator logical counts",
+  "measurements": [
+    {
+      "n": 7,
+      "manual_vchain_AND": {
+        "qubits": 14,
+        "ccz": 6,
+        "measurements": 6
+      },
+      "stdlib_Controlled_X": {
+        "qubits": 13,
+        "ccz": 11,
+        "measurements": 0
+      }
+    },
+    {
+      "n": 15,
+      "manual_vchain_AND": {
+        "qubits": 30,
+        "ccz": 14,
+        "measurements": 14
+      },
+      "stdlib_Controlled_X": {
+        "qubits": 29,
+        "ccz": 27,
+        "measurements": 0
+      }
+    },
+    {
+      "n": 31,
+      "manual_vchain_AND": {
+        "qubits": 62,
+        "ccz": 30,
+        "measurements": 30
+      },
+      "stdlib_Controlled_X": {
+        "qubits": 61,
+        "ccz": 59,
+        "measurements": 0
+      }
+    }
+  ],
+  "sanity_checks": {
+    "AND_pair": {
+      "ccz": 1,
+      "measurements": 1
+    },
+    "unitary_Toffoli_pair": {
+      "ccz": 2,
+      "measurements": 0
+    }
+  }
+}
