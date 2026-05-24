@@ -25,17 +25,17 @@ Standard SHA-256 IV. Local collision spans steps 7–17. Message words
 $W_0, \dots, W_6$ are identical between the two copies; differences in
 $W_7, W_8, W_{12}, W_{15}, W_{17}$.
 
-- **Reproducer**: [`reproduce_table7_27step.cpp`](reproduce_table7_27step.cpp)
+- **Reproducer**: [`code/reproduce_table7_27step.cpp`](code/reproduce_table7_27step.cpp)
 - **Source**: paper Table 7 (full characteristic). The reproducer
   embeds the characteristic data locally (function
   `starting_point_27_table7_local()`); an identical copy lives in
-  [`starting_points.hpp`](starting_points.hpp) as `starting_point_27_table7()`
+  [`code/starting_points.hpp`](code/starting_points.hpp) as `starting_point_27_table7()`
   for reuse by other consumers.
 - **SAT result** (single core, n_fixed=0): SAT in ~40 s / 764K
   conflicts. With $W_0, \dots, W_{n-1}$ pinned to Table 8 values
   (n_fixed=9): SAT in ~0.1 s / ~750 conflicts.
 - **Verification**: SAT-extracted message pair is fed through the
-  reference SHA-256 step function ([`sha256.hpp`](sha256.hpp)) with
+  reference SHA-256 step function ([`code/sha256.hpp`](code/sha256.hpp)) with
   full 256-bit output equality check.
 
 ### 32-step semi-free-start collision (Table 3)
@@ -43,7 +43,7 @@ $W_7, W_8, W_{12}, W_{15}, W_{17}$.
 IV is free (both copies use the same IV value but it is not the
 standard SHA-256 IV). Local collision spans steps 2–17.
 
-- **Reproducer**: [`reproduce_table3_32step_sfs.cpp`](reproduce_table3_32step_sfs.cpp)
+- **Reproducer**: [`code/reproduce_table3_32step_sfs.cpp`](code/reproduce_table3_32step_sfs.cpp)
 - **Source**: paper Table 3 (full characteristic), with a documented
   hybrid relaxation: Table 3 marks 19 bits in $W_{3..7}$ low-half as
   `-` (equal) but Table 4's example collision has those bits
@@ -52,7 +52,7 @@ standard SHA-256 IV). Local collision spans steps 2–17.
   ~16 bits of $W_{3..7}$ to free. The reproducer embeds the
   characteristic locally (function `starting_point_32_sfs_table3_local()`);
   a near-identical copy lives in
-  [`starting_points.hpp`](starting_points.hpp) as `starting_point_32_sfs_table3()`.
+  [`code/starting_points.hpp`](code/starting_points.hpp) as `starting_point_32_sfs_table3()`.
 - **SAT result**: SAT in ~5.6 s / 170K conflicts.
 - **Verification**: as above.
 
@@ -60,7 +60,7 @@ standard SHA-256 IV). Local collision spans steps 2–17.
 
 Mendel 2011 Table 4 prints $h_1[1]$ as `e1f519a2`; running SHA-256 on
 the paper's message pair and IV produces `f5abb78c`. The verifier
-[`verify_collisions.cpp`](verify_collisions.cpp) checks against the
+[`code/verify_collisions.cpp`](code/verify_collisions.cpp) checks against the
 corrected value.
 
 ## Build
