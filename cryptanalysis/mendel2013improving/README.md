@@ -24,9 +24,9 @@ seconds; no novel attack or speedup is claimed.
 
 Standard SHA-256 IV. Local collision spans 11 steps.
 
-- **Reproducer**: [`reproduce_table3_28step.cpp`](reproduce_table3_28step.cpp)
+- **Reproducer**: [`code/reproduce_table3_28step.cpp`](code/reproduce_table3_28step.cpp)
 - **Source**: paper Table 3 (full characteristic), encoded as
-  `mendel2013::starting_point_28_full()` in [`starting_points.hpp`](starting_points.hpp).
+  `mendel2013::starting_point_28_full()` in [`code/starting_points.hpp`](code/starting_points.hpp).
 - **SAT result**: SAT in ~0.1 s / ~350 conflicts.
 - **Verification**: SAT-extracted message pair fed through reference
   SHA-256 step function with full 256-bit output equality check.
@@ -35,9 +35,9 @@ Standard SHA-256 IV. Local collision spans 11 steps.
 
 Semi-free-start. Local collision spans 14 steps; 7 active message words.
 
-- **Reproducer**: [`reproduce_table4_31step_sfs.cpp`](reproduce_table4_31step_sfs.cpp)
+- **Reproducer**: [`code/reproduce_table4_31step_sfs.cpp`](code/reproduce_table4_31step_sfs.cpp)
 - **Source**: paper Table 4 (full characteristic), encoded as
-  `mendel2013::starting_point_31_full()` in [`starting_points.hpp`](starting_points.hpp).
+  `mendel2013::starting_point_31_full()` in [`code/starting_points.hpp`](code/starting_points.hpp).
 - **SAT result**: SAT in ~11.7 s / ~272K conflicts.
 - **Verification**: as above.
 
@@ -47,9 +47,9 @@ Semi-free-start. Local collision spans 18 steps; 6 active message words.
 Paper estimates this attack at ~8 hours of single-CPU time using their
 bespoke guess-and-determine engine.
 
-- **Reproducer**: [`reproduce_table5_38step_sfs.cpp`](reproduce_table5_38step_sfs.cpp)
+- **Reproducer**: [`code/reproduce_table5_38step_sfs.cpp`](code/reproduce_table5_38step_sfs.cpp)
 - **Source**: paper Table 5 (full characteristic), encoded as
-  `mendel2013::starting_point_38_sfs_full()` in [`starting_points.hpp`](starting_points.hpp).
+  `mendel2013::starting_point_38_sfs_full()` in [`code/starting_points.hpp`](code/starting_points.hpp).
 - **SAT result**: SAT in ~9.6 s / ~212K conflicts.
 - **Verification**: as above.
 
