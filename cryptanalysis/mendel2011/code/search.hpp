@@ -1884,7 +1884,7 @@ inline LookAheadDecision select_decision(
 
 // ---- Search engine ----
 
-// B2': include here (after BitLoc/CharState/WordType are declared) so that
+// EmbeddedBCP integration: include here (after BitLoc/CharState/WordType are declared) so that
 // search() below can use EmbeddedBCP. embedded_bcp.hpp opens its own
 // `namespace mendel2011 {`, so we must close ours, include, then reopen.
 // embedded_bcp.hpp re-includes search.hpp which is a no-op (#pragma once),
@@ -2003,7 +2003,7 @@ inline SearchResult search(CharState initial, SearchConfig config, std::mt19937&
     }
 
     while (result.total_decisions < config.max_decisions) {
-        // B2': rewind BCP to the IV + starting-point fixpoint at every restart
+        // BCP fixpoint rewind: restore BCP to the IV + starting-point fixpoint at every restart
         // epoch. On the first iteration this is a no-op (base just built).
         if (config.use_embedded_bcp) bcp.restore_base();
 
@@ -2211,8 +2211,8 @@ inline SearchResult search(CharState initial, SearchConfig config, std::mt19937&
             // Impose first choice
             get_word(cs, chosen).impose(chosen.bit, first_choice);
 
-            // B2': BCP pre-filter on the main-decision first_choice. Per
-            // path_b_design.md §C+§D-bis, this runs BEFORE the expensive
+            // BCP pre-filter on the main-decision first_choice. This runs
+            // BEFORE the expensive
             // propagate_full so a BCP-detectable conflict (~100–1000 unit
             // propagations) short-circuits the heavier GnD propagation.
             // BCP is NOT called on the alt path or in backtrack pops; on
