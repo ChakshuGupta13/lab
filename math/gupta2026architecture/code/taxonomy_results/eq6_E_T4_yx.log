@@ -1,0 +1,26 @@
+Running eq6 × E_T4_yx: eml(1,eml(1,eml(y,x))) RR_yx
+  Resumed eq6_E_T4_yx: 48 runs already done
+  eq6_E_T4_yx: 56/64 seeds, 48/48 exact (100.0%) [0s]
+  eq6_E_T4_yx: 64/64 seeds, 48/48 exact (100.0%) [0s]
+  eq6_E_T4_yx: 72/64 seeds, 48/48 exact (100.0%) [0s]
+  eq6_E_T4_yx: 80/64 seeds, 48/48 exact (100.0%) [0s]
+  eq6_E_T4_yx: 88/64 seeds, 48/48 exact (100.0%) [0s]
+  eq6_E_T4_yx: 96/64 seeds, 48/48 exact (100.0%) [0s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE eq6_E_T4_yx: 50/50 exact (100.0%) [46s]
+  Failure types: {'exact': 50}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+
+TOTAL                                      178     64     64      0      0      0
+
+All failure types: {'training_failure': 64, 'hardening_failure': 64, 'exact': 178}

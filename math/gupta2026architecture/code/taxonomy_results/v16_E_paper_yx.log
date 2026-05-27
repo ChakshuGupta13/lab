@@ -1,0 +1,35 @@
+
+============================================================
+Started: 2026-05-02 21:12:22
+============================================================
+Running v16 × E_paper_yx: eml(eml(1,eml(y,x)),1) LR
+  v16_E_paper_yx: 8/64 seeds, 7/32 exact (21.9%) [313s]
+  v16_E_paper_yx: 16/64 seeds, 15/64 exact (23.4%) [628s]
+  v16_E_paper_yx: 24/64 seeds, 18/96 exact (18.8%) [975s]
+Running v16 × E_paper_yx: eml(eml(1,eml(y,x)),1) LR
+  Resumed v16_E_paper_yx: 96 runs already done
+  v16_E_paper_yx: 104/64 seeds, 18/96 exact (18.8%) [0s]
+  v16_E_paper_yx: 112/64 seeds, 18/96 exact (18.8%) [0s]
+  v16_E_paper_yx: 120/64 seeds, 18/96 exact (18.8%) [0s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE v16_E_paper_yx: 18/100 exact (18.0%) [60s]
+  Failure types: {'hardening_failure': 82, 'exact': 18}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_Bal_xy                       0.0%      0      2       0      0      0      0
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_R_LR_yx                        0.0%      0      0       2      0      0      0
+eq6_S_Bal_xy                       0.0%      0      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+v16_E_paper_yx                    18.0%     18      0      82      0      0      0
+
+TOTAL                                      196     66    148      0      0      0
+
+All failure types: {'training_failure': 66, 'hardening_failure': 148, 'exact': 196, 'chain_collapse': 2}

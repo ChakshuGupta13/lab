@@ -69,5 +69,5 @@ must be documented per-entry.
 ## Commits
 
 Conventional Commits. Scope is `<topic>/<entry-name>` (e.g.
-`feat(tools/quantum/qbudget): ...`, `feat(math/odrzywolek2026): ...`).
+`feat(tools/quantum/qbudget): ...`, `feat(math/gupta2026architecture): ...`).
 Top-level changes (README, AGENTS.md, .gitignore, LICENSE) use scope `infra`.

@@ -1,0 +1,37 @@
+
+============================================================
+Started: 2026-05-02 21:12:22
+============================================================
+Running v16 × S_LR_yx: sml(sml(1,sml(y,x)),1) LR
+  v16_S_LR_yx: 8/64 seeds, 29/32 exact (90.6%) [337s]
+  v16_S_LR_yx: 16/64 seeds, 55/64 exact (85.9%) [678s]
+Running v16 × S_LR_yx: sml(sml(1,sml(y,x)),1) LR
+  Resumed v16_S_LR_yx: 64 runs already done
+  v16_S_LR_yx: 72/64 seeds, 55/64 exact (85.9%) [0s]
+  v16_S_LR_yx: 80/64 seeds, 55/64 exact (85.9%) [0s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE v16_S_LR_yx: 58/68 exact (85.3%) [63s]
+  Failure types: {'exact': 58, 'hardening_failure': 10}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_Bal_xy                       0.0%      0      2       0      0      0      0
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_R_LR_yx                        0.0%      0      0       2      0      0      0
+eq6_S_Bal_xy                       0.0%      0      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+hybrid_S_LR_yx                     0.0%      0      0      44      0      0      0
+v16_E_Bal_xy                       0.0%      0    100       0      0      0      0
+v16_E_paper_yx                    18.0%     18      0      82      0      0      0
+v16_S_Bal_xy                       0.0%      0      0      51      0      0      0
+v16_S_LR_yx                       85.3%     58      0      10      0      0      0
+
+TOTAL                                      254    166    253      0      0      0
+
+All failure types: {'training_failure': 166, 'hardening_failure': 253, 'exact': 254, 'chain_collapse': 19}

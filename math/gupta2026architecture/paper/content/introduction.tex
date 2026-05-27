@@ -1,0 +1,56 @@
+%% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+%% ===================================================================
+
+% Par 1: SP motivation, gap
+Closed-form models of nonlinear signal-processing systems are
+useful for interpretability, sensitivity analysis, and downstream
+design.  Symbolic regression (SR) recovers such models from
+data~\citep{Cranmer2023pysr, LaCava2021srbench}.
+Differentiable SR over a fixed tree of operator
+nodes~\citep{Sahoo2018eql, Dong2024eeql, Odrzywolek2026eml} is
+especially relevant when the learned expression is intended to
+be inspected, simplified, or reused in downstream
+signal-processing models.  The tree's structure encodes inductive
+biases the practitioner controls before training.  The tree's
+shape and where input variables enter the tree together form its
+architecture, fixed before any data is seen.  How much that
+fixed choice constrains gradient-based recovery, when operator
+and grammar are held constant, remains difficult to isolate
+because existing comparisons usually vary architecture together
+with at least one other factor.
+
+% Par 2: Related work, compressed
+SRBench~\citep{LaCava2021srbench} compares 14 methods on 252
+problems whose operator sets and search algorithms vary across
+methods, confounding architecture with grammar and search.  The
+Equation Learner (EQL)~\citep{Sahoo2018eql} and its extension
+eEQL~\citep{Dong2024eeql} each evaluate a single fixed
+architecture, leaving the effect of architecture choice
+unmeasured.  MetaSymNet~\citep{Li2025metasymnet} and
+DySymNet~\citep{Li2024dysymnet} adapt architecture during search,
+quantifying end-to-end recovery rather than the contribution of
+any one fixed architecture.  Methods outside the fixed-tree
+gradient setting~\citep{Petersen2021dsr, Cranmer2023pysr,
+Brunton2016sindy} operate on a different design space and are
+not directly comparable.
+
+% Par 3: Approach
+Isolating variable-routing architecture requires a controlled
+operator family in which the tested targets are representable
+within the chosen depth limit.  The Exp-Minus-Log (EML) operator~\citep{Odrzywolek2026eml}
+provides such a controlled setting for the targets studied here.  Three architectures, each a different
+variable-routing pattern over a depth-3 EML tree, are compared
+on a common set of targets, and two further operators, one
+sharing EML's gradient asymmetry and one reversing that
+asymmetry, test whether the findings depend on EML specifically
+or on the gradient-asymmetry pattern exhibited by the operator.
+This paper makes three contributions.  First, we formalize
+recoverability as distinct from representability in fixed-tree
+differentiable SR.  Second, we introduce a controlled comparison
+in which variable-routing architecture is varied while operator
+and grammar are held fixed.  Third, we show, as a proof of
+concept, that held-out validation over a small architecture set
+can mitigate some recovery failures, including on a Shockley
+diode target outside the synthetic target family.

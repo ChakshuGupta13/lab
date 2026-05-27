@@ -1,0 +1,40 @@
+
+============================================================
+Started: 2026-05-02 21:12:22
+============================================================
+Running hybrid × S_Bal_xy: sml(sml(1,x),sml(1,y)) Bal
+  hybrid_S_Bal_xy: 8/64 seeds, 0/32 exact (0.0%) [361s]
+  hybrid_S_Bal_xy: 16/64 seeds, 0/64 exact (0.0%) [735s]
+Running hybrid × S_Bal_xy: sml(sml(1,x),sml(1,y)) Bal
+  Resumed hybrid_S_Bal_xy: 64 runs already done
+  hybrid_S_Bal_xy: 72/64 seeds, 0/64 exact (0.0%) [0s]
+  hybrid_S_Bal_xy: 80/64 seeds, 0/64 exact (0.0%) [0s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE hybrid_S_Bal_xy: 0/68 exact (0.0%) [67s]
+  Failure types: {'hardening_failure': 68}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_Bal_xy                       0.0%      0      2       0      0      0      0
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_R_LR_yx                        0.0%      0      0       2      0      0      0
+eq6_S_Bal_xy                       0.0%      0      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+hybrid_E_Bal_xy                    0.0%      0     68       0      0      0      0
+hybrid_S_Bal_xy                    0.0%      0      0      68      0      0      0
+hybrid_S_LR_yx                     0.0%      0      0      44      0      0      0
+hybrid_S_RL_xy                   100.0%     44      0       0      0      0      0
+v16_E_Bal_xy                       0.0%      0    100       0      0      0      0
+v16_E_paper_yx                    18.0%     18      0      82      0      0      0
+v16_S_Bal_xy                       0.0%      0      0      51      0      0      0
+v16_S_LR_yx                       85.3%     58      0      10      0      0      0
+
+TOTAL                                      298    234    321      0      0      0
+
+All failure types: {'training_failure': 234, 'hardening_failure': 321, 'exact': 298, 'chain_collapse': 19}

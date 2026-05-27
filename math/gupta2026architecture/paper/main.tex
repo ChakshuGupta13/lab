@@ -1,0 +1,95 @@
+%% =====================================================================
+%% IEEE MLSP 2026 wrapper — content lives in content/*.tex
+%% Anonymized for double-blind review (deadline May 15, 2026)
+%% =====================================================================
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{mlspconf}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% mlspconf does not load natbib; map natbib commands to plain \cite so the
+% existing content/*.tex files (written with \citep/\citet) compile unchanged.
+\providecommand{\citep}[1]{\cite{#1}}
+\providecommand{\citet}[1]{\cite{#1}}
+
+% ACM accessibility command — no-op under MLSP/IEEE
+\providecommand{\Description}[1]{}
+
+% Tighten bibliography item spacing (does not affect margins)
+\makeatletter
+\renewcommand{\thebibliography}[1]{\section{References}\list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}%
+ \setlength{\itemsep}{0pt plus 0pt minus 0pt}%
+ \setlength{\parsep}{0pt plus 0pt minus 0pt}}
+ \def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy\clubpenalty4000\widowpenalty4000
+ \sfcode`\.=1000\relax}
+% Tighten float and caption spacing (does not change margins)
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{0pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 1pt}
+\makeatother
+
+% Conference header — required by mlspconf for IEEE camera-ready;
+% suppressed for arXiv since arXiv conveys venue via metadata.
+% \toappear{2026 IEEE International Workshop on Machine Learning for Signal Processing, Sep.\ 28-- Oct.\ 1, 2026, Atlanta, USA}
+
+\input{content/macros}
+
+\title{Architecture-Induced Recoverability Bias in
+  Differentiable Symbolic Regression}
+
+% Double-blind anonymization (MLSP requires this exact form for initial submission;
+% see https://mlsp26.ieeesps.org/paper-submission-instructions/).
+% \name{Anonymous\thanks{Anonymous.}}
+% \address{Anonymous}
+
+% =====================================================================
+% De-anonymized author block for arXiv / CAMERA-READY (uncomment after
+% acceptance, and remove the \name/\address lines above).
+
+\name{%
+    Chakshu Gupta$^{\star}$%
+    \qquad Theodore J. LaGrow$^{\star\dagger}$%
+}
+\address{%
+    $^{\star}$ College of Computing, Georgia Institute of Technology, Atlanta, GA, USA \\%
+    $^{\dagger}$ College of Lifetime Learning, Georgia Institute of Technology, Atlanta, GA, USA%
+}
+% =====================================================================
+
+\begin{document}
+\ninept
+\maketitle
+
+\begin{abstract}
+\input{content/abstract}
+\end{abstract}
+
+\begin{keywords}
+Differentiable symbolic regression, expression recovery, architecture-induced bias, gradient-based symbolic regression, nonlinear system identification
+\end{keywords}
+
+\input{content/introduction}
+\input{content/background}
+\input{content/methodology}
+\input{content/results}
+\input{content/discussion}
+\input{content/conclusion}
+
+% =====================================================================
+\bibliographystyle{IEEEbib}
+\bibliography{references}
+
+\end{document}

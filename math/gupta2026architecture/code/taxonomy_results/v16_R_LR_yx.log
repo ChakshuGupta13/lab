@@ -1,0 +1,33 @@
+Running v16 × R_LR_yx: rml(rml(1,rml(y,x)),1) LR
+  v16_R_LR_yx: 8/64 seeds, 1/32 exact (3.1%) [368s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE v16_R_LR_yx: 1/52 exact (1.9%) [601s]
+  Failure types: {'hardening_failure': 47, 'exact': 1, 'numerical_divergence': 4}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_Bal_xy                       0.0%      0      2       0      0      0      0
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_R_LR_yx                        0.0%      0      0       2      0      0      0
+eq6_S_Bal_xy                       0.0%      0      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+hybrid_E_Bal_xy                    0.0%      0     68       0      0      0      0
+hybrid_S_Bal_xy                    0.0%      0      0      68      0      0      0
+hybrid_S_LR_yx                     0.0%      0      0      44      0      0      0
+hybrid_S_RL_xy                   100.0%     44      0       0      0      0      0
+v16_E_Bal_xy                       0.0%      0    100       0      0      0      0
+v16_E_paper_yx                    18.0%     18      0      82      0      0      0
+v16_R_LR_yx                        1.9%      1      0      47      0      0      0
+v16_S_Bal_xy                       0.0%      0      0      51      0      0      0
+v16_S_LR_yx                       85.3%     58      0      10      0      0      0
+v16_S_RR_xy                       98.1%     51      0       1      0      0      0
+
+TOTAL                                      350    234    369      0      0      0
+
+All failure types: {'training_failure': 234, 'hardening_failure': 369, 'exact': 350, 'chain_collapse': 19, 'numerical_divergence': 4}

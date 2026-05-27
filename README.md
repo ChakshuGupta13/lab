@@ -10,7 +10,7 @@ Implementations and supporting code for specific research papers.
 
 | Anchor | Description |
 |--------|-------------|
-| [odrzywolek2026](math/odrzywolek2026/) | Why architecture choice matters in symbolic regression ([arXiv:2604.23256](https://arxiv.org/abs/2604.23256)) |
+| [gupta2026architecture](math/gupta2026architecture/) | Architecture-induced recoverability bias in differentiable symbolic regression ([arXiv:2604.23256](https://arxiv.org/abs/2604.23256), MLSP 2026) |
 
 ### cryptanalysis
 

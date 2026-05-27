@@ -1,0 +1,32 @@
+Symbolic regression aims to recover closed-form expressions
+from numerical data, but in differentiable symbolic regression
+the recovered expression depends not only on the grammar but
+also on the fixed architecture through which variables are
+routed during training.  This is relevant to signal-processing
+settings in which closed-form models and interpretable nonlinear
+structure are useful.  This architecture-specific effect has
+rarely been isolated directly, because existing comparisons often
+vary architecture together with operator family, grammar, or
+search procedure.
+Three depth-3 architectures are compared across twenty-four
+operator--shape--leaf combinations, holding operator family,
+grammar, and training protocol fixed as far as possible while
+varying the variable-routing architecture.  Recovery changes from
+$0/64$ to $64/64$ trials on the same target under an
+architecture-plus-native-training-protocol comparison.  The best
+architecture on one target is the worst on another, and trees
+with two equal-depth subtrees fail in every configuration tested
+($0/3{,}776$).  As a proof-of-concept mitigation, a small
+architecture set is trained and the hardened expression with the
+lowest held-out RMSE is selected.  On the jointly-run subset,
+this improves recovery from $34.4\%$ for the only architecture
+present in all three configurations to $50.1\%$.  On a
+Shockley diode target, the validation selector recovers cases
+missed by that baseline architecture, which by itself recovers
+$0/32$ seeds.  Since the jointly-run subset contains only three
+configurations, the selector result is evidence that
+validation-based architecture selection is promising, not a
+complete benchmark.  These results support treating architecture
+as a measurable design variable that should be reported,
+stress-tested, and selected using held-out validation rather
+than fixed a priori.

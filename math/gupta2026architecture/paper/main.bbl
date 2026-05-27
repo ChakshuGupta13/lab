@@ -1,0 +1,88 @@
+\begin{thebibliography}{10}
+
+\bibitem{Cranmer2023pysr}
+Miles Cranmer,
+\newblock ``Interpretable machine learning for science with {PySR} and
+  {SymbolicRegression.jl},''
+\newblock {\em arXiv preprint arXiv:2305.01582}, 2023.
+
+\bibitem{LaCava2021srbench}
+William~La Cava, Patryk Orzechowski, Bogdan Burlacu, Fabr{\'\i}cio~Olivetti
+  de~Fran{\c{c}}a, Marco Virgolin, Ying Jin, Michael Kommenda, and Jason~H.
+  Moore,
+\newblock ``Contemporary symbolic regression methods and their relative
+  performance,''
+\newblock in {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  2021, vol.~34.
+
+\bibitem{Sahoo2018eql}
+Subham Sahoo, Christoph Lampert, and Georg Martius,
+\newblock ``Learning equations for extrapolation and control,''
+\newblock in {\em Proceedings of the 35th International Conference on Machine
+  Learning (ICML)}, 2018, pp. 4442--4450.
+
+\bibitem{Dong2024eeql}
+Hao Dong and Jiangjun Zhong,
+\newblock ``Extended equation learner solves symbolic regression tasks with
+  evolutionary components,''
+\newblock {\em IEEE Transactions on Evolutionary Computation}, 2024.
+
+\bibitem{Odrzywolek2026eml}
+Andrzej Odrzywolek,
+\newblock ``All elementary functions from a single operator,''
+\newblock {\em arXiv preprint arXiv:2603.21852v2}, 2026,
+\newblock Institute of Theoretical Physics, Jagiellonian University.
+
+\bibitem{Li2025metasymnet}
+Wenqiang Li, Weijun Li, Lina Yu, Min Wu, Linjun Sun, Jingyi Liu, Yanjie Li, and
+  Songsong Tian,
+\newblock ``{MetaSymNet}: A dynamic symbolic regression network capable of
+  evolving into arbitrary formulas,''
+\newblock in {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, 2025.
+
+\bibitem{Li2024dysymnet}
+Wenqiang Li, Weijun Li, Linjun Sun, Min Wu, Lina Yu, Jingyi Liu, Yanjie Li, and
+  Songsong Tian,
+\newblock ``A neural-guided dynamic symbolic network for exploring mathematical
+  expressions from data,''
+\newblock in {\em Proceedings of the 41st International Conference on Machine
+  Learning (ICML)}, 2024.
+
+\bibitem{Petersen2021dsr}
+Brenden~K. Petersen, Mikel Landajuela, T.~Nathan Mundhenk, Claudio~P. Santiago,
+  Soo~K. Kim, and Joanne~T. Kim,
+\newblock ``Deep symbolic regression: Recovering mathematical expressions from
+  data via risk-seeking policy gradients,''
+\newblock in {\em Proceedings of the International Conference on Learning
+  Representations (ICLR)}, 2021.
+
+\bibitem{Brunton2016sindy}
+Steven~L. Brunton, Joshua~L. Proctor, and J.~Nathan Kutz,
+\newblock ``Discovering governing equations from data by sparse identification
+  of nonlinear dynamical systems,''
+\newblock {\em Proceedings of the National Academy of Sciences}, vol. 113, no.
+  15, pp. 3932--3937, 2016.
+
+\bibitem{Shockley1949pn}
+W.~Shockley,
+\newblock ``The theory of {p}-{n} junctions in semiconductors and {p}-{n}
+  junction transistors,''
+\newblock {\em The Bell System Technical Journal}, vol. 28, no. 3, pp.
+  435--489, 1949.
+
+\bibitem{Liu2019darts}
+Hanxiao Liu, Karen Simonyan, and Yiming Yang,
+\newblock ``{DARTS}: Differentiable architecture search,''
+\newblock in {\em International Conference on Learning Representations (ICLR)},
+  2019.
+
+\bibitem{Zela2020robustdarts}
+Arber Zela, Thomas Elsken, Tonmoy Saikia, Yassine Marrakchi, Thomas Brox, and
+  Frank Hutter,
+\newblock ``Understanding and robustifying differentiable architecture
+  search,''
+\newblock in {\em International Conference on Learning Representations (ICLR)},
+  2020.
+
+\end{thebibliography}

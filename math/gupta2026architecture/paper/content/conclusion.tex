@@ -1,0 +1,17 @@
+%% ===================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%% ===================================================================
+
+In depth-limited differentiable symbolic regression,
+architecture is not merely an implementation detail.  Even when
+operator and grammar are controlled, the variable-routing
+pattern can strongly affect whether a representable expression
+is recovered after training and hardening, with recovery moving
+between $0\%$ and $100\%$ on the same target in the tested
+configurations.  The practical implication is direct.
+Architecture should be reported, stress-tested, and selected by
+held-out validation rather than fixed a priori.  The
+next step is to test whether this recoverability bias persists
+in deeper trees and in grammars with addition, multiplication,
+and composition as primitives.

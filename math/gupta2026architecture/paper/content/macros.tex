@@ -1,0 +1,30 @@
+% Shared notation — included by all format wrappers
+\newcommand{\eml}{\mathrm{eml}}
+\newcommand{\sml}{\mathrm{sml}}
+\newcommand{\rml}{\mathrm{rml}}
+\newcommand{\op}{\mathrm{op}}
+
+% Modest float-spacing tightening (content-preserving; preserves format)
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\intextsep}{9pt plus 2pt minus 2pt}
+\setlength{\floatsep}{9pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{6pt}
+\setlength{\belowcaptionskip}{0pt}
+
+% Modest section-heading spacing tightening (preserves mlspconf format:
+% font/size/weight unchanged; only the vertical skips before/after shrink)
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-2.8ex \@plus -0.8ex \@minus -.2ex}%
+  {1.8ex \@plus.2ex}%
+  {\normalfont\Large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-2.4ex \@plus -0.7ex \@minus -.2ex}%
+  {1.1ex \@plus.2ex}%
+  {\normalfont\large\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {-2.1ex \@plus -0.6ex \@minus -.2ex}%
+  {0.9ex \@plus.2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother

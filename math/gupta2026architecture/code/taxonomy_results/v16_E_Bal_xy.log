@@ -1,0 +1,36 @@
+
+============================================================
+Started: 2026-05-02 21:12:22
+============================================================
+Running v16 × E_Bal_xy: eml(eml(x,1),eml(y,1)) Bal
+  v16_E_Bal_xy: 8/64 seeds, 0/32 exact (0.0%) [310s]
+  v16_E_Bal_xy: 16/64 seeds, 0/64 exact (0.0%) [621s]
+  v16_E_Bal_xy: 24/64 seeds, 0/96 exact (0.0%) [964s]
+Running v16 × E_Bal_xy: eml(eml(x,1),eml(y,1)) Bal
+  Resumed v16_E_Bal_xy: 96 runs already done
+  v16_E_Bal_xy: 104/64 seeds, 0/96 exact (0.0%) [0s]
+  v16_E_Bal_xy: 112/64 seeds, 0/96 exact (0.0%) [0s]
+  v16_E_Bal_xy: 120/64 seeds, 0/96 exact (0.0%) [0s]
+
+[SIGINT] finishing current run, then saving checkpoint...
+
+  DONE v16_E_Bal_xy: 0/100 exact (0.0%) [60s]
+  Failure types: {'training_failure': 100}
+
+========================================================================
+Cell                               Rate  exact  train  harden  const   near  other
+========================================================================
+eq6_E_Bal_xy                       0.0%      0      2       0      0      0      0
+eq6_E_T1_xy                        0.0%      0     64       0      0      0      0
+eq6_E_T4_xy                        0.0%      0      0      64      0      0      0
+eq6_E_T4_yx                      100.0%     50      0       0      0      0      0
+eq6_E_paper_yx                   100.0%     64      0       0      0      0      0
+eq6_R_LR_yx                        0.0%      0      0       2      0      0      0
+eq6_S_Bal_xy                       0.0%      0      0       0      0      0      0
+eq6_S_RL_xy                      100.0%     64      0       0      0      0      0
+v16_E_Bal_xy                       0.0%      0    100       0      0      0      0
+v16_E_paper_yx                    18.0%     18      0      82      0      0      0
+
+TOTAL                                      196    166    148      0      0      0
+
+All failure types: {'training_failure': 166, 'hardening_failure': 148, 'exact': 196, 'chain_collapse': 2}

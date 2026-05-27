@@ -1,0 +1,79 @@
+%% ===================================================================
+\section{Methodology}
+\label{sec:setup}
+%% ===================================================================
+
+To test whether the architecture--target interaction is specific to
+EML or general to operators with gradient asymmetry, two additional
+operators are introduced:
+\begin{align}
+  \sml(a,b) &= \sinh(a) - \arctan(b), \label{eq:sml} \\
+  \rml(a,b) &= \arctan(a) - \sinh(b). \label{eq:rml}
+\end{align}
+SML shares EML's gradient direction.  The left input receives
+unbounded gradients ($\partial\sml/\partial a = \cosh a$, which
+grows exponentially) while the right is bounded
+($\partial\sml/\partial b = -1/(1+b^2)$).  RML reverses this
+asymmetry.  Neither SML nor RML is known to be universal, and target trees are evaluated numerically.
+
+Each node's left and right inputs are weighted combinations of
+an architecture-specific set of available terms, typically drawn from
+$\{1, x, y, f_{\text{child}}\}$.  Which terms are available at which
+nodes is exactly what distinguishes the three architectures
+(Table~\ref{tab:archs}).  Weights are controlled by learnable
+parameters under a softmax or sigmoid.  Training minimizes mean
+squared error using Adam with a learning rate
+of 0.01 on a $21 \times 21$ grid over the positive quadrant
+$[1,3]^2$ (441~points).  The domain is bounded away from zero
+for two reasons.  First, EML's right-input logarithm $\ln b$
+requires $b>0$.  Second, the singularity in
+$\partial\eml/\partial b = -1/b$ near zero would destabilize
+gradient measurements.  Targets with
+numerical overflow on a subset of the grid are excluded entirely,
+leaving only targets whose function values are finite on all
+441~points.  Training proceeds in two phases.  A
+search phase runs for 6{,}000 iterations at temperature $\tau = 2.5$, with
+soft softmax and sigmoid weights, followed by a hardening phase
+of 2{,}000 iterations in which $\tau$ anneals from 2.5 to 0.01 with entropy
+and binarity penalties before the one-hot snap.  After hardening
+each node selects exactly one input, producing a concrete
+expression tree.
+
+Each combination of architecture, operator, tree shape, and leaf
+assignment is one cell.  V16 and Hybrid are tested with 256
+trials per cell, using 64 seeds over four initialization
+strategies.  Eq.\,6 is tested with 64 trials per cell using the
+original paper's randn~$\times$~0.1 initialization.  Applying
+V16's initialization set to Eq.\,6 would mix architecture and
+initialization effects.  V16 and Hybrid initializations bias the
+softmax weights either toward the constant~$1$ (\emph{biased}),
+uniformly across inputs (\emph{uniform}), toward the variable
+inputs (\emph{$xy$-biased}), or onto a single randomly chosen
+input (\emph{random-hot}).  All reported rates carry 95\% Clopper--Pearson
+confidence intervals (at $n = 256$,
+mid-range half-widths $\approx$6\,pp; at $n = 64$,
+0\% yields $[0, 5.6]$\%).  A trial counts as exact recovery when
+the hardened model satisfies training MSE below $10^{-20}$ on the
+441-point grid and held-out RMSE below $10^{-6}$ on 500 points
+drawn uniformly from $[0.5,5.0]^2$, which strictly contains the
+training grid.  In practice, this tolerance separates exact
+symbolic recovery from close numerical fits on the noiseless
+grid, and the held-out grid checks both in-range fit and
+extrapolation.
+Per-trial logs (twelve fields including seed, initialization,
+architecture, target, operator, training and held-out RMSE,
+hardened expression, routing, structural-match flag, failure-type
+label, and wall time) are recorded for every run.
+
+A sensitivity screen varied six protocol factors: optimizer,
+hardening schedule, clamp magnitude, held-out grid seed,
+training noise $\sigma$, and numerical $\varepsilon$.  The screen
+ran 5{,}248 OFAT trials plus a factorial across the twelve
+non-balanced chain cells.  The largest cell-dependent effects
+came from initialization strategy.  One harmful level appeared
+for the optimizer, Adam~$10^{-3}$, and one appeared for the
+hardening schedule, step annealing.  The remaining levels
+changed recovery by less than $12$ percentage points.  The main experiment
+uses Adam~$10^{-2}$, power-law hardening, clamp~$=10^6$, grid
+seed~$=12345$, $\sigma=0$, and $\varepsilon=10^{-12}$.\footnote{Source
+code: \url{https://github.com/ChakshuGupta13/lab/}.}

@@ -1,0 +1,134 @@
+%% ===================================================================
+\section{Discussion}
+\label{sec:discussion}
+%% ===================================================================
+
+These results should be read as a controlled study of
+recoverability in depth-limited differentiable symbolic
+regression, not as a benchmark ranking symbolic regression
+methods broadly.  For closed-form signal-model discovery,
+recoverability depends not only on the operator grammar but also
+on the architecture through which signal variables are routed
+during training.  Varying the architecture's variable-routing
+pattern while holding operator, tree shape, and leaf
+assignment fixed produces 0\%--100\% recovery reversals across
+three operators, three architectures, and twenty-four target
+configurations.  What each architecture can represent does not
+fully explain the pattern.  Eq.\,6's representable set is a strict superset
+of V16's, yet Eq.\,6 fails on targets V16 recovers at 99.6\%.
+Balanced topologies fail to recover under any combination tested
+(0/3{,}776), and reversing the operator's input asymmetry collapses
+all rates to 2\% or below.  These results provide evidence for architecture-induced
+recoverability bias as a measurable property of differentiable
+symbolic regression on the configurations tested.  Recovery
+differences are associated with variable routing and
+optimization-landscape geometry, a pattern most directly
+observable when the variable-routing architecture is isolated, a
+condition absent from benchmarks where methods vary
+simultaneously in grammar, search, and
+architecture~\citep{LaCava2021srbench}.  This parallels findings
+in differentiable architecture search~\citep{Liu2019darts},
+where smooth relaxations can yield unstable discrete
+selections~\citep{Zela2020robustdarts}.
+
+Cross-operator results suggest that recovery moves with variable
+routing, tree shape, leaf assignment, and gradient direction
+together rather than with any one factor in isolation.  Reversing the
+operator's input asymmetry with RML collapses Eq.\,6 and Hybrid
+to $0\%$ on every tested chain rather than mirroring their EML
+preferences.  This is consistent with left-amplifying asymmetry
+being important for Eq.\,6 recovery under this protocol.
+
+\subsection{Practical Implications}
+\label{sec:practical}
+
+The validation-selected ensemble in
+Section~\ref{sec:results-selection} suggests a simple mitigation
+strategy.  In nonlinear system identification and interpretable
+signal modeling, the goal is often recovery of a reusable
+closed form rather than just low prediction error, so
+architecture choice can determine whether a physically
+meaningful expression is discoverable at all.  A practitioner
+can train a small architecture set, harden each candidate, and
+select by held-out RMSE.  This is a proof of concept rather than
+a complete deployment rule, since the selector was evaluated on
+a limited subset and on noiseless targets where recovery and
+non-recovery separate clearly.  Two qualifications matter.
+First, the lift comes from two sources: cell-level selection
+($34.4\%$ for V16 to $50.1\%$ on the three jointly-run
+configurations) and coverage, where adding architectures avoids
+commitment to a candidate whose representable set excludes the
+target, as the Shockley diode case isolates.  Second, the
+selector matches the per-target oracle only because recovery
+and non-recovery runs separate by five orders of magnitude in
+held-out RMSE.  On noisier data or tighter training budgets the
+gap may shrink and the selector may pick a non-recovering run
+that happens to fit slightly better.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+The architecture--target interaction is established only at depth~3
+under the subtraction form $f(a)-g(b)$.  The results should
+therefore not be read as a claim about all differentiable SR
+architectures or all symbolic grammars.  Multiplicative and
+compositional operators are untested, and a limited depth-4 V16
+sweep suggests the depth-3 generalist profile may not persist
+(RL: $99.6\%\to 0.8\%$), so a full depth-4 matrix is needed
+before the depth-3 ordering can be treated as general.  The
+narrower output range of SML on $[1,3]^2$ may partly explain
+V16's higher SML rates, but the shape-specific reversals
+(Eq.\,6 under SML: LR~$0\%$, RL~$100\%$) are unlikely to be
+explained by only output conditioning.  The paper does not
+claim EML or SML is a strong practical grammar for
+signal-processing formula discovery; instead, these grammars
+are used as controlled settings in which representability and
+recoverability can be separated.
+
+The gradient ratio $\rho_{xy}$ is a diagnostic correlate
+(Section~\ref{sec:results-gradient}), not a causal account.  The
+sensitivity screen (Section~\ref{sec:setup}) indicates that the
+observed architecture--target reversals are not artifacts of
+optimizer, clamp, held-out seed, training noise, or numerical
+$\varepsilon$ under the tested ranges, although initialization
+remains cell-dependent.
+
+The signal-model audit shows where the controlled recovery
+phenomenon intersects with common formula classes used in
+electrical, acoustic, and communication modeling.
+Table~\ref{tab:audit} audits several canonical signal-processing
+nonlinearities at depth~3.  Some are directly representable and
+tested as recovery targets; others expose grammar barriers
+involving addition, reciprocal structure, signed exponents, or
+constant construction.
+
+Many canonical two-variable signal-processing,
+electrical-engineering, and physics formulas fall
+into the second group.  Addition in EML requires a much deeper
+tree~\citep{Odrzywolek2026eml}, and the current
+softmax-weighted leaves cannot represent negation.  Constant
+constructibility also matters.  With the current leaf alphabet
+$\{1,x,y\}$, zero cannot be synthesized as a subtree on the
+training domain.  As a result, log-only responses of the form
+$\eml(0,\cdot)$ are structurally unreachable, while exponential
+responses such as the normalized Shockley diode remain
+reachable.
+
+\begin{table}[t]
+\centering
+\caption{Signal-model audit at depth~3.  R: representable;
+A: blocked (missing primitive in parentheses).}
+\label{tab:audit}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+Formula class (example) & Application context & Status \\
+\midrule
+Exp.\ device law (Shockley) & electronics; sensors & R \\
+Log compression ($1-\ln x$) & dB; log spectra      & A (zero leaf) \\
+Friis / path loss           & RF; comms            & A (sum) \\
+Shannon capacity            & comms; info rate     & A (sum) \\
+Sabine / Hill               & acoustics; sensory   & A (reciprocal) \\
+\bottomrule
+\end{tabular}
+\end{table}
