@@ -117,7 +117,7 @@ camera-ready.
 
 ## License
 
-Code: MIT. Paper: CC BY 4.0.
+CC BY 4.0. See [LICENSE](../../LICENSE).
 
 ## Acknowledgment
 

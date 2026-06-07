@@ -111,4 +111,4 @@ Requirements: Python 3.10+, NumPy. No other dependencies.
 
 ## License
 
-MIT. See [LICENSE](../../LICENSE).
+CC BY 4.0. See [LICENSE](../../LICENSE).

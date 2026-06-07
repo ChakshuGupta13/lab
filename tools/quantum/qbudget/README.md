@@ -171,7 +171,7 @@ pytest tests/
 
 ## License
 
-MIT, see [`LICENSE`](LICENSE).
+CC BY 4.0. See [LICENSE](../../../LICENSE).
 
 ## Citation
 
