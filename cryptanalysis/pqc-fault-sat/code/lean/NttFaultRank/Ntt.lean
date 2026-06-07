@@ -63,6 +63,38 @@ def nttFault (Z : spec.Twiddles K) (F : spec.FaultSet) :
     (Fin spec.n → K) →ₗ[K] (Fin spec.n → K) :=
   spec.ntt (spec.faultedTwiddles Z F)
 
+/-! ### Generalized fault model: arbitrary replacement twiddles -/
+
+/-- Generalized faulted twiddle assignment: faulted groups get replacement
+    twiddles `Z'` instead of zero. -/
+def faultedTwiddlesGen (Z Z' : spec.Twiddles K) (F : spec.FaultSet) : spec.Twiddles K :=
+  fun ℓ g => if g ∈ F ℓ then Z' ℓ g else Z ℓ g
+
+/-- Specialization: zeroing replacement twiddles recovers `faultedTwiddles`. -/
+@[simp]
+lemma faultedTwiddlesGen_zero (Z : spec.Twiddles K) (F : spec.FaultSet) :
+    spec.faultedTwiddlesGen Z (fun _ _ => 0) F = spec.faultedTwiddles Z F := by
+  ext ℓ g
+  unfold faultedTwiddlesGen faultedTwiddles
+  simp
+
+/-- Generalized faulted NTT with arbitrary replacement twiddles. -/
+def nttFaultGen (Z Z' : spec.Twiddles K) (F : spec.FaultSet) :
+    (Fin spec.n → K) →ₗ[K] (Fin spec.n → K) :=
+  spec.ntt (spec.faultedTwiddlesGen Z Z' F)
+
+/-- Specialization: zeroing replacement twiddles recovers `nttFault`. -/
+@[simp]
+lemma nttFaultGen_zero (Z : spec.Twiddles K) (F : spec.FaultSet) :
+    spec.nttFaultGen Z (fun _ _ => 0) F = spec.nttFault Z F := by
+  unfold nttFaultGen nttFault
+  rw [faultedTwiddlesGen_zero]
+
+/-- Generalized fault-difference operator with arbitrary replacement twiddles. -/
+def faultDiffGen (Z Z' : spec.Twiddles K) (F : spec.FaultSet) :
+    (Fin spec.n → K) →ₗ[K] (Fin spec.n → K) :=
+  spec.ntt Z - spec.nttFaultGen Z Z' F
+
 end LayerSpec
 
 /-! ### Kyber parameters: `n = 256`, `N = 7`, `G ℓ = 2^ℓ`, `L ℓ = 128 / 2^ℓ` -/
@@ -85,7 +117,7 @@ def kyberSpec : LayerSpec where
 /-- The Cooley-Tukey recurrence: at every successive layer, butterfly
     length halves and group count doubles. Required for the (⊇) direction
     of Theorem 2. -/
-class KyberLike (spec : LayerSpec) : Prop where
+class CooleyTukeyLike (spec : LayerSpec) : Prop where
   /-- `L` halves between consecutive layers. -/
   L_succ : ∀ k (h : k + 1 < spec.N),
     spec.L ⟨k + 1, h⟩ * 2 = spec.L ⟨k, Nat.lt_of_succ_lt h⟩
@@ -96,7 +128,7 @@ class KyberLike (spec : LayerSpec) : Prop where
   L_zero_doubled : ∀ (h : 0 < spec.N), 2 * spec.L ⟨0, h⟩ = spec.n
 
 /-- `kyberSpec` satisfies the Cooley-Tukey recurrence. -/
-instance : KyberLike kyberSpec where
+instance : CooleyTukeyLike kyberSpec where
   L_succ k h := by
     show kyberL ⟨k + 1, h⟩ * 2 = kyberL ⟨k, Nat.lt_of_succ_lt h⟩
     unfold kyberL
@@ -114,6 +146,44 @@ instance : KyberLike kyberSpec where
     show 2 * kyberL ⟨0, h⟩ = 256
     unfold kyberL
     show 2 * (128 / 2 ^ (0 : Fin 7).val) = 256
+    norm_num
+
+/-! ### ML-DSA parameters: `n = 256`, `N = 8`, complete NTT with `L_{m-1} = 1` -/
+
+/-- Group count at layer ℓ for ML-DSA (complete NTT). -/
+def dsaG (ℓ : Fin 8) : ℕ := 2 ^ ℓ.val
+
+/-- Butterfly length at layer ℓ for ML-DSA (complete NTT). -/
+def dsaL (ℓ : Fin 8) : ℕ := 128 / 2 ^ ℓ.val
+
+/-- The ML-DSA layer specification: 8 layers, innermost has L = 1. -/
+def dsaSpec : LayerSpec where
+  N := 8
+  n := 256
+  G := dsaG
+  L := dsaL
+  hGL ℓ := by fin_cases ℓ <;> decide
+
+/-- `dsaSpec` satisfies the Cooley-Tukey recurrence (same shape as Kyber,
+    one extra layer at the innermost length `dsaL ⟨7,_⟩ = 1`). -/
+instance : CooleyTukeyLike dsaSpec where
+  L_succ k h := by
+    show dsaL ⟨k + 1, h⟩ * 2 = dsaL ⟨k, Nat.lt_of_succ_lt h⟩
+    unfold dsaL
+    show 128 / 2 ^ (k + 1) * 2 = 128 / 2 ^ k
+    have hk : k < 7 := by
+      have : k + 1 < 8 := h
+      omega
+    interval_cases k <;> decide
+  G_succ k h := by
+    show dsaG ⟨k + 1, h⟩ = 2 * dsaG ⟨k, Nat.lt_of_succ_lt h⟩
+    unfold dsaG
+    show 2 ^ (k + 1) = 2 * 2 ^ k
+    ring
+  L_zero_doubled h := by
+    show 2 * dsaL ⟨0, h⟩ = 256
+    unfold dsaL
+    show 2 * (128 / 2 ^ (0 : Fin 8).val) = 256
     norm_num
 
 end NttFaultRank

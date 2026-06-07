@@ -2,7 +2,7 @@
 Phase F6 — Bit-indexed subspaces `V ℓ` (paper Lemma `lem:Vsubspaces`,
 main.tex lines ~318–360).
 
-For a `KyberLike spec` and field `K`, define for each layer `ℓ : Fin spec.N`
+For a `CooleyTukeyLike spec` and field `K`, define for each layer `ℓ : Fin spec.N`
 
   bitOf ℓ i := (i.val / spec.L ℓ) % 2
   V ℓ := span K {basis i | bitOf ℓ i = 1}
@@ -25,7 +25,7 @@ Strategy:
   2. `lt_L_of_bit_one` — bit = 1 forces `i.val ≥ spec.L ℓ`.
   3. `lt_L_last_of_all_bits_zero` — main inductive arithmetic claim:
      all bits β_ℓ zero ⇒ i.val < L_{N-1}. Proved by induction down
-     through ℓ via `KyberLike.L_succ` halving.
+     through ℓ via `CooleyTukeyLike.L_succ` halving.
   4. Containment ⊇ via Step 3 contrapositive: `L_{N-1} ≤ i.val` ⇒
      some ℓ has `bitOf ℓ i = 1`.
   5. Containment ⊆ via Step 2 + `spec.L_antitone` (from Fellsupport).
@@ -65,7 +65,7 @@ lemma L_le_of_bitOf_eq_one (ℓ : Fin spec.N) (i : Fin spec.n)
 
 /-- **Core induction**: if every `bitOf ℓ i` is zero, then `i.val < spec.L ⟨k, _⟩`
     for every `k < spec.N`. Proved by induction on `k`. -/
-lemma lt_L_of_all_bits_zero [KyberLike spec] (i : Fin spec.n)
+lemma lt_L_of_all_bits_zero [CooleyTukeyLike spec] (i : Fin spec.n)
     (h : ∀ ℓ : Fin spec.N, spec.bitOf ℓ i = 0) :
     ∀ (k : ℕ) (hk : k < spec.N), i.val < spec.L ⟨k, hk⟩ := by
   intro k hk
@@ -75,7 +75,7 @@ lemma lt_L_of_all_bits_zero [KyberLike spec] (i : Fin spec.n)
     -- so i.val / L_0 = 0, i.e. i.val < L_0.
     have h0 : (i.val / spec.L ⟨0, hk⟩) % 2 = 0 := h ⟨0, hk⟩
     have hbig : i.val < 2 * spec.L ⟨0, hk⟩ := by
-      rw [KyberLike.L_zero_doubled hk]; exact i.isLt
+      rw [CooleyTukeyLike.L_zero_doubled hk]; exact i.isLt
     have hL_pos : 0 < spec.L ⟨0, hk⟩ := by
       rcases Nat.eq_zero_or_pos (spec.L ⟨0, hk⟩) with hz | hp
       · exfalso; rw [hz] at hbig; omega
@@ -94,7 +94,7 @@ lemma lt_L_of_all_bits_zero [KyberLike spec] (i : Fin spec.n)
     have ih' := ih hk_prev
     -- ih' : i.val < spec.L ⟨k, hk_prev⟩
     -- L_succ: spec.L ⟨k+1, hk⟩ * 2 = spec.L ⟨k, hk_prev⟩
-    have hLs := KyberLike.L_succ (spec := spec) k hk
+    have hLs := CooleyTukeyLike.L_succ (spec := spec) k hk
     have hbig : i.val < 2 * spec.L ⟨k + 1, hk⟩ := by
       have : spec.L ⟨k, hk_prev⟩ = 2 * spec.L ⟨k + 1, hk⟩ := by
         omega
@@ -114,14 +114,14 @@ lemma lt_L_of_all_bits_zero [KyberLike spec] (i : Fin spec.n)
 
 /-- **Specialisation to last layer**: if every bit is zero, then
     `i.val < spec.L ⟨spec.N - 1, _⟩`. -/
-lemma lt_L_last_of_all_bits_zero [KyberLike spec] (i : Fin spec.n)
+lemma lt_L_last_of_all_bits_zero [CooleyTukeyLike spec] (i : Fin spec.n)
     (hN : 0 < spec.N)
     (h : ∀ ℓ : Fin spec.N, spec.bitOf ℓ i = 0) :
     i.val < spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩ :=
   spec.lt_L_of_all_bits_zero i h (spec.N - 1) _
 
 /-- **Converse**: if `i.val < spec.L ⟨spec.N - 1, _⟩`, every bit is zero. -/
-lemma all_bits_zero_of_lt_L_last [KyberLike spec] (i : Fin spec.n)
+lemma all_bits_zero_of_lt_L_last [CooleyTukeyLike spec] (i : Fin spec.n)
     (hN : 0 < spec.N)
     (h : i.val < spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩) :
     ∀ ℓ : Fin spec.N, spec.bitOf ℓ i = 0 := by
@@ -144,7 +144,7 @@ def V (ℓ : Fin spec.N) : Submodule K (Fin spec.n → K) :=
     { v | ∃ i : Fin spec.n, spec.bitOf ℓ i = 1 ∧ v = spec.basis (K := K) i }
 
 /-- The complementary "big" span: indices `i` with `i.val ≥ spec.L ⟨N-1, _⟩`. -/
-def spanBigBasis [KyberLike spec] (hN : 0 < spec.N) :
+def spanBigBasis [CooleyTukeyLike spec] (hN : 0 < spec.N) :
     Submodule K (Fin spec.n → K) :=
   Submodule.span K
     { v | ∃ i : Fin spec.n,
@@ -156,7 +156,7 @@ def spanBigBasis [KyberLike spec] (hN : 0 < spec.N) :
 /-- **F6 main result.** The sum of the `V ℓ` covers exactly the basis vectors
     at indices `≥ spec.L ⟨spec.N - 1, _⟩`. For Kyber (`spec.L ⟨6, _⟩ = 2`)
     this is `span {e_2, …, e_{n-1}}`, complementary to the `{e_0, e_1}` kernel. -/
-theorem V_sum_eq_spanBigBasis [KyberLike spec] (hN : 0 < spec.N) :
+theorem V_sum_eq_spanBigBasis [CooleyTukeyLike spec] (hN : 0 < spec.N) :
     (⨆ ℓ : Fin spec.N, spec.V (K := K) ℓ) = spec.spanBigBasis (K := K) hN := by
   apply le_antisymm
   · -- ⊆: each V ℓ generator is basis i with bitOf ℓ i = 1; that forces

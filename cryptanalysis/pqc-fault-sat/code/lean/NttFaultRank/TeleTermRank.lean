@@ -404,11 +404,11 @@ lemma aSide_layer (Z : spec.Twiddles K) (ℓ : Fin spec.N) (v : Fin spec.n → K
 
 /-- For the relevant inputs `j = L_k + s` (with `s.val < L_k`), the
     flat index `L_k + s.val` lies in `Fin spec.n` (since `2 L_k ≤
-    spec.n` for any KyberLike spec at `k < spec.N`). -/
-lemma two_L_le_n [KyberLike spec] (k : ℕ) (hk : k < spec.N) :
+    spec.n` for any CooleyTukeyLike spec at `k < spec.N`). -/
+lemma two_L_le_n [CooleyTukeyLike spec] (k : ℕ) (hk : k < spec.N) :
     2 * spec.L ⟨k, hk⟩ ≤ spec.n := by
   have h0 : 0 < spec.N := lt_of_le_of_lt (Nat.zero_le _) hk
-  have hL0 : 2 * spec.L ⟨0, h0⟩ = spec.n := KyberLike.L_zero_doubled h0
+  have hL0 : 2 * spec.L ⟨0, h0⟩ = spec.n := CooleyTukeyLike.L_zero_doubled h0
   have hanti : spec.L ⟨k, hk⟩ ≤ spec.L ⟨0, h0⟩ :=
     spec.L_antitone hk h0 (Nat.zero_le _)
   omega
@@ -417,7 +417,7 @@ lemma two_L_le_n [KyberLike spec] (k : ℕ) (hk : k < spec.N) :
     indicator of `i.val % (2 L_k) = L_k + s.val`. Direct corollary of
     F3 (`runPrefix_basis_value_indicator`). -/
 lemma runPrefix_at_basis_Lks
-    [KyberLike spec] (Z : spec.Twiddles K) (k : ℕ) (hk : k < spec.N)
+    [CooleyTukeyLike spec] (Z : spec.Twiddles K) (k : ℕ) (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩)) (i : Fin spec.n) :
     spec.runPrefix Z k (Nat.le_of_lt hk)
         (spec.basis (K := K)
@@ -440,7 +440,7 @@ lemma runPrefix_at_basis_Lks
     `g₀` is the unique fault index at layer `k` and `mid` is the
     layer-`k` perturbation. Equals `Z ⟨k,hk⟩ g₀` if `s' = s`, else `0`. -/
 lemma aSide_mid_pre_basis
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     (Z : spec.Twiddles K)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (k : ℕ) (hk : k < spec.N)
@@ -516,7 +516,7 @@ lemma aSide_mid_pre_basis
 
 /-- **Lower bound (Step 6 — headline LI).** -/
 theorem teleTerm_rank_ge
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (k : ℕ) (hk : k < spec.N) :
@@ -603,7 +603,7 @@ theorem teleTerm_rank_ge
 
 /-- **Headline F5: per-term rank equality.** -/
 theorem teleTerm_rank_eq
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (k : ℕ) (hk : k < spec.N) :
@@ -613,6 +613,205 @@ theorem teleTerm_rank_eq
   le_antisymm
     (spec.teleTerm_rank_le hZ h2 hF k hk)
     (spec.teleTerm_rank_ge hZ h2 hF k hk)
+/-! ### Step 8 — Generalized per-term rank (arbitrary replacement twiddle)
 
+  The proofs above hardcode `Z' = faultedTwiddles Z F` (zeroing).
+  Below, we generalize to `Z' = faultedTwiddlesGen Z Z_repl F` where
+  `Z_repl` is an arbitrary replacement-twiddle assignment satisfying
+  `hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g`.
+
+  The diagonal coefficient changes from `Z g₀` to `Z g₀ - Z_repl g₀`.
+  All other arguments (suffix equiv, Fellsupport, bSide indicator)
+  are twiddle-independent and carry over verbatim. -/
+
+/-- Bridge: layer Z ⟨k,hk⟩ - layer (faultedTwiddlesGen Z Z_repl F) ⟨k,hk⟩
+    equals perturbationGen. -/
+lemma layer_diff_eq_perturbationGen
+    (Z Z_repl : spec.Twiddles K) (F : spec.FaultSet) (k : ℕ) (hk : k < spec.N) :
+    (spec.layer Z ⟨k, hk⟩) - (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩)
+      = spec.perturbationGen Z Z_repl F ⟨k, hk⟩ := rfl
+
+/-- **Upper bound (gen).** -/
+theorem teleTerm_rank_le_gen
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) :
+    Module.finrank K
+        (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k))
+      ≤ spec.L ⟨k, hk⟩ := by
+  set Z' := spec.faultedTwiddlesGen Z Z_repl F with hZ'_def
+  set pre := spec.runPrefix Z' k (Nat.le_of_lt hk)
+  set mid := spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+  rw [spec.teleTerm_factor Z Z' k hk]
+  rw [spec.layer_diff_eq_perturbationGen Z Z_repl F k hk]
+  rw [LinearMap.range_comp, ← spec.suffixEquiv_toLinearMap Z hZ h2 k hk,
+      LinearEquiv.finrank_map_eq, LinearMap.range_comp]
+  refine le_trans (Submodule.finrank_mono LinearMap.map_le_range) ?_
+  exact le_of_eq (spec.perturbation_rank_eq_gen hδ hF ⟨k, hk⟩)
+
+/-- Generalized diagonal formula: `aSide (mid(pre(v_s))) g₀ s'`
+    equals `Z g₀ - Z_repl g₀` if `s' = s`, else `0`. -/
+lemma aSide_mid_pre_basis_gen
+    [CooleyTukeyLike spec]
+    (Z : spec.Twiddles K)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N)
+    (s s' : Fin (spec.L ⟨k, hk⟩)) :
+    let Z' := spec.faultedTwiddlesGen Z Z_repl F
+    let pre := spec.runPrefix Z' k (Nat.le_of_lt hk)
+    let mid := spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+    let g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose
+    let v_s := spec.basis (K := K)
+      ⟨spec.L ⟨k, hk⟩ + s.val,
+        lt_of_lt_of_le (by have := s.isLt; omega) (spec.two_L_le_n k hk)⟩
+    spec.aSide (mid (pre v_s)) ⟨k, hk⟩ g₀ s'
+      = if s' = s then Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀ else 0 := by
+  set Z' := spec.faultedTwiddlesGen Z Z_repl F with hZ'_def
+  set pre := spec.runPrefix Z' k (Nat.le_of_lt hk)
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose with hg₀_def
+  set v_s := spec.basis (K := K)
+    ⟨spec.L ⟨k, hk⟩ + s.val,
+      lt_of_lt_of_le (by have := s.isLt; omega) (spec.two_L_le_n k hk)⟩
+  show spec.aSide (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ (pre v_s)) ⟨k, hk⟩ g₀ s' = _
+  have hpert : spec.perturbationGen Z Z_repl F ⟨k, hk⟩ (pre v_s)
+             = (spec.layer Z ⟨k, hk⟩) (pre v_s)
+               - (spec.layer Z' ⟨k, hk⟩) (pre v_s) := by
+    show ((spec.layer Z ⟨k, hk⟩) - spec.layer Z' ⟨k, hk⟩) (pre v_s) =
+         (spec.layer Z ⟨k, hk⟩) (pre v_s) - (spec.layer Z' ⟨k, hk⟩) (pre v_s)
+    rw [LinearMap.sub_apply]
+  rw [hpert]
+  have hsub : spec.aSide ((spec.layer Z ⟨k, hk⟩) (pre v_s) -
+                          (spec.layer Z' ⟨k, hk⟩) (pre v_s)) ⟨k, hk⟩ g₀ s'
+            = spec.aSide ((spec.layer Z ⟨k, hk⟩) (pre v_s)) ⟨k, hk⟩ g₀ s'
+            - spec.aSide ((spec.layer Z' ⟨k, hk⟩) (pre v_s)) ⟨k, hk⟩ g₀ s' := by
+    simp [aSide, map_sub, Pi.sub_apply, reshape, funReindex]
+  rw [hsub,
+      spec.aSide_layer Z ⟨k, hk⟩ (pre v_s) g₀ s',
+      spec.aSide_layer Z' ⟨k, hk⟩ (pre v_s) g₀ s']
+  -- Z' ⟨k,hk⟩ g₀ = Z_repl ⟨k,hk⟩ g₀ (faulted at g₀).
+  have hZ'_eq : Z' ⟨k, hk⟩ g₀ = Z_repl ⟨k, hk⟩ g₀ := by
+    have h_eq : F ⟨k, hk⟩ = {g₀} :=
+      (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec
+    show spec.faultedTwiddlesGen Z Z_repl F ⟨k, hk⟩ g₀ = Z_repl ⟨k, hk⟩ g₀
+    unfold faultedTwiddlesGen
+    simp [h_eq]
+  rw [hZ'_eq]
+  ring_nf
+  -- Now: (Z g₀ - Z_repl g₀) * bSide (pre v_s) ⟨k,hk⟩ g₀ s'
+  --    = if s' = s then Z g₀ - Z_repl g₀ else 0.
+  rw [spec.bSide_eq_apply]
+  have hb := spec.runPrefix_at_basis_Lks Z' k hk s (spec.bSideIdx ⟨k, hk⟩ g₀ s')
+  have hb_val : (spec.bSideIdx ⟨k, hk⟩ g₀ s').val % (2 * spec.L ⟨k, hk⟩)
+              = spec.L ⟨k, hk⟩ + s'.val := by
+    rw [spec.bSideIdx_val]
+    have hsum_lt : spec.L ⟨k, hk⟩ + s'.val < 2 * spec.L ⟨k, hk⟩ := by
+      have := s'.isLt; omega
+    rw [show g₀.val * (2 * spec.L ⟨k, hk⟩) + spec.L ⟨k, hk⟩ + s'.val
+          = (spec.L ⟨k, hk⟩ + s'.val) + (2 * spec.L ⟨k, hk⟩) * g₀.val from by ring]
+    rw [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hsum_lt]
+  rw [hb, hb_val]
+  by_cases hss : s' = s
+  · subst hss; simp
+  · have hne : ¬ (spec.L ⟨k, hk⟩ + s'.val = spec.L ⟨k, hk⟩ + s.val) := by
+      intro h; exact hss (Fin.ext (by omega))
+    rw [if_neg hne, if_neg hss]; ring
+
+/-- **Lower bound (gen).** -/
+theorem teleTerm_rank_ge_gen
+    [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) :
+    spec.L ⟨k, hk⟩ ≤ Module.finrank K
+      (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k)) := by
+  set Z' := spec.faultedTwiddlesGen Z Z_repl F with hZ'_def
+  set pre := spec.runPrefix Z' k (Nat.le_of_lt hk)
+  set mid := spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose with hg₀_def
+  let v : Fin (spec.L ⟨k, hk⟩) → (Fin spec.n → K) := fun s =>
+    spec.basis (K := K)
+      ⟨spec.L ⟨k, hk⟩ + s.val,
+        lt_of_lt_of_le (by have := s.isLt; omega) (spec.two_L_le_n k hk)⟩
+  let mp : Fin (spec.L ⟨k, hk⟩) → (Fin spec.n → K) := fun s => mid (pre (v s))
+  -- Diagonal is Z g₀ - Z_repl g₀, which is nonzero by hδ.
+  have hg₀_mem : g₀ ∈ F ⟨k, hk⟩ := by
+    rw [(Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec]
+    exact Finset.mem_singleton_self g₀
+  have hδk : Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀ ≠ 0 :=
+    sub_ne_zero.mpr (hδ ⟨k, hk⟩ g₀ hg₀_mem)
+  have hmp_LI : LinearIndependent K mp := by
+    rw [Fintype.linearIndependent_iff]
+    intro c hsum s'
+    have h_at := congrArg (fun w => spec.aSide w ⟨k, hk⟩ g₀ s') hsum
+    simp only at h_at
+    have hsum_aSide :
+        spec.aSide (∑ s, c s • mp s) ⟨k, hk⟩ g₀ s'
+          = ∑ s, c s * spec.aSide (mp s) ⟨k, hk⟩ g₀ s' := by
+      show (∑ s, c s • mp s) (spec.aSideIdx ⟨k, hk⟩ g₀ s')
+         = ∑ s, c s * spec.aSide (mp s) ⟨k, hk⟩ g₀ s'
+      rw [Finset.sum_apply]
+      apply Finset.sum_congr rfl
+      intros s _
+      simp [Pi.smul_apply, smul_eq_mul, aSide_eq_apply]
+    rw [hsum_aSide] at h_at
+    have hcalc : ∀ s : Fin (spec.L ⟨k, hk⟩),
+        spec.aSide (mp s) ⟨k, hk⟩ g₀ s'
+          = if s' = s then Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀ else 0 := by
+      intro s
+      exact spec.aSide_mid_pre_basis_gen Z hF k hk s s'
+    have h_at' : ∑ s, c s * (if s' = s then Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀ else 0)
+               = (spec.aSide (0 : Fin spec.n → K) ⟨k, hk⟩ g₀ s') := by
+      rw [← h_at]; apply Finset.sum_congr rfl; intros s _; rw [hcalc s]
+    have hzero : spec.aSide (0 : Fin spec.n → K) ⟨k, hk⟩ g₀ s' = 0 := by
+      rw [aSide_eq_apply]; rfl
+    rw [hzero] at h_at'
+    have hsingle : ∑ s, c s * (if s' = s then Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀ else 0)
+                = c s' * (Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀) := by
+      rw [Finset.sum_eq_single s']
+      · simp
+      · intros s _ hne; simp [Ne.symm hne]
+      · intro h; exact absurd (Finset.mem_univ _) h
+    rw [hsingle] at h_at'
+    exact (mul_eq_zero.mp h_at').resolve_right hδk
+  set suf := spec.suffixEquiv Z hZ h2 k hk
+  have h_tele_LI : LinearIndependent K (suf.toLinearMap ∘ mp) :=
+    hmp_LI.map' suf.toLinearMap suf.ker
+  have h_eq : (suf.toLinearMap ∘ mp) = (fun s => spec.teleTerm Z Z' k (v s)) := by
+    funext s
+    show suf.toLinearMap (mid (pre (v s))) = spec.teleTerm Z Z' k (v s)
+    rw [spec.suffixEquiv_toLinearMap Z hZ h2 k hk]
+    show (chainList spec Z (spec.suffixList (k + 1) (spec.N - k - 1) _)) _ = _
+    rw [spec.teleTerm_factor Z Z' k hk, spec.layer_diff_eq_perturbationGen Z Z_repl F k hk]
+    rfl
+  rw [h_eq] at h_tele_LI
+  let R := LinearMap.range (spec.teleTerm Z Z' k)
+  have h_mem : ∀ s, spec.teleTerm Z Z' k (v s) ∈ R :=
+    fun s => LinearMap.mem_range_self _ _
+  let w : Fin (spec.L ⟨k, hk⟩) → R := fun s => ⟨spec.teleTerm Z Z' k (v s), h_mem s⟩
+  have hw_LI : LinearIndependent K w := by
+    have hcomp : R.subtype ∘ w = fun s => spec.teleTerm Z Z' k (v s) := rfl
+    exact LinearIndependent.of_comp R.subtype (by rw [hcomp]; exact h_tele_LI)
+  have := hw_LI.fintype_card_le_finrank
+  simpa using this
+
+/-- **Headline F5-gen: per-term rank equality (generalized).** -/
+theorem teleTerm_rank_eq_gen
+    [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) :
+    Module.finrank K
+        (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k))
+      = spec.L ⟨k, hk⟩ :=
+  le_antisymm
+    (spec.teleTerm_rank_le_gen hZ h2 hδ hF k hk)
+    (spec.teleTerm_rank_ge_gen hZ h2 hδ hF k hk)
 end LayerSpec
 end NttFaultRank

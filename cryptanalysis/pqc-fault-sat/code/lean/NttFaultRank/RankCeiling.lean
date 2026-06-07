@@ -108,7 +108,7 @@ private lemma partialSup_succ (Z : spec.Twiddles K) (F : spec.FaultSet)
 
 /-- `finrank(partialSup n) = ∑ b : Fin n, L_b` by induction on n. Exposed for
     future use (e.g. F10 codimension arguments). -/
-lemma finrank_partialSup_eq_sum [KyberLike spec]
+lemma finrank_partialSup_eq_sum [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) :
     ∀ (n : ℕ) (hn : n ≤ spec.N),
@@ -151,7 +151,7 @@ lemma finrank_partialSup_eq_sum [KyberLike spec]
       rfl
 
 /-- **Step 1b headline.** `finrank(⨆ ℓ, range(teleTerm ℓ)) = ∑ ℓ, L_ℓ`. -/
-lemma finrank_iSup_telescope_eq_sum_L [KyberLike spec]
+lemma finrank_iSup_telescope_eq_sum_L [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) :
     Module.finrank K
@@ -172,7 +172,7 @@ lemma finrank_iSup_telescope_eq_sum_L [KyberLike spec]
 /-! ### Step 1c — Upper bound -/
 
 /-- **Step 1 headline.** Upper bound on `finrank(range(faultDiff))`. -/
-theorem faultDiff_rank_le_sum_L [KyberLike spec]
+theorem faultDiff_rank_le_sum_L [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) :
     Module.finrank K ↑(LinearMap.range (spec.faultDiff Z F))
@@ -183,7 +183,7 @@ theorem faultDiff_rank_le_sum_L [KyberLike spec]
 /-! ### Step 3 — Arithmetic `∑ L_ℓ = n - L_{N-1}` -/
 
 /-- The sum of all `L_ℓ` equals `n - L_{N-1}` (geometric series via `sum_Li_plus_2L_eq_n`). -/
-lemma sum_L_eq_n_sub_L_last [KyberLike spec] (hN : 0 < spec.N) :
+lemma sum_L_eq_n_sub_L_last [CooleyTukeyLike spec] (hN : 0 < spec.N) :
     (∑ ℓ : Fin spec.N, spec.L ⟨ℓ.val, ℓ.isLt⟩)
       = spec.n - spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩ := by
   -- Split: ∑ ℓ : Fin N, L_ℓ = (∑ ℓ : Fin (N-1), L_ℓ) + L_{N-1}.
@@ -231,7 +231,7 @@ lemma sum_L_eq_n_sub_L_last [KyberLike spec] (hN : 0 < spec.N) :
 /-! ### Step 4 — Headlines (upper bound only) -/
 
 /-- **F9 (upper bound).** `finrank(range(faultDiff)) ≤ n - L_{N-1}`. -/
-theorem faultDiff_rank_le [KyberLike spec]
+theorem faultDiff_rank_le [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N) :
     Module.finrank K ↑(LinearMap.range (spec.faultDiff Z F))
@@ -264,7 +264,7 @@ theorem faultDiff_rank_le [KyberLike spec]
 
 /-- Lower contribution vanishes: for `b < N-1`, the `(nttInv ∘ teleTerm b)`
     image evaluated at any top-layer `freshIdx` position is zero. -/
-private lemma nttInv_teleTerm_low_at_freshTop_eq_zero [KyberLike spec]
+private lemma nttInv_teleTerm_low_at_freshTop_eq_zero [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N)
     (b : ℕ) (hb : b < spec.N - 1)
@@ -286,7 +286,7 @@ private lemma nttInv_teleTerm_low_at_freshTop_eq_zero [KyberLike spec]
 
 /-- Top contribution diagonal: for `b = N-1`, the value equals
     `(1/2)^{N-1} * δ_{s_in, s_out}`. -/
-private lemma nttInv_teleTerm_top_at_freshTop_eq [KyberLike spec]
+private lemma nttInv_teleTerm_top_at_freshTop_eq [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N)
     (s_in s_out : Fin (spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩)) :
@@ -348,7 +348,7 @@ private lemma nttInv_teleTerm_top_at_freshTop_eq [KyberLike spec]
     omega
 
 /-- The diagonal value formula at top-layer fresh positions. -/
-lemma nttInv_faultDiff_freshTop_diag [KyberLike spec]
+lemma nttInv_faultDiff_freshTop_diag [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N)
     (s_in s_out : Fin (spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩)) :
@@ -386,7 +386,7 @@ lemma nttInv_faultDiff_freshTop_diag [KyberLike spec]
 
 /-- **L1+L2 headline: top-layer LI**. The L_{N-1} basis vectors at top-layer
     fresh indices have linearly independent images under `faultDiff`. -/
-lemma topLayer_faultDiff_LI [KyberLike spec]
+lemma topLayer_faultDiff_LI [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N) :
     LinearIndependent K
@@ -436,7 +436,7 @@ lemma topLayer_faultDiff_LI [KyberLike spec]
 
 /-- **R1.** `dim(ker(faultDiff Z F)) ≥ spec.L ⟨spec.N - 1, _⟩`. Follows from
     `faultDiff_rank_le` via rank–nullity. -/
-theorem faultDiff_ker_dim_ge [KyberLike spec]
+theorem faultDiff_ker_dim_ge [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F) (hN : 0 < spec.N) :
     spec.L ⟨spec.N - 1, Nat.sub_lt hN Nat.one_pos⟩
@@ -481,4 +481,103 @@ theorem faultDiff_kyber_ker_dim_ge_two
               = 2 := by decide
   omega
 
+end NttFaultRank
+
+/-! ### Generalized rank bounds for arbitrary replacement twiddles -/
+
+namespace NttFaultRank
+variable {K : Type*} [Field K]
+namespace LayerSpec
+variable (spec : LayerSpec)
+
+/-- Gen: `range(faultDiffGen) ⊆ ⨆ range(teleTerm Z Z' ℓ)`. -/
+lemma range_faultDiffGen_le_iSup
+    (Z Z_repl : spec.Twiddles K) (F : spec.FaultSet) :
+    LinearMap.range (spec.faultDiffGen Z Z_repl F)
+      ≤ ⨆ ℓ : Fin spec.N,
+          LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) ℓ.val) := by
+  intro v ⟨w, hw⟩
+  have htele : spec.faultDiffGen Z Z_repl F
+              = ∑ k ∈ Finset.range spec.N,
+                  spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k := by
+    show spec.ntt Z - spec.nttFaultGen Z Z_repl F = _
+    exact spec.diff_ntt_telescope_gen Z Z_repl F
+  rw [htele] at hw
+  rw [← hw, LinearMap.coe_sum, Finset.sum_apply]
+  refine Submodule.sum_mem _ (fun k hk_mem => ?_)
+  exact Submodule.mem_iSup_of_mem ⟨k, Finset.mem_range.mp hk_mem⟩ ⟨w, rfl⟩
+
+/-- Gen: partial supremum of gen teleTerm ranges. -/
+private def partialSupGen (Z Z_repl : spec.Twiddles K) (F : spec.FaultSet) (n : ℕ) :
+    Submodule K (Fin spec.n → K) :=
+  ⨆ b : Fin spec.N, ⨆ _ : b.val < n,
+    LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) b.val)
+
+/-- Gen: finrank of the partial sup = ∑ L_b. Uses gen teleTerm_rank + gen disjointness. -/
+lemma finrank_partialSupGen_eq_sum [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F) :
+    ∀ (n : ℕ) (hn : n ≤ spec.N),
+      Module.finrank K (spec.partialSupGen Z Z_repl F n)
+        = ∑ b : Fin n, spec.L ⟨b.val, lt_of_lt_of_le b.isLt hn⟩
+  | 0, _ => by
+      unfold partialSupGen
+      have h_eq : (⨆ b : Fin spec.N, ⨆ _ : b.val < 0,
+            LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) b.val))
+          = (⊥ : Submodule K (Fin spec.n → K)) :=
+        le_antisymm (iSup_le fun b => iSup_le fun hb => absurd hb (Nat.not_lt_zero _)) bot_le
+      rw [h_eq, finrank_bot]; simp
+  | n + 1, hn => by
+      have hn' : n < spec.N := hn
+      have hn_le : n ≤ spec.N := Nat.le_of_succ_le hn
+      have ih := finrank_partialSupGen_eq_sum hZ h2 hδ hF n hn_le
+      -- partialSupGen (n+1) = partialSupGen n ⊔ range(teleTerm n)
+      have h_split : spec.partialSupGen Z Z_repl F (n + 1)
+          = spec.partialSupGen Z Z_repl F n ⊔
+              LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) n) := by
+        unfold partialSupGen
+        refine le_antisymm ?_ ?_
+        · refine iSup_le (fun b => iSup_le (fun hb_lt => ?_))
+          by_cases hbn : b.val < n
+          · exact le_sup_of_le_left (le_iSup_of_le b (le_iSup_of_le hbn le_rfl))
+          · refine le_sup_of_le_right ?_; rw [show b.val = n by omega]
+        · refine sup_le ?_ ?_
+          · exact iSup_le (fun b => iSup_le (fun hb => le_iSup_of_le b (le_iSup_of_le (by omega) le_rfl)))
+          · exact le_iSup_of_le ⟨n, hn'⟩ (le_iSup_of_le (by simp) le_rfl)
+      rw [h_split]
+      have h_disj : Disjoint (spec.partialSupGen Z Z_repl F n)
+                      (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) n)) := by
+        exact Disjoint.symm (spec.teleTerm_image_disjoint_lower_gen hZ h2 hδ hF ⟨n, hn'⟩)
+      have hsi := Submodule.finrank_sup_add_finrank_inf_eq
+                (spec.partialSupGen Z Z_repl F n)
+                (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) n))
+      rw [disjoint_iff.mp h_disj, finrank_bot, Nat.add_zero] at hsi
+      rw [hsi, ih, spec.teleTerm_rank_eq_gen hZ h2 hδ hF n hn']
+      rw [Fin.sum_univ_castSucc]; rfl
+
+/-- **Gen upper bound.** `rank(faultDiffGen) ≤ ∑ L`. -/
+theorem faultDiffGen_rank_le_sum_L [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F) :
+    Module.finrank K ↑(LinearMap.range (spec.faultDiffGen Z Z_repl F))
+      ≤ ∑ ℓ : Fin spec.N, spec.L ⟨ℓ.val, ℓ.isLt⟩ := by
+  have heq : (⨆ ℓ : Fin spec.N,
+              LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) ℓ.val))
+            = spec.partialSupGen Z Z_repl F spec.N := by
+    unfold partialSupGen
+    exact le_antisymm
+      (iSup_le fun ℓ => le_iSup_of_le ℓ (le_iSup_of_le ℓ.isLt le_rfl))
+      (iSup_le fun b => iSup_le fun _ => le_iSup_of_le b le_rfl)
+  rw [← spec.finrank_partialSupGen_eq_sum hZ h2 hδ hF spec.N le_rfl, ← heq]
+  exact Submodule.finrank_mono (spec.range_faultDiffGen_le_iSup Z Z_repl F)
+
+-- Gen lower bound deferred: requires gen `combinedFreshBasis_injective`
+-- (~90 LoC Assembly duplication). Upper bound is the security-relevant
+-- direction and is fully proved above.
+
+end LayerSpec
 end NttFaultRank

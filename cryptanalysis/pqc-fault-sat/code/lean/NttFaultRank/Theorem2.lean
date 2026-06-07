@@ -39,6 +39,13 @@ def faultDiff (Z : spec.Twiddles K) (F : spec.FaultSet) :
     (Fin spec.n → K) →ₗ[K] (Fin spec.n → K) :=
   spec.ntt Z - spec.nttFault Z F
 
+/-- Zeroing replacement twiddles recovers `faultDiff` from `faultDiffGen`. -/
+@[simp]
+lemma faultDiffGen_zero (Z : spec.Twiddles K) (F : spec.FaultSet) :
+    spec.faultDiffGen Z (fun _ _ => 0) F = spec.faultDiff Z F := by
+  unfold faultDiffGen faultDiff
+  rw [nttFaultGen_zero]
+
 end LayerSpec
 
 end NttFaultRank

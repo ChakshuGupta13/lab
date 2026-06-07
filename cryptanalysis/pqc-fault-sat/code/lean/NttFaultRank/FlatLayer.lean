@@ -66,6 +66,16 @@ theorem fullLayerDiff'_rank_eq {zs zs' : Fin G → K} (g₀ : Fin G)
   -- Recover the inner rank via FullLayer.fullLayerDiff_rank_eq.
   exact fullLayerDiff_rank_eq G L g₀ hagree hz hz'
 
+/-- **B3'-gen — Generalized flat-layer rank = L when twiddles differ at g₀.** -/
+theorem fullLayerDiff'_rank_eq_gen {zs zs' : Fin G → K} (g₀ : Fin G)
+    (hagree : ∀ g ≠ g₀, zs g = zs' g)
+    (hne : zs g₀ ≠ zs' g₀) :
+    Module.finrank K (LinearMap.range (fullLayerDiff' G L zs zs')) = L := by
+  rw [range_fullLayerDiff' G L zs zs']
+  rw [← ((reshape K G L).symm.submoduleMap
+          (LinearMap.range (fullLayerDiff G L zs zs'))).finrank_eq] at *
+  exact fullLayerDiff_rank_eq_gen G L g₀ hagree hne
+
 /-! ### B2' — flat-layer bijectivity -/
 
 /-- **B2' — Flat-form `fullLayer'` is bijective when twiddles are nonzero.** -/

@@ -72,6 +72,16 @@ theorem layerOnDiff_rank_eq {h : G * (2 * L) = n} {zs zs' : Fin G → K}
             (LinearMap.range (fullLayerDiff' G L zs zs'))).finrank_eq] at *
   exact fullLayerDiff'_rank_eq G L g₀ hagree hz hz'
 
+/-- Generalized: rank = L when twiddles differ at g₀. -/
+theorem layerOnDiff_rank_eq_gen {h : G * (2 * L) = n} {zs zs' : Fin G → K}
+    (g₀ : Fin G) (hagree : ∀ g ≠ g₀, zs g = zs' g)
+    (hne : zs g₀ ≠ zs' g₀) :
+    Module.finrank K (LinearMap.range (layerOnDiff n G L h zs zs')) = L := by
+  rw [range_layerOnDiff n G L h zs zs']
+  rw [← ((funReindex n G L h).symm.submoduleMap
+            (LinearMap.range (fullLayerDiff' G L zs zs'))).finrank_eq] at *
+  exact fullLayerDiff'_rank_eq_gen G L g₀ hagree hne
+
 theorem layerOn_bijective {h : G * (2 * L) = n} {zs : Fin G → K}
     (hz : ∀ g, zs g ≠ 0) (h2 : (2 : K) ≠ 0) :
     Function.Bijective (layerOn n G L h zs) := by

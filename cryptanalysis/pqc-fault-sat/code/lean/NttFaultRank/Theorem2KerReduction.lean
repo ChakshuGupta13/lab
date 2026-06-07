@@ -127,7 +127,7 @@ lemma each_zero_of_sum_zero_disjoint_lower
     reduces to: a `v` satisfying ALL per-layer b-side vanishing must lie in
     `span {basis 0, basis 1}`. -/
 theorem mem_ker_faultDiff_iff_bSide_vanish
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (v : Fin spec.n → K) :

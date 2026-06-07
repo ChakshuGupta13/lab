@@ -26,7 +26,7 @@ and faulted (a, b) ↦ (a, a) send (1, 0) to (1, 1), independent of z.
 Hence the running σ_k is a {0, 1}-indicator at every step.
 
 The arithmetic glue uses the Kyber recurrence `L_{k+1} · 2 = L_k`
-(`KyberLike.L_succ`). The single iterated fact needed is the
+(`CooleyTukeyLike.L_succ`). The single iterated fact needed is the
 antitonicity of `spec.L` along `Fin spec.N`, proved below.
 -/
 
@@ -41,10 +41,10 @@ variable (spec : LayerSpec)
 
 /-! ### Arithmetic glue: antitonicity of `spec.L` -/
 
-/-- `spec.L` is antitone along `Fin spec.N` for a `KyberLike` spec:
+/-- `spec.L` is antitone along `Fin spec.N` for a `CooleyTukeyLike` spec:
     if `k ≤ k'`, then `spec.L ⟨k', _⟩ ≤ spec.L ⟨k, _⟩`. Proved by
-    iterating `KyberLike.L_succ` (`L_{k+1} · 2 = L_k`). -/
-lemma L_antitone [KyberLike spec] :
+    iterating `CooleyTukeyLike.L_succ` (`L_{k+1} · 2 = L_k`). -/
+lemma L_antitone [CooleyTukeyLike spec] :
     ∀ {k' : ℕ} (hk' : k' < spec.N) {k : ℕ} (hk : k < spec.N), k ≤ k' →
       spec.L ⟨k', hk'⟩ ≤ spec.L ⟨k, hk⟩ := by
   intro k'
@@ -60,13 +60,13 @@ lemma L_antitone [KyberLike spec] :
     · subst hkek'; exact le_refl _
     · have hk_le_k' : k ≤ k' := by omega
       have hk'_lt : k' < spec.N := Nat.lt_of_succ_lt hk'
-      have hLs := KyberLike.L_succ (spec := spec) k' hk'
+      have hLs := CooleyTukeyLike.L_succ (spec := spec) k' hk'
       have ih' := ih hk'_lt hk hk_le_k'
       omega
 
 /-- For `k < k'` in `Fin spec.N`, `2 * spec.L k' ≤ spec.L k`. Combines
     `L_succ` at index `k' − 1` with antitonicity from `k` to `k' − 1`. -/
-lemma two_L_le_L_of_lt [KyberLike spec]
+lemma two_L_le_L_of_lt [CooleyTukeyLike spec]
     {k k' : ℕ} (hk : k < spec.N) (hk' : k' < spec.N) (hkk' : k < k') :
     2 * spec.L ⟨k', hk'⟩ ≤ spec.L ⟨k, hk⟩ := by
   match k', hk', hkk' with
@@ -74,7 +74,7 @@ lemma two_L_le_L_of_lt [KyberLike spec]
   | k'' + 1, hk', hkk' =>
     have hk'' : k'' < spec.N := Nat.lt_of_succ_lt hk'
     have hk_le_k'' : k ≤ k'' := Nat.lt_succ_iff.mp hkk'
-    have hLs := KyberLike.L_succ (spec := spec) k'' hk'
+    have hLs := CooleyTukeyLike.L_succ (spec := spec) k'' hk'
     have hanti := spec.L_antitone hk'' hk hk_le_k''
     omega
 
@@ -187,7 +187,7 @@ lemma layer_apply_bside_of_self_zero
 
     for every `0 ≤ k ≤ ℓ.val`. Twiddle-independent: same formula for `Z`
     and for `faultedTwiddles Z F`. -/
-theorem runPrefix_basis_value_indicator [KyberLike spec]
+theorem runPrefix_basis_value_indicator [CooleyTukeyLike spec]
     (Z : spec.Twiddles K) (ℓ : Fin spec.N)
     (j : Fin spec.n) (hj_lt : j.val < 2 * spec.L ℓ)
     (k : ℕ) :
@@ -201,7 +201,7 @@ theorem runPrefix_basis_value_indicator [KyberLike spec]
     intro hk i
     have h0lt : (0 : ℕ) < spec.N := lt_of_le_of_lt (Nat.zero_le _) ℓ.isLt
     have hL0 : 2 * spec.L ⟨0, h0lt⟩ = spec.n :=
-      KyberLike.L_zero_doubled (spec := spec) h0lt
+      CooleyTukeyLike.L_zero_doubled (spec := spec) h0lt
     have hi_mod : i.val % (2 * spec.L ⟨0, h0lt⟩) = i.val := by
       rw [hL0]; exact Nat.mod_eq_of_lt i.isLt
     have hrun : spec.runPrefix Z 0 (Nat.zero_le _) (spec.basis (K := K) j)
@@ -224,7 +224,7 @@ theorem runPrefix_basis_value_indicator [KyberLike spec]
     set hkN' : k + 1 ≤ spec.N := le_trans hk1_le (Nat.le_of_lt ℓ.isLt) with hkN'_def
     set ℓ_k : Fin spec.N := ⟨k, hkN'⟩ with hℓk_def
     have hLrec : 2 * spec.L ⟨k + 1, hk1N⟩ = spec.L ℓ_k := by
-      have h := KyberLike.L_succ (spec := spec) k hk1N
+      have h := CooleyTukeyLike.L_succ (spec := spec) k hk1N
       simp only [hℓk_def]; omega
     have hk_lt_ℓ : k < ℓ.val := hk1_le
     have hjLk : j.val < spec.L ℓ_k := by
@@ -342,7 +342,7 @@ def fellPattern (ℓ : Fin spec.N) (j : Fin spec.n) : Finset (Fin spec.n) :=
 
     Twiddle-independent: applies in particular to `faultedTwiddles Z F`
     for any one-per-layer fault selection `F`. -/
-theorem fellPrefix_basis_eq_pattern [KyberLike spec]
+theorem fellPrefix_basis_eq_pattern [CooleyTukeyLike spec]
     (Z : spec.Twiddles K) (ℓ : Fin spec.N)
     (j : Fin spec.n) (hj_lt : j.val < 2 * spec.L ℓ)
     (i : Fin spec.n) :

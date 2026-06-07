@@ -148,6 +148,62 @@ def compute_diff_matrix(n, zetas, k_fault, q=Q):
     return D
 
 
+def check_one_per_layer_multifault(n, zetas, q=Q, num_selections=6, seed=20260606):
+    """One fault per layer (incomplete NTT): verify rank = n-2 and that the
+    kernel includes span(e_0, e_1) (columns 0,1 of D_K are zero, nullity 2),
+    under both twiddle-zeroing and general perturbation (zeta' = zeta + 1).
+    Reproduces the paper's n=256 'six representative selections' claim.
+    """
+    import random as _random
+    rng = _random.Random(seed)
+    by_layer = {}
+    for k in range(1, n // 2):
+        layer, _, _ = fault_info(k, n)
+        by_layer.setdefault(layer, []).append(k)
+    layers = sorted(by_layer)
+    selections = [
+        [by_layer[l][0] for l in layers],                 # all-first
+        [by_layer[l][-1] for l in layers],                # all-last
+        [by_layer[l][len(by_layer[l]) // 2] for l in layers],  # all-mid
+    ]
+    while len(selections) < num_selections:
+        selections.append([rng.choice(by_layer[l]) for l in layers])
+
+    print(f"\n{'='*55}")
+    print(f"One-per-layer multi-fault: n={n} ({len(selections)} selections)")
+    print(f"Expect rank={n-2}, kernel=span(e_0,e_1), nullity 2")
+    print(f"{'='*55}")
+    all_ok = True
+    for sel in selections:
+        fset = set(sel)
+        # general-perturbation table: zeta' = zeta + 1 (delta = -1 != 0 mod q)
+        zetas_pert = list(zetas)
+        for k in sel:
+            zetas_pert[k] = (zetas[k] + 1) % q
+        for model in ("zeroing", "general"):
+            D = [[0] * n for _ in range(n)]
+            for j in range(n):
+                e_j = [0] * n
+                e_j[j] = 1
+                c = ntt(e_j, n, zetas, q)
+                if model == "zeroing":
+                    f = ntt(e_j, n, zetas, q, fault_set=fset)
+                else:
+                    f = ntt(e_j, n, zetas_pert, q)
+                for i in range(n):
+                    D[i][j] = (c[i] - f[i]) % q
+            rank = matrix_rank_gfq(D, n)
+            e0 = all(D[i][0] % q == 0 for i in range(n))
+            e1 = all(D[i][1] % q == 0 for i in range(n))
+            ok = rank == n - 2 and e0 and e1
+            all_ok &= ok
+            print(f"  sel={sorted(sel)} [{model:>7}]: rank={rank} (exp {n-2}), "
+                  f"e0,e1 in ker={e0 and e1}, nullity={n-rank}  "
+                  f"{'OK' if ok else 'FAIL'}")
+    print(f"  -> {'ALL OK' if all_ok else 'FAILURE'}")
+    return all_ok
+
+
 def main():
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 16
     assert n & (n - 1) == 0 and 4 <= n <= 256, "n must be power of 2 in [4,256]"
@@ -250,6 +306,10 @@ def main():
                 combined = D1 + D2
                 rank = matrix_rank_gfq(combined, n)
                 print(f"  k1={k1}(L{l1}) + k2={k2}(L{l2}): rank={rank}/{n}")
+
+        # One-per-layer multi-fault (paper Theorem 2 / section 6):
+        # six representative selections -> rank n-2, kernel span(e_0, e_1).
+        check_one_per_layer_multifault(n, zetas)
 
 
 if __name__ == '__main__':

@@ -135,6 +135,19 @@ theorem fullLayerDiff_rank_eq {zs zs' : Fin G → K} (g₀ : Fin G)
   rw [← this]
   exact groupLayerDiff_rank_eq L hz
 
+/-- **B7d-gen — Generalized: rank = L when twiddles differ at g₀.** -/
+theorem fullLayerDiff_rank_eq_gen {zs zs' : Fin G → K} (g₀ : Fin G)
+    (hagree : ∀ g ≠ g₀, zs g = zs' g)
+    (hne : zs g₀ ≠ zs' g₀) :
+    Module.finrank K (LinearMap.range (fullLayerDiff G L zs zs')) = L := by
+  rw [fullLayerDiff_range G L g₀ hagree]
+  rw [groupLayer_sub_eq_groupLayerDiff]
+  have := (Submodule.equivMapOfInjective (embedGroup G L g₀)
+              (embedGroup_injective G L g₀)
+              (LinearMap.range (groupLayerDiff L (zs g₀ - zs' g₀)))).finrank_eq
+  rw [← this]
+  exact groupLayerDiff_rank_eq L (sub_ne_zero.mpr hne)
+
 /-- Inverse of `fullLayer`: componentwise `groupLayerInv`. -/
 def fullLayerInv (zs : Fin G → K) :
     (Fin G → Fin 2 → Fin L → K) →ₗ[K] (Fin G → Fin 2 → Fin L → K) where

@@ -375,12 +375,12 @@ lemma bSide_layerInv (Z : spec.Twiddles K) (ℓ : Fin spec.N)
 /-! ### Step 5b — Divisibility `2·L_k ∣ L_ℓ'` for `ℓ' < k` -/
 
 /-- Auxiliary form: parameterised on `n = k − ℓ' − 1`. -/
-lemma two_L_dvd_L_aux [KyberLike spec] :
+lemma two_L_dvd_L_aux [CooleyTukeyLike spec] :
     ∀ (n ℓ' : ℕ) (hℓ' : ℓ' < spec.N) (hk : ℓ' + n + 1 < spec.N),
       (2 * spec.L ⟨ℓ' + n + 1, hk⟩) ∣ spec.L ⟨ℓ', hℓ'⟩
   | 0, ℓ', hℓ', hk => by
       have hk1 : ℓ' + 1 < spec.N := by omega
-      have h := KyberLike.L_succ (spec := spec) ℓ' hk1
+      have h := CooleyTukeyLike.L_succ (spec := spec) ℓ' hk1
       have hidx : (⟨ℓ' + 0 + 1, hk⟩ : Fin spec.N) = ⟨ℓ' + 1, hk1⟩ := by
         apply Fin.ext
         show ℓ' + 0 + 1 = ℓ' + 1
@@ -398,7 +398,7 @@ lemma two_L_dvd_L_aux [KyberLike spec] :
         show (ℓ'+1) + n + 1 = ℓ' + (n+1) + 1
         ring
       rw [hidx] at h1
-      have hLs := KyberLike.L_succ (spec := spec) ℓ' hℓ'1
+      have hLs := CooleyTukeyLike.L_succ (spec := spec) ℓ' hℓ'1
       have hidx' : (⟨ℓ', Nat.lt_of_succ_lt hℓ'1⟩ : Fin spec.N) = ⟨ℓ', hℓ'⟩ := rfl
       have hLeq : spec.L ⟨ℓ', hℓ'⟩ = 2 * spec.L ⟨ℓ' + 1, hℓ'1⟩ := by
         rw [← hidx', ← hLs]; ring
@@ -406,7 +406,7 @@ lemma two_L_dvd_L_aux [KyberLike spec] :
       exact Dvd.dvd.mul_left h1 2
 
 /-- For `ℓ' < k`, `2 · L_k ∣ L_ℓ'`. -/
-lemma two_L_dvd_L [KyberLike spec] {ℓ' k : ℕ} (hℓ' : ℓ' < spec.N)
+lemma two_L_dvd_L [CooleyTukeyLike spec] {ℓ' k : ℕ} (hℓ' : ℓ' < spec.N)
     (hk : k < spec.N) (hℓ'k : ℓ' < k) :
     (2 * spec.L ⟨k, hk⟩) ∣ spec.L ⟨ℓ', hℓ'⟩ := by
   obtain ⟨n, hn⟩ : ∃ n, k = ℓ' + n + 1 := ⟨k - ℓ' - 1, by omega⟩
@@ -416,7 +416,7 @@ lemma two_L_dvd_L [KyberLike spec] {ℓ' k : ℕ} (hℓ' : ℓ' < spec.N)
 /-! ### Step 5c — `bitOf k` is preserved by `partnerIdx ⟨ℓ', _⟩` when `ℓ' < k` -/
 
 /-- The layer-`ℓ'` partner has the same bit-`β_k` value, when `ℓ' < k`. -/
-lemma bitOf_partnerIdx_eq_of_lt [KyberLike spec]
+lemma bitOf_partnerIdx_eq_of_lt [CooleyTukeyLike spec]
     {ℓ' k : ℕ} (hℓ' : ℓ' < spec.N) (hk : k < spec.N) (hℓ'k : ℓ' < k)
     (i : Fin spec.n) :
     spec.bitOf ⟨k, hk⟩ (spec.partnerIdx ⟨ℓ', hℓ'⟩ i) = spec.bitOf ⟨k, hk⟩ i := by
@@ -579,7 +579,7 @@ lemma partnerIdx_bSideIdx (ℓ : Fin spec.N) (g : Fin (spec.G ℓ)) (j : Fin (sp
   omega
 
 /-- **Step 5e.** For `ℓ' < k`, `layerInv ⟨ℓ',⟩` preserves `V ⟨k,⟩`. -/
-lemma layerInv_preserves_V_of_lt [KyberLike spec]
+lemma layerInv_preserves_V_of_lt [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {ℓ' k : ℕ} (hℓ' : ℓ' < spec.N) (hk : k < spec.N) (hℓ'k : ℓ' < k)
     {v : Fin spec.n → K} (hv : v ∈ spec.V (K := K) ⟨k, hk⟩) :
@@ -667,7 +667,7 @@ lemma runPrefixInv_succ {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0)
   rw [LinearEquiv.apply_symm_apply]
 
 /-- **Step 5f.** `runPrefixInv m` preserves `V ⟨k,⟩` whenever `m ≤ k`. -/
-lemma runPrefixInv_preserves_V [KyberLike spec]
+lemma runPrefixInv_preserves_V [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     (k : ℕ) (hk : k < spec.N) :
     ∀ (m : ℕ) (hm : m ≤ k) {v : Fin spec.n → K},
@@ -704,7 +704,7 @@ lemma runPrefixInv_preserves_V [KyberLike spec]
 
 /-- **F7 main result.** `INTT(im T_ℓ) ⊆ V_ℓ` (paper Lemma `lem:Vcontain`). -/
 theorem teleTerm_intt_image_subset_V
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (k : ℕ) (hk : k < spec.N) :
@@ -722,6 +722,88 @@ theorem teleTerm_intt_image_subset_V
   rw [spec.nttInv_suffix_apply hZ h2 k hk]
   apply spec.runPrefixInv_preserves_V hZ h2 k hk k le_rfl
   exact spec.layerInv_pert_mem_V hZ h2 F k hk _
+
+/-! ### Generalized headlines for arbitrary replacement twiddles -/
+
+/-- `aSide (pertGen w) ℓ g j = (Z ℓ g − Z' ℓ g) * bSide w ℓ g j`
+    (gen version using `perturbationGen`). -/
+lemma aSide_perturbationGen (Z Z_repl : spec.Twiddles K) (F : spec.FaultSet)
+    (ℓ : Fin spec.N) (w : Fin spec.n → K)
+    (g : Fin (spec.G ℓ)) (j : Fin (spec.L ℓ)) :
+    spec.aSide (spec.perturbationGen Z Z_repl F ℓ w) ℓ g j
+      = (Z ℓ g - (spec.faultedTwiddlesGen Z Z_repl F) ℓ g) * spec.bSide w ℓ g j := by
+  show spec.aSide ((spec.layer Z ℓ) w - (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w)
+        ℓ g j = _
+  have hsub : spec.aSide ((spec.layer Z ℓ) w -
+      (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w) ℓ g j
+    = spec.aSide ((spec.layer Z ℓ) w) ℓ g j
+      - spec.aSide ((spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w) ℓ g j := by
+    show ((spec.layer Z ℓ) w - (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w)
+          (spec.aSideIdx ℓ g j) = _
+    rw [Pi.sub_apply]; rfl
+  rw [hsub, spec.aSide_layer Z ℓ w g j, spec.aSide_layer _ ℓ w g j]; ring
+
+/-- `bSide (pertGen w) ℓ g j = (Z' ℓ g − Z ℓ g) * bSide w ℓ g j`
+    (gen version). -/
+lemma bSide_perturbationGen (Z Z_repl : spec.Twiddles K) (F : spec.FaultSet)
+    (ℓ : Fin spec.N) (w : Fin spec.n → K)
+    (g : Fin (spec.G ℓ)) (j : Fin (spec.L ℓ)) :
+    spec.bSide (spec.perturbationGen Z Z_repl F ℓ w) ℓ g j
+      = ((spec.faultedTwiddlesGen Z Z_repl F) ℓ g - Z ℓ g) * spec.bSide w ℓ g j := by
+  show spec.bSide ((spec.layer Z ℓ) w - (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w)
+        ℓ g j = _
+  have hsub : spec.bSide ((spec.layer Z ℓ) w -
+      (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w) ℓ g j
+    = spec.bSide ((spec.layer Z ℓ) w) ℓ g j
+      - spec.bSide ((spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w) ℓ g j := by
+    show ((spec.layer Z ℓ) w - (spec.layer (spec.faultedTwiddlesGen Z Z_repl F) ℓ) w)
+          (spec.bSideIdx ℓ g j) = _
+    rw [Pi.sub_apply]; rfl
+  rw [hsub, spec.bSide_layer Z ℓ w g j, spec.bSide_layer _ ℓ w g j]; ring
+
+/-- `layerInv(pertGen w) ∈ V_k` (gen version). -/
+lemma layerInv_pertGen_mem_V
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    (Z_repl : spec.Twiddles K) (F : spec.FaultSet)
+    (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K) :
+    (spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+        (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ w) ∈ spec.V (K := K) ⟨k, hk⟩ := by
+  apply spec.mem_V_of_bit_zero_vanish
+  intro i hbit
+  obtain ⟨g, j, rfl⟩ := spec.exists_aSide_decomp ⟨k, hk⟩ i hbit
+  show spec.aSide ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+        (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ w)) ⟨k, hk⟩ g j = 0
+  rw [spec.aSide_layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2 _ g j,
+      spec.aSide_perturbationGen Z Z_repl F ⟨k, hk⟩ w g j,
+      spec.bSide_perturbationGen Z Z_repl F ⟨k, hk⟩ w g j]
+  have : (Z ⟨k, hk⟩ g - (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g)
+            * spec.bSide w ⟨k, hk⟩ g j
+        + ((spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g - Z ⟨k, hk⟩ g)
+            * spec.bSide w ⟨k, hk⟩ g j
+        = 0 := by ring
+  rw [this, zero_div]
+
+/-- **F7-gen headline.** `INTT(teleTerm_gen image) ⊆ V_k` for arbitrary replacement. -/
+theorem teleTerm_intt_image_subset_V_gen
+    [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) :
+    LinearMap.range
+        ((spec.nttInv hZ h2).comp
+            (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k))
+      ≤ spec.V (K := K) ⟨k, hk⟩ := by
+  rintro x ⟨w, hw⟩
+  rw [← hw]
+  show spec.nttInv hZ h2 (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k w)
+        ∈ spec.V (K := K) ⟨k, hk⟩
+  rw [spec.teleTerm_factor Z (spec.faultedTwiddlesGen Z Z_repl F) k hk,
+      spec.layer_diff_eq_perturbationGen Z Z_repl F k hk]
+  rw [LinearMap.comp_apply, LinearMap.comp_apply]
+  rw [spec.nttInv_suffix_apply hZ h2 k hk]
+  apply spec.runPrefixInv_preserves_V hZ h2 k hk k le_rfl
+  exact spec.layerInv_pertGen_mem_V hZ h2 Z_repl F k hk _
 
 end LayerSpec
 end NttFaultRank

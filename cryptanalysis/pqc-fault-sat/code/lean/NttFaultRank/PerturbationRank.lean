@@ -55,6 +55,38 @@ theorem perturbation_rank_eq
     unfold faultedTwiddles
     simp [hg₀]
 
+/-! ### Generalized perturbation: arbitrary replacement twiddles -/
+
+/-- Generalized perturbation: difference of unfaulted and generalized-faulted layer. -/
+def perturbationGen (Z Z' : spec.Twiddles K) (F : spec.FaultSet) (ℓ : Fin spec.N) :
+    (Fin spec.n → K) →ₗ[K] (Fin spec.n → K) :=
+  spec.layer Z ℓ - spec.layer (spec.faultedTwiddlesGen Z Z' F) ℓ
+
+/-- **Headline F4-gen.** Under "one fault per layer", when faulted twiddles
+    differ from original (`Z ℓ g ≠ Z' ℓ g` at faulted groups), the layer-`ℓ`
+    perturbation has rank `spec.L ℓ`. -/
+theorem perturbation_rank_eq_gen
+    {Z Z' : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z' ℓ g)
+    (hF : spec.OneFaultPerLayer F) (ℓ : Fin spec.N) :
+    Module.finrank K (LinearMap.range (spec.perturbationGen Z Z' F ℓ)) = spec.L ℓ := by
+  obtain ⟨g₀, hg₀⟩ := Finset.card_eq_one.mp (hF ℓ)
+  show Module.finrank K (LinearMap.range
+    (layerOnDiff spec.n (spec.G ℓ) (spec.L ℓ) (spec.hGL ℓ)
+      (Z ℓ) ((spec.faultedTwiddlesGen Z Z' F) ℓ))) = spec.L ℓ
+  refine layerOnDiff_rank_eq_gen (n := spec.n) (G := spec.G ℓ) (L := spec.L ℓ)
+    (h := spec.hGL ℓ) (zs := Z ℓ) (zs' := (spec.faultedTwiddlesGen Z Z' F) ℓ)
+    g₀ ?_ ?_
+  · -- agreement off g₀
+    intro g hg
+    unfold faultedTwiddlesGen
+    simp [hg₀, hg]
+  · -- Z ℓ g₀ ≠ faultedTwiddlesGen Z Z' F ℓ g₀
+    unfold faultedTwiddlesGen
+    have hg₀_mem : g₀ ∈ F ℓ := by rw [hg₀]; exact Finset.mem_singleton_self g₀
+    rw [if_pos hg₀_mem]
+    exact hδ ℓ g₀ hg₀_mem
+
 end LayerSpec
 
 end NttFaultRank

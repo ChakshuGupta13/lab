@@ -42,27 +42,27 @@ lemma L_pos (k : ℕ) (hk : k < spec.N) (hn : 0 < spec.n) :
   · exfalso; rw [hz] at hgl; simp at hgl; omega
   · exact hp
 
-/-- `2 * L ⟨k, hk⟩ ≤ spec.n` for `KyberLike spec` (matches `two_L_le_n` from F5). -/
-lemma two_L_le_n_F8 [KyberLike spec] (k : ℕ) (hk : k < spec.N) :
+/-- `2 * L ⟨k, hk⟩ ≤ spec.n` for `CooleyTukeyLike spec` (matches `two_L_le_n` from F5). -/
+lemma two_L_le_n_F8 [CooleyTukeyLike spec] (k : ℕ) (hk : k < spec.N) :
     2 * spec.L ⟨k, hk⟩ ≤ spec.n := by
   have h0 : 0 < spec.N := lt_of_le_of_lt (Nat.zero_le _) hk
-  have hL0 : 2 * spec.L ⟨0, h0⟩ = spec.n := KyberLike.L_zero_doubled h0
+  have hL0 : 2 * spec.L ⟨0, h0⟩ = spec.n := CooleyTukeyLike.L_zero_doubled h0
   have hanti : spec.L ⟨k, hk⟩ ≤ spec.L ⟨0, h0⟩ :=
     spec.L_antitone hk h0 (Nat.zero_le _)
   omega
 
 /-- The "fresh" flat index `[0^k | 1 | s]`: value `L_k + s.val`. -/
-def freshIdx [KyberLike spec] {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩)) :
+def freshIdx [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩)) :
     Fin spec.n :=
   ⟨spec.L ⟨k, hk⟩ + s.val,
     lt_of_lt_of_le (by have := s.isLt; omega) (spec.two_L_le_n_F8 k hk)⟩
 
-@[simp] lemma freshIdx_val [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+@[simp] lemma freshIdx_val [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩)) :
     (spec.freshIdx hk s).val = spec.L ⟨k, hk⟩ + s.val := rfl
 
 /-- `bitOf k (freshIdx hk s) = 1`. -/
-lemma bitOf_freshIdx_self [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma bitOf_freshIdx_self [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩)) :
     spec.bitOf ⟨k, hk⟩ (spec.freshIdx hk s) = 1 := by
   unfold bitOf
@@ -78,7 +78,7 @@ lemma bitOf_freshIdx_self [KyberLike spec] {k : ℕ} (hk : k < spec.N)
 
 /-- `bitOf k' (freshIdx hk s) = 0` for any `k' < k`.
     Uses `two_L_dvd_L`: `L_{k'} ≥ 2 * L_k` so `L_k + s < L_{k'}`. -/
-lemma bitOf_freshIdx_lower [KyberLike spec] {k k' : ℕ}
+lemma bitOf_freshIdx_lower [CooleyTukeyLike spec] {k k' : ℕ}
     (hk : k < spec.N) (hk' : k' < spec.N) (hk'k : k' < k)
     (s : Fin (spec.L ⟨k, hk⟩)) :
     spec.bitOf ⟨k', hk'⟩ (spec.freshIdx hk s) = 0 := by
@@ -176,11 +176,11 @@ lemma bSide_layerInv_pert_off
   because `L_{m-1} = 2 L_m` absorbs into the trailing `2 L_m` term:
   `(∑_{i<m} L_i) + 2 L_m = (∑_{i<m-1} L_i) + L_{m-1} + 2 L_m
                          = (∑_{i<m-1} L_i) + 2 L_{m-1}`.
-  At the base `m = 0`: `0 + 2 L_0 = n` (KyberLike.L_zero_doubled).
+  At the base `m = 0`: `0 + 2 L_0 = n` (CooleyTukeyLike.L_zero_doubled).
   Combined with `L_k ≤ L_m` for `m ≤ k` (antitonicity), we get the bound
   needed for `orbitIdx`. -/
 
-lemma sum_Li_plus_2L_eq_n [KyberLike spec] :
+lemma sum_Li_plus_2L_eq_n [CooleyTukeyLike spec] :
     ∀ (m : ℕ) (hm : m < spec.N),
       (∑ i : Fin m, spec.L ⟨i.val, lt_of_lt_of_le i.isLt hm.le⟩)
         + 2 * spec.L ⟨m, hm⟩ = spec.n := by
@@ -189,7 +189,7 @@ lemma sum_Li_plus_2L_eq_n [KyberLike spec] :
   | zero =>
     -- ∑ over Fin 0 = 0, then 2 L_0 = n.
     simp
-    exact KyberLike.L_zero_doubled hm
+    exact CooleyTukeyLike.L_zero_doubled hm
   | succ m ih =>
     -- ∑_{i:Fin (m+1)} L_i + 2 L_{m+1}
     --   = (∑_{i:Fin m} L_i.castSucc) + L_⟨m,_⟩ + 2 L_{m+1}
@@ -197,7 +197,7 @@ lemma sum_Li_plus_2L_eq_n [KyberLike spec] :
     --   = (∑_{i:Fin m} L_i.castSucc) + 2 L_⟨m,_⟩
     -- and this equals n by ih.
     have hm_prev : m < spec.N := Nat.lt_of_succ_lt hm
-    have hLs := KyberLike.L_succ (spec := spec) m hm
+    have hLs := CooleyTukeyLike.L_succ (spec := spec) m hm
     have ih' := ih hm_prev
     rw [Fin.sum_univ_castSucc]
     show (∑ i : Fin m, spec.L ⟨i.val, _⟩) + spec.L ⟨m, hm_prev⟩
@@ -214,7 +214,7 @@ lemma sum_Li_plus_2L_eq_n [KyberLike spec] :
 
 /-- The bound used in `orbitIdx`: for `m ≤ k < N`,
     `(∑_{i:Fin m} L_i) + 2 L_k ≤ n`. -/
-lemma sum_Li_plus_2Lk_le_n [KyberLike spec]
+lemma sum_Li_plus_2Lk_le_n [CooleyTukeyLike spec]
     {k : ℕ} (hk : k < spec.N) {m : ℕ} (hmk : m ≤ k) :
     (∑ i : Fin m, spec.L ⟨i.val,
         lt_of_lt_of_le i.isLt (le_trans hmk hk.le)⟩)
@@ -233,13 +233,13 @@ lemma sum_Li_plus_2Lk_le_n [KyberLike spec]
   All `2^m` orbit positions remain in `Fin spec.n` by the 3a bound. -/
 
 /-- The offset added to `freshIdx hk s` by orbit index `y : Fin (2^m)`. -/
-def orbitOffset [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+def orbitOffset [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (m : ℕ) (hmk : m ≤ k) (y : ℕ) : ℕ :=
   ∑ i : Fin m, if y.testBit i.val
     then spec.L ⟨i.val, lt_of_lt_of_le i.isLt (le_trans hmk hk.le)⟩ else 0
 
 /-- The orbit-offset is bounded by the sum of all `L_i` for `i < m`. -/
-lemma orbitOffset_le_sum [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitOffset_le_sum [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     {m : ℕ} (hmk : m ≤ k) (y : ℕ) :
     spec.orbitOffset hk m hmk y
       ≤ ∑ i : Fin m, spec.L ⟨i.val,
@@ -252,7 +252,7 @@ lemma orbitOffset_le_sum [KyberLike spec] {k : ℕ} (hk : k < spec.N)
   · exact Nat.zero_le _
 
 /-- The `y`-th orbit position of `freshIdx hk s`. -/
-def orbitIdx [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+def orbitIdx [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩))
     (m : ℕ) (hmk : m ≤ k) (y : Fin (2^m)) : Fin spec.n :=
   ⟨spec.L ⟨k, hk⟩ + s.val + spec.orbitOffset hk m hmk y.val,
@@ -262,14 +262,14 @@ def orbitIdx [KyberLike spec] {k : ℕ} (hk : k < spec.N)
     have hs := s.isLt
     omega⟩
 
-@[simp] lemma orbitIdx_val [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+@[simp] lemma orbitIdx_val [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩))
     (m : ℕ) (hmk : m ≤ k) (y : Fin (2^m)) :
     (spec.orbitIdx hk s m hmk y).val
       = spec.L ⟨k, hk⟩ + s.val + spec.orbitOffset hk m hmk y.val := rfl
 
 /-- At `m = 0`, the only orbit element is `freshIdx hk s` itself. -/
-lemma orbitIdx_zero [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitIdx_zero [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩)) (y : Fin 1) :
     spec.orbitIdx hk s 0 (Nat.zero_le _) y = spec.freshIdx hk s := by
   apply Fin.ext
@@ -281,7 +281,7 @@ lemma orbitIdx_zero [KyberLike spec] {k : ℕ} (hk : k < spec.N)
 /-! ### Step 3c — Universal scalar formula via `runPrefixInv` induction -/
 
 /-- For `i < m`, `L_i = 2^(m-i) * L_m` (Kyber recurrence iterated). -/
-lemma L_eq_pow_L_succ [KyberLike spec] :
+lemma L_eq_pow_L_succ [CooleyTukeyLike spec] :
     ∀ {m i : ℕ} (hm : m < spec.N) (him : i ≤ m),
       spec.L ⟨i, lt_of_le_of_lt him hm⟩
         = 2^(m - i) * spec.L ⟨m, hm⟩ := by
@@ -298,7 +298,7 @@ lemma L_eq_pow_L_succ [KyberLike spec] :
     · have him' : i ≤ m := by omega
       have hm_prev : m < spec.N := Nat.lt_of_succ_lt hm
       have ih' := ih hm_prev him'
-      have hLs := KyberLike.L_succ (spec := spec) m hm
+      have hLs := CooleyTukeyLike.L_succ (spec := spec) m hm
       -- L_i = 2^(m-i) * L_m = 2^(m-i) * (2 * L_{m+1}) = 2^(m+1-i) * L_{m+1}.
       rw [ih']
       have hpow : 2^(m + 1 - i) = 2^(m - i) * 2 := by
@@ -313,7 +313,7 @@ lemma L_eq_pow_L_succ [KyberLike spec] :
     - `L_k + s < 2 L_k ≤ L_m` (since `k > m` makes `L_k ≤ L_m / 2`),
     - each `L_i = 2^{m-i} L_m` with `m > i`, hence even multiple of `L_m`.
     Thus `(orbit / L_m) % 2 = 0`. -/
-lemma bitOf_orbitIdx_self_zero [KyberLike spec]
+lemma bitOf_orbitIdx_self_zero [CooleyTukeyLike spec]
     {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩))
     (m : ℕ) (hmk : m < k) (y : Fin (2^m)) :
     spec.bitOf ⟨m, lt_of_lt_of_le hmk hk.le⟩
@@ -391,7 +391,7 @@ lemma bitOf_orbitIdx_self_zero [KyberLike spec]
 /-- Inserting the `(m+1)`-th coordinate to an orbit offset:
     `orbitOffset_{m+1}(y.val) = orbitOffset_m(y.val)` (bit `m` of `y.val` is 0
     when `y < 2^m`). -/
-lemma orbitOffset_castSucc [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitOffset_castSucc [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     {m : ℕ} (hmk : m + 1 ≤ k) (y : Fin (2^m)) :
     spec.orbitOffset hk (m+1) hmk y.val
       = spec.orbitOffset hk m (Nat.le_of_succ_le hmk) y.val := by
@@ -403,7 +403,7 @@ lemma orbitOffset_castSucc [KyberLike spec] {k : ℕ} (hk : k < spec.N)
   simp [hbit_m]
 
 /-- Toggling bit `m` (adding `2^m`) extends the orbit by `L_m`. -/
-lemma orbitOffset_succ_with_bit [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitOffset_succ_with_bit [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     {m : ℕ} (hmk : m + 1 ≤ k) (y : Fin (2^m)) :
     spec.orbitOffset hk (m+1) hmk (y.val + 2^m)
       = spec.orbitOffset hk m (Nat.le_of_succ_le hmk) y.val
@@ -428,7 +428,7 @@ lemma orbitOffset_succ_with_bit [KyberLike spec] {k : ℕ} (hk : k < spec.N)
 
 /-- Partner of an orbit position at layer `m` equals the orbit position at
     step `m+1` with bit `m` toggled. -/
-lemma partnerIdx_orbitIdx_eq [KyberLike spec]
+lemma partnerIdx_orbitIdx_eq [CooleyTukeyLike spec]
     {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩))
     {m : ℕ} (hmk : m + 1 ≤ k) (y : Fin (2^m)) :
     spec.partnerIdx ⟨m, lt_of_le_of_lt (Nat.le_of_succ_le hmk) hk⟩
@@ -492,7 +492,7 @@ lemma partnerIdx_orbitIdx_eq [KyberLike spec]
 
 /-- Orbit at step `m` equals orbit at step `m+1` with `y` embedded via
     `castAdd` (bit `m` of `y` stays 0). -/
-lemma orbitIdx_castSucc [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitIdx_castSucc [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (s : Fin (spec.L ⟨k, hk⟩))
     {m : ℕ} (hmk : m + 1 ≤ k) (y : Fin (2^m)) :
     spec.orbitIdx hk s (m+1) hmk
@@ -554,7 +554,7 @@ lemma sum_fin_two_pow_succ_split {M : Type*} [AddCommMonoid M] (m : ℕ)
   `(m+1, y + 2^m)`). The twiddle cancels because the orbit is on the a-side
   of layer m (the formula `(a + b) / 2` has no twiddle dependence). -/
 
-lemma layerInv_at_orbit [KyberLike spec]
+lemma layerInv_at_orbit [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩))
     {m : ℕ} (hmk : m + 1 ≤ k) (v : Fin spec.n → K) (y : Fin (2^m)) :
@@ -601,7 +601,7 @@ lemma layerInv_at_orbit [KyberLike spec]
 
   Proved by induction on m. -/
 
-lemma runPrefixInv_at_freshIdx_aux [KyberLike spec]
+lemma runPrefixInv_at_freshIdx_aux [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {k : ℕ} (hk : k < spec.N) (s : Fin (spec.L ⟨k, hk⟩)) :
     ∀ (m : ℕ) (hmk : m ≤ k) (v : Fin spec.n → K),
@@ -669,11 +669,11 @@ lemma runPrefixInv_at_freshIdx_aux [KyberLike spec]
 
 /-! ### Step E — Collapse to `pi_scalar_at_fresh` headline -/
 
-/-- `spec.G ⟨k, hk⟩ = 2^k` for KyberLike (induction via `G_succ`). -/
-lemma G_eq_pow2 [KyberLike spec] (hn : 0 < spec.n) :
+/-- `spec.G ⟨k, hk⟩ = 2^k` for CooleyTukeyLike (induction via `G_succ`). -/
+lemma G_eq_pow2 [CooleyTukeyLike spec] (hn : 0 < spec.n) :
     ∀ (k : ℕ) (hk : k < spec.N), spec.G ⟨k, hk⟩ = 2^k
   | 0, hk => by
-      have hL0 := KyberLike.L_zero_doubled (spec := spec) hk
+      have hL0 := CooleyTukeyLike.L_zero_doubled (spec := spec) hk
       have hgl := spec.hGL ⟨0, hk⟩
       rw [hL0] at hgl
       -- hgl : G_0 * n = n. With n > 0, G_0 = 1.
@@ -686,11 +686,11 @@ lemma G_eq_pow2 [KyberLike spec] (hn : 0 < spec.n) :
       rw [hG0, pow_zero]
   | k+1, hk => by
       have hk' : k < spec.N := Nat.lt_of_succ_lt hk
-      rw [KyberLike.G_succ (spec := spec) k hk, G_eq_pow2 hn k hk', pow_succ]
+      rw [CooleyTukeyLike.G_succ (spec := spec) k hk, G_eq_pow2 hn k hk', pow_succ]
       ring
 
 /-- `orbitOffset` is divisible by `2 * L_k` (each term `L_i` is a multiple of `2 L_k`). -/
-lemma two_L_dvd_orbitOffset [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma two_L_dvd_orbitOffset [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     {m : ℕ} (hmk : m ≤ k) (y : ℕ) :
     (2 * spec.L ⟨k, hk⟩) ∣ spec.orbitOffset hk m hmk y := by
   unfold orbitOffset
@@ -710,7 +710,7 @@ lemma two_L_dvd_orbitOffset [KyberLike spec] {k : ℕ} (hk : k < spec.N)
   · exact dvd_zero _
 
 /-- The "group at layer k" of orbit index `y : Fin (2^k)`: divide `orbitOffset` by `2 L_k`. -/
-def groupAtK [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n)
+def groupAtK [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n)
     (y : Fin (2^k)) : Fin (spec.G ⟨k, hk⟩) :=
   ⟨spec.orbitOffset hk k le_rfl y.val / (2 * spec.L ⟨k, hk⟩), by
     -- orbitOffset + 2 L_k ≤ n = G_k * (2 L_k); so orbitOffset ≤ (G_k - 1) * (2 L_k);
@@ -732,7 +732,7 @@ def groupAtK [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n)
     exact this⟩
 
 /-- Defining property of `groupAtK`: `(groupAtK y).val * (2 L_k) = orbitOffset y`. -/
-lemma groupAtK_val_mul [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n)
+lemma groupAtK_val_mul [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n)
     (y : Fin (2^k)) :
     (spec.groupAtK hk hn y).val * (2 * spec.L ⟨k, hk⟩)
       = spec.orbitOffset hk k le_rfl y.val := by
@@ -741,7 +741,7 @@ lemma groupAtK_val_mul [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < sp
   exact Nat.div_mul_cancel (spec.two_L_dvd_orbitOffset hk (le_refl k) y.val)
 
 /-- `orbitIdx hk s k _ y = bSideIdx ⟨k,_⟩ (groupAtK y) s`. -/
-lemma orbit_eq_bSideIdx_groupAtK [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbit_eq_bSideIdx_groupAtK [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (hn : 0 < spec.n) (s : Fin (spec.L ⟨k, hk⟩)) (y : Fin (2^k)) :
     spec.orbitIdx hk s k le_rfl y = spec.bSideIdx ⟨k, hk⟩ (spec.groupAtK hk hn y) s := by
   apply Fin.ext
@@ -791,7 +791,7 @@ private lemma sum_pow_two_testBit :
 
 /-- For i < k, the bit at position `k-1-i` of `orbitOffset y / (2 L_k)` equals
     `y.testBit i`. -/
-lemma orbitOffset_testBit_eq [KyberLike spec] {k : ℕ} (hk : k < spec.N)
+lemma orbitOffset_testBit_eq [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N)
     (hn : 0 < spec.n) (y : ℕ) (i : ℕ) (hi : i < k) :
     y.testBit i =
       ((spec.orbitOffset hk k le_rfl y) / (2 * spec.L ⟨k, hk⟩)).testBit (k - 1 - i) := by
@@ -837,7 +837,7 @@ lemma orbitOffset_testBit_eq [KyberLike spec] {k : ℕ} (hk : k < spec.N)
   -- y.testBit (k - 1 - (k - 1 - i)) = y.testBit i.
   have hki : k - 1 - (k - 1 - i) = i := by omega
   rw [hki]
-lemma groupAtK_injective [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n) :
+lemma groupAtK_injective [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n) :
     Function.Injective (spec.groupAtK hk hn) := by
   intro y₁ y₂ hg
   have h_off_eq : spec.orbitOffset hk k le_rfl y₁.val
@@ -865,7 +865,7 @@ lemma groupAtK_injective [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < 
     rw [h1, h2]
 
 /-- `groupAtK` is surjective (card-equal + injective). -/
-lemma groupAtK_surjective [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n) :
+lemma groupAtK_surjective [CooleyTukeyLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 < spec.n) :
     Function.Surjective (spec.groupAtK hk hn) := by
   have hcard : Fintype.card (Fin (2^k)) = Fintype.card (Fin (spec.G ⟨k, hk⟩)) := by
     simp [spec.G_eq_pow2 hn k hk]
@@ -877,7 +877,7 @@ lemma groupAtK_surjective [KyberLike spec] {k : ℕ} (hk : k < spec.N) (hn : 0 <
 /-- **F8 main lemma (paper `lem:piscalar`).** The π-projection at `freshIdx ⟨k,_⟩ s`
     equals `(1/2)^k · bSide (runPrefix Z' k w) ⟨k,_⟩ g₀ s`. -/
 theorem pi_scalar_at_fresh
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K)
@@ -1001,7 +1001,7 @@ lemma teleTerm_eq_zero_of_pert_zero
     then `v = 0`. F9 will use this for the rank-additivity argument by peeling
     from the top. -/
 theorem teleTerm_image_disjoint_lower
-    [KyberLike spec]
+    [CooleyTukeyLike spec]
     {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
     {F : spec.FaultSet} (hF : spec.OneFaultPerLayer F)
     (a : Fin spec.N) :
@@ -1085,6 +1085,258 @@ theorem teleTerm_image_disjoint_lower
     spec.pert_vanish_of_bSide_zero Z hF a.val ha _ h_bSide_zero
   have h_teleTerm : spec.teleTerm Z (spec.faultedTwiddles Z F) a.val w_a = 0 :=
     spec.teleTerm_eq_zero_of_pert_zero F a.val ha w_a h_pert
+  rw [← hw_a, h_teleTerm]
+
+/-! ### Generalized PiInjective lemmas for arbitrary replacement twiddles -/
+
+/-- Gen: bSide of layerInv(pertGen v) = scalar * bSide v. -/
+lemma bSide_layerInv_pertGen
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    (Z_repl : spec.Twiddles K) (F : spec.FaultSet)
+    (k : ℕ) (hk : k < spec.N) (v : Fin spec.n → K)
+    (g : Fin (spec.G ⟨k, hk⟩)) (j : Fin (spec.L ⟨k, hk⟩)) :
+    spec.bSide
+        ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+          (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ v))
+        ⟨k, hk⟩ g j
+      = (Z ⟨k, hk⟩ g - (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g) / (Z ⟨k, hk⟩ g)
+          * spec.bSide v ⟨k, hk⟩ g j := by
+  rw [spec.bSide_layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2 _ g j,
+      spec.aSide_perturbationGen Z Z_repl F ⟨k, hk⟩ v g j,
+      spec.bSide_perturbationGen Z Z_repl F ⟨k, hk⟩ v g j]
+  field_simp; ring
+
+/-- Gen: at faulted group g₀, scalar = (Z g₀ - Z_repl g₀) / Z g₀. -/
+lemma bSide_layerInv_pertGen_g0
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K)
+    (s : Fin (spec.L ⟨k, hk⟩)) :
+    spec.bSide
+        ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+          (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ w))
+        ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose s
+      = (Z ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose
+          - Z_repl ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose)
+        / (Z ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose)
+          * spec.bSide w ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose s := by
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose with hg₀_def
+  rw [spec.bSide_layerInv_pertGen hZ h2 Z_repl F k hk w g₀ s]
+  -- faultedTwiddlesGen Z Z_repl F k g₀ = Z_repl k g₀
+  have hg₀_spec : F ⟨k, hk⟩ = {g₀} :=
+    (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec
+  have hZ'_eq : (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g₀ = Z_repl ⟨k, hk⟩ g₀ := by
+    unfold faultedTwiddlesGen; simp [hg₀_spec]
+  rw [hZ'_eq]
+
+/-- Gen: at group g ≠ g₀, value = 0 (twiddles agree off g₀). -/
+lemma bSide_layerInv_pertGen_off
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K)
+    (g : Fin (spec.G ⟨k, hk⟩))
+    (hg : g ≠ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose)
+    (s : Fin (spec.L ⟨k, hk⟩)) :
+    spec.bSide
+        ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+          (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ w))
+        ⟨k, hk⟩ g s = 0 := by
+  rw [spec.bSide_layerInv_pertGen hZ h2 Z_repl F k hk w g s]
+  have hZ'_eq : (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g = Z ⟨k, hk⟩ g := by
+    have hg₀_spec : F ⟨k, hk⟩ = {(Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose} :=
+      (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec
+    show (if g ∈ F ⟨k, hk⟩ then Z_repl ⟨k, hk⟩ g else Z ⟨k, hk⟩ g) = Z ⟨k, hk⟩ g
+    rw [hg₀_spec, if_neg (by simpa using hg)]
+  rw [hZ'_eq, sub_self, zero_div, zero_mul]
+
+/-- Gen: if bSide v g₀ s = 0 for all s, then pertGen v = 0. -/
+lemma pertGen_vanish_of_bSide_zero
+    (Z Z_repl : spec.Twiddles K) {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) (v : Fin spec.n → K)
+    (h_van : ∀ s : Fin (spec.L ⟨k, hk⟩),
+      spec.bSide v ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose s = 0) :
+    spec.perturbationGen Z Z_repl F ⟨k, hk⟩ v = 0 := by
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose with hg₀_def
+  funext i
+  by_cases hbit : spec.bitOf ⟨k, hk⟩ i = 0
+  · obtain ⟨g, j, rfl⟩ := spec.exists_aSide_decomp ⟨k, hk⟩ i hbit
+    show spec.aSide (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ v) ⟨k, hk⟩ g j = 0
+    rw [spec.aSide_perturbationGen Z Z_repl F ⟨k, hk⟩ v g j]
+    by_cases hg : g = g₀
+    · subst hg; rw [h_van j]; ring
+    · have hZ'_eq : (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g = Z ⟨k, hk⟩ g := by
+        have hg₀_spec : F ⟨k, hk⟩ = {g₀} :=
+          (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec
+        show (if g ∈ F ⟨k, hk⟩ then Z_repl ⟨k, hk⟩ g else Z ⟨k, hk⟩ g) = Z ⟨k, hk⟩ g
+        rw [hg₀_spec, if_neg (by simpa using hg)]
+      rw [hZ'_eq, sub_self, zero_mul]
+  · have hbit1 : spec.bitOf ⟨k, hk⟩ i = 1 := by
+      have h_lt : spec.bitOf ⟨k, hk⟩ i < 2 := Nat.mod_lt _ (by norm_num)
+      unfold bitOf at hbit ⊢; omega
+    obtain ⟨g, j, rfl⟩ := spec.exists_bSide_decomp ⟨k, hk⟩ i hbit1
+    show spec.bSide (spec.perturbationGen Z Z_repl F ⟨k, hk⟩ v) ⟨k, hk⟩ g j = 0
+    rw [spec.bSide_perturbationGen Z Z_repl F ⟨k, hk⟩ v g j]
+    by_cases hg : g = g₀
+    · subst hg; rw [h_van j]; ring
+    · have hZ'_eq : (spec.faultedTwiddlesGen Z Z_repl F) ⟨k, hk⟩ g = Z ⟨k, hk⟩ g := by
+        have hg₀_spec : F ⟨k, hk⟩ = {g₀} :=
+          (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose_spec
+        show (if g ∈ F ⟨k, hk⟩ then Z_repl ⟨k, hk⟩ g else Z ⟨k, hk⟩ g) = Z ⟨k, hk⟩ g
+        rw [hg₀_spec, if_neg (by simpa using hg)]
+      rw [hZ'_eq, sub_self, zero_mul]
+
+/-- Gen: if pertGen(runPrefix ... w) = 0, then teleTerm w = 0. -/
+lemma teleTerm_eq_zero_of_pertGen_zero
+    {Z : spec.Twiddles K} (Z_repl : spec.Twiddles K) (F : spec.FaultSet)
+    (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K)
+    (h_pert : spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+        (spec.runPrefix (spec.faultedTwiddlesGen Z Z_repl F) k (Nat.le_of_lt hk) w) = 0) :
+    spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k w = 0 := by
+  rw [spec.teleTerm_factor Z (spec.faultedTwiddlesGen Z Z_repl F) k hk,
+      spec.layer_diff_eq_perturbationGen Z Z_repl F k hk]
+  rw [LinearMap.comp_apply, LinearMap.comp_apply, h_pert]
+  exact map_zero _
+
+/-- **Gen: pi_scalar_at_fresh.** The scalar becomes
+    `(1/2)^k * (Z g₀ - Z_repl g₀) / Z g₀ * bSide(runPrefix Z' k w) g₀ s`. -/
+theorem pi_scalar_at_fresh_gen
+    [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (k : ℕ) (hk : k < spec.N) (w : Fin spec.n → K)
+    (s : Fin (spec.L ⟨k, hk⟩)) :
+    spec.nttInv hZ h2 (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) k w)
+        (spec.freshIdx hk s)
+      = (1 / (2 : K))^k
+        * ((Z ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose
+            - Z_repl ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose)
+          / Z ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose)
+        * spec.bSide
+            (spec.runPrefix (spec.faultedTwiddlesGen Z Z_repl F) k (Nat.le_of_lt hk) w)
+            ⟨k, hk⟩ (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose s := by
+  set Z' := spec.faultedTwiddlesGen Z Z_repl F with hZ'_def
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨k, hk⟩)).choose with hg₀_def
+  rw [spec.teleTerm_factor Z Z' k hk, spec.layer_diff_eq_perturbationGen Z Z_repl F k hk]
+  rw [LinearMap.comp_apply, LinearMap.comp_apply]
+  rw [spec.nttInv_suffix_apply hZ h2 k hk]
+  rw [spec.runPrefixInv_at_freshIdx_aux hZ h2 hk s k le_rfl _]
+  -- Goal: (1/2)^k * ∑ y, v(orbit y) = (1/2)^k * ((Z g₀ - Z_repl g₀)/Z g₀) * bSide ...
+  -- Collapse the sum via sum_eq_single to get (Z g₀ - Z_repl g₀)/Z g₀ * bSide.
+  have hn : 0 < spec.n := lt_of_le_of_lt (Nat.zero_le _) (spec.freshIdx hk s).isLt
+  obtain ⟨y_g₀, hy_g₀⟩ := spec.groupAtK_surjective hk hn g₀
+  have h_sum :
+      ∑ y : Fin (2 ^ k),
+        ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+          (spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+            (spec.runPrefix Z' k (Nat.le_of_lt hk) w)))
+          (spec.orbitIdx hk s k le_rfl y)
+      = (Z ⟨k, hk⟩ g₀ - Z_repl ⟨k, hk⟩ g₀) / Z ⟨k, hk⟩ g₀
+          * spec.bSide (spec.runPrefix Z' k (Nat.le_of_lt hk) w) ⟨k, hk⟩ g₀ s := by
+    rw [Finset.sum_eq_single y_g₀]
+    · rw [spec.orbit_eq_bSideIdx_groupAtK hk hn s y_g₀, hy_g₀]
+      rw [← spec.bSide_eq_apply
+            ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+              (spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+                (spec.runPrefix Z' k (Nat.le_of_lt hk) w)))
+            ⟨k, hk⟩ g₀ s]
+      exact spec.bSide_layerInv_pertGen_g0 hZ h2 hF k hk
+        (spec.runPrefix Z' k (Nat.le_of_lt hk) w) s
+    · intro y _ hy_ne
+      rw [spec.orbit_eq_bSideIdx_groupAtK hk hn s y]
+      rw [← spec.bSide_eq_apply
+            ((spec.layerInv Z ⟨k, hk⟩ (fun g => hZ ⟨k, hk⟩ g) h2)
+              (spec.perturbationGen Z Z_repl F ⟨k, hk⟩
+                (spec.runPrefix Z' k (Nat.le_of_lt hk) w)))
+            ⟨k, hk⟩ (spec.groupAtK hk hn y) s]
+      have hg_ne : spec.groupAtK hk hn y ≠ g₀ := by
+        intro hg; apply hy_ne
+        exact spec.groupAtK_injective hk hn (hg.trans hy_g₀.symm)
+      exact spec.bSide_layerInv_pertGen_off hZ h2 hF k hk
+        (spec.runPrefix Z' k (Nat.le_of_lt hk) w)
+        (spec.groupAtK hk hn y) hg_ne s
+    · intro hmem; exact absurd (Finset.mem_univ _) hmem
+  rw [h_sum]; ring
+
+/-- **Gen: teleTerm_image_disjoint_lower.** -/
+theorem teleTerm_image_disjoint_lower_gen
+    [CooleyTukeyLike spec]
+    {Z : spec.Twiddles K} (hZ : ∀ ℓ g, Z ℓ g ≠ 0) (h2 : (2 : K) ≠ 0)
+    {Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hδ : ∀ ℓ g, g ∈ F ℓ → Z ℓ g ≠ Z_repl ℓ g)
+    (hF : spec.OneFaultPerLayer F)
+    (a : Fin spec.N) :
+    Disjoint
+      (LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) a.val))
+      (⨆ b : Fin spec.N, ⨆ _ : b.val < a.val,
+        LinearMap.range (spec.teleTerm Z (spec.faultedTwiddlesGen Z Z_repl F) b.val)) := by
+  set Z' := spec.faultedTwiddlesGen Z Z_repl F with hZ'_def
+  rw [Submodule.disjoint_def]
+  intro v hv_a hv_sup
+  obtain ⟨w_a, hw_a⟩ := hv_a
+  set ha := a.isLt
+  have h_each : ∀ b : Fin spec.N, b.val < a.val →
+      LinearMap.range (spec.teleTerm Z Z' b.val)
+        ≤ (spec.V (K := K) b).comap (spec.nttInv hZ h2) := by
+    intro b hba w hw
+    obtain ⟨u, hu⟩ := hw
+    have h_in : spec.nttInv hZ h2 (spec.teleTerm Z Z' b.val u)
+                  ∈ spec.V (K := K) b :=
+      spec.teleTerm_intt_image_subset_V_gen hZ h2 hF b.val b.isLt ⟨u, rfl⟩
+    rw [← hu]; exact h_in
+  have h_combined :
+      (⨆ b : Fin spec.N, ⨆ _ : b.val < a.val, LinearMap.range (spec.teleTerm Z Z' b.val))
+        ≤ (⨆ b : Fin spec.N, ⨆ _ : b.val < a.val, spec.V (K := K) b).comap
+            (spec.nttInv hZ h2) := by
+    refine iSup_le (fun b => iSup_le (fun hba => ?_))
+    exact le_trans (h_each b hba) (Submodule.comap_mono
+      (le_iSup_of_le b (le_iSup_of_le hba le_rfl)))
+  have h_nttInv_v_in : spec.nttInv hZ h2 v ∈
+      (⨆ b : Fin spec.N, ⨆ _ : b.val < a.val, spec.V (K := K) b) :=
+    h_combined hv_sup
+  have h_van : ∀ s : Fin (spec.L ⟨a.val, ha⟩),
+      spec.nttInv hZ h2 v (spec.freshIdx ha s) = 0 := by
+    intro s
+    refine Submodule.iSup_induction
+      (fun b : Fin spec.N => ⨆ _ : b.val < a.val, spec.V (K := K) b)
+      (motive := fun w => w (spec.freshIdx ha s) = 0)
+      h_nttInv_v_in ?_ rfl ?_
+    · intro b w hw
+      refine Submodule.iSup_induction
+        (fun _ : b.val < a.val => spec.V (K := K) b)
+        (motive := fun w => w (spec.freshIdx ha s) = 0)
+        hw ?_ rfl ?_
+      · intro hba w' hw'
+        exact spec.bit_zero_vanish_of_mem_V b w' hw' (spec.freshIdx ha s)
+          (spec.bitOf_freshIdx_lower ha b.isLt hba s)
+      · intro u v hu hv; show (u + v) _ = 0; rw [Pi.add_apply, hu, hv, add_zero]
+    · intro u v hu hv; show (u + v) _ = 0; rw [Pi.add_apply, hu, hv, add_zero]
+  -- pi_scalar_at_fresh_gen ⇒ bSide ... = 0 for all s.
+  set g₀ := (Finset.card_eq_one.mp (hF ⟨a.val, ha⟩)).choose with hg₀_def
+  have hg₀_mem : g₀ ∈ F ⟨a.val, ha⟩ := by
+    rw [(Finset.card_eq_one.mp (hF ⟨a.val, ha⟩)).choose_spec]
+    exact Finset.mem_singleton_self g₀
+  have hδa : Z ⟨a.val, ha⟩ g₀ - Z_repl ⟨a.val, ha⟩ g₀ ≠ 0 :=
+    sub_ne_zero.mpr (hδ ⟨a.val, ha⟩ g₀ hg₀_mem)
+  have h_scalar_ne : (1 / (2 : K))^a.val * ((Z ⟨a.val, ha⟩ g₀ - Z_repl ⟨a.val, ha⟩ g₀) /
+      Z ⟨a.val, ha⟩ g₀) ≠ 0 := by
+    apply mul_ne_zero
+    · exact pow_ne_zero _ (one_div_ne_zero h2)
+    · exact div_ne_zero hδa (hZ ⟨a.val, ha⟩ g₀)
+  have h_bSide_zero : ∀ s : Fin (spec.L ⟨a.val, ha⟩),
+      spec.bSide (spec.runPrefix Z' a.val (Nat.le_of_lt ha) w_a) ⟨a.val, ha⟩ g₀ s = 0 := by
+    intro s
+    have hpi := spec.pi_scalar_at_fresh_gen (Z_repl := Z_repl) hZ h2 hF a.val ha w_a s
+    rw [hw_a] at hpi; rw [h_van s] at hpi
+    exact (mul_eq_zero.mp (hpi.symm)).resolve_left h_scalar_ne
+  have h_pert : spec.perturbationGen Z Z_repl F ⟨a.val, ha⟩
+      (spec.runPrefix Z' a.val (Nat.le_of_lt ha) w_a) = 0 :=
+    spec.pertGen_vanish_of_bSide_zero Z Z_repl hF a.val ha _ h_bSide_zero
+  have h_teleTerm : spec.teleTerm Z Z' a.val w_a = 0 :=
+    spec.teleTerm_eq_zero_of_pertGen_zero Z_repl F a.val ha w_a h_pert
   rw [← hw_a, h_teleTerm]
 
 end LayerSpec

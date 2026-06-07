@@ -114,6 +114,16 @@ theorem groupLayerDiff_rank_eq {z : K} (hz : z ≠ 0) :
   rw [LinearMap.finrank_range_of_inj hinj]
   exact Module.finrank_fin_fun (R := K)
 
+/-- `groupLayer L z - groupLayer L z' = groupLayerDiff L (z - z')`:
+    the difference of two group layers with different twiddles equals the
+    zero-referenced diff applied to the twiddle difference. -/
+lemma groupLayer_sub_eq_groupLayerDiff (z z' : K) :
+    groupLayer L z - groupLayer L z' = groupLayerDiff L (z - z') := by
+  apply LinearMap.ext; intro v; funext b j
+  rcases fin2_cases b with rfl | rfl
+  · simp [groupLayerDiff, LinearMap.sub_apply]; ring
+  · simp [groupLayerDiff, LinearMap.sub_apply]; ring
+
 end GroupLayer
 
 end NttFaultRank

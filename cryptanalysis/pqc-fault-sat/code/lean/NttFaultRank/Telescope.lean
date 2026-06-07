@@ -84,5 +84,20 @@ theorem diff_ntt_telescope (Z : spec.Twiddles K) (F : spec.FaultSet) :
   rw [hsum, spec.hybrid_zero Z Z', spec.hybrid_ge Z Z' (le_refl spec.N)]
   rfl
 
+/-- **Generalized telescope identity.** -/
+theorem diff_ntt_telescope_gen (Z Z' : spec.Twiddles K) (F : spec.FaultSet) :
+    spec.ntt Z - spec.nttFaultGen Z Z' F =
+      ∑ k ∈ Finset.range spec.N,
+        spec.teleTerm Z (spec.faultedTwiddlesGen Z Z' F) k := by
+  show spec.ntt Z - spec.ntt (spec.faultedTwiddlesGen Z Z' F) = _
+  set W := spec.faultedTwiddlesGen Z Z' F
+  have hsum :
+      ∑ k ∈ Finset.range spec.N,
+          (spec.hybrid Z W k - spec.hybrid Z W (k + 1))
+        = spec.hybrid Z W 0 - spec.hybrid Z W spec.N :=
+    Finset.sum_range_sub' (fun k => spec.hybrid Z W k) spec.N
+  simp only [teleTerm]
+  rw [hsum, spec.hybrid_zero Z W, spec.hybrid_ge Z W (le_refl spec.N)]
+
 end LayerSpec
 end NttFaultRank

@@ -141,7 +141,7 @@ lemma runPrefix_basis_bSide_zero_at_zero
     Both `v i` and `v (partner i)` lie in the IH-zero class, so their
     combination is zero.
 
-    Status: FULLY PROVED (no sorry). Uses `KyberLike` recurrence
+    Status: FULLY PROVED (no sorry). Uses `CooleyTukeyLike` recurrence
     `L_{k+1} · 2 = L_k` and `G_{k+1} = 2 G_k`. -/
 
 /-- **Support invariant.**
@@ -150,7 +150,7 @@ lemma runPrefix_basis_bSide_zero_at_zero
     `i.val % (2 * spec.L k) = p.val % (2 * spec.L k)`. This characterises
     the support as the orbit `{p + g · (2 L k) : g ∈ Fin G k}`. -/
 theorem runPrefix_basis_support_invariant
-    [KyberLike spec] (Z : spec.Twiddles K) (p : Fin spec.n)
+    [CooleyTukeyLike spec] (Z : spec.Twiddles K) (p : Fin spec.n)
     (k : ℕ) (hk : k ≤ spec.N) (ℓ : Fin spec.N) (hℓ : ℓ.val = k) :
     ∀ i : Fin spec.n,
       i.val % (2 * spec.L ℓ) ≠ p.val % (2 * spec.L ℓ) →
@@ -162,7 +162,7 @@ theorem runPrefix_basis_support_invariant
     intro ℓ hℓ
     -- Base case: runPrefix Z 0 = id, so the value is (basis p) i.
     -- We need to show: i.val % (2 L_0) ≠ p.val % (2 L_0) ⇒ (basis p) i = 0.
-    -- Since 2 * L_0 = n (by KyberLike.L_zero_doubled), the modular condition
+    -- Since 2 * L_0 = n (by CooleyTukeyLike.L_zero_doubled), the modular condition
     -- reduces to i.val ≠ p.val (both are < n), i.e. i ≠ p.
     intro i hmod
     have h0lt : 0 < spec.N := by
@@ -171,7 +171,7 @@ theorem runPrefix_basis_support_invariant
       have hzero : ℓ = ⟨0, h0lt⟩ := by
         apply Fin.ext; exact hℓ
       rw [hzero]
-      exact KyberLike.L_zero_doubled (spec := spec) h0lt
+      exact CooleyTukeyLike.L_zero_doubled (spec := spec) h0lt
     -- Now i.val < n and p.val < n, both reduced mod n are themselves.
     have hi_mod : i.val % (2 * spec.L ℓ) = i.val := by
       rw [hL0]; exact Nat.mod_eq_of_lt i.isLt
@@ -198,11 +198,11 @@ theorem runPrefix_basis_support_invariant
     have hk_le : k ≤ spec.N := Nat.le_of_lt hkN
     -- ℓ_k: the previous layer index.
     set ℓ_k : Fin spec.N := ⟨k, hkN⟩ with hℓk_def
-    -- KyberLike recurrence: 2 L_ℓ = L_{ℓ_k}.
+    -- CooleyTukeyLike recurrence: 2 L_ℓ = L_{ℓ_k}.
     have hLrec : 2 * spec.L ℓ = spec.L ℓ_k := by
       have heq : ℓ = ⟨k + 1, hk1_lt_N⟩ := by
         apply Fin.ext; exact hℓ
-      have hLs := KyberLike.L_succ (spec := spec) k hk1_lt_N
+      have hLs := CooleyTukeyLike.L_succ (spec := spec) k hk1_lt_N
       rw [heq]
       linarith
     intro i hmod
@@ -251,7 +251,7 @@ theorem runPrefix_basis_support_invariant
     (`runPrefix_basis_support_invariant`) by direct arithmetic on the
     `bSideIdx`. -/
 theorem runPrefix_basis_bSide_zero
-    [KyberLike spec] (Z : spec.Twiddles K) (p : Fin spec.n)
+    [CooleyTukeyLike spec] (Z : spec.Twiddles K) (p : Fin spec.n)
     (k : Fin spec.N) (hp_lt : p.val < spec.L k) :
     ∀ g : Fin (spec.G k), ∀ j : Fin (spec.L k),
       spec.bSide (spec.runPrefix Z k.val (Nat.le_of_lt k.isLt)
@@ -304,7 +304,7 @@ lemma faultedTwiddles_agree_off {Z : spec.Twiddles K} {F : spec.FaultSet}
 /-- For `p` with `p < spec.L ℓ` at every layer, the unfaulted and
     faulted NTT prefixes agree on `basis p`. -/
 theorem runPrefix_eq_under_fault
-    [KyberLike spec] {Z : spec.Twiddles K} {F : spec.FaultSet}
+    [CooleyTukeyLike spec] {Z : spec.Twiddles K} {F : spec.FaultSet}
     (hF : spec.OneFaultPerLayer F)
     (p : Fin spec.n) (hp_lt : ∀ k : Fin spec.N, p.val < spec.L k)
     (k : ℕ) (hk : k ≤ spec.N) :
@@ -339,7 +339,7 @@ theorem runPrefix_eq_under_fault
 /-- `basis p ∈ ker (faultDiff Z F)` whenever `p.val < spec.L ℓ` for
     every layer ℓ. -/
 theorem basis_mem_ker
-    [KyberLike spec] {Z : spec.Twiddles K} {F : spec.FaultSet}
+    [CooleyTukeyLike spec] {Z : spec.Twiddles K} {F : spec.FaultSet}
     (hF : spec.OneFaultPerLayer F)
     (p : Fin spec.n) (hp_lt : ∀ k : Fin spec.N, p.val < spec.L k) :
     spec.basis p ∈ LinearMap.ker (spec.faultDiff Z F) := by
@@ -349,6 +349,55 @@ theorem basis_mem_ker
   rw [LinearMap.sub_apply, sub_eq_zero]
   rw [spec.ntt_eq_runPrefix_last Z, spec.ntt_eq_runPrefix_last (spec.faultedTwiddles Z F)]
   exact spec.runPrefix_eq_under_fault hF p hp_lt spec.N le_rfl
+
+/-! ### Gen ⊇ direction (generic LayerSpec level) -/
+
+/-- Gen: faulted twiddles agree with Z off the unique fault index. -/
+lemma faultedTwiddlesGen_agree_off {Z Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F) (ℓ : Fin spec.N) :
+    let g₀ := (Finset.card_eq_one.mp (hF ℓ)).choose
+    ∀ g ≠ g₀, Z ℓ g = spec.faultedTwiddlesGen Z Z_repl F ℓ g := by
+  intro g₀ g hg
+  have h₁ : F ℓ = {g₀} := (Finset.card_eq_one.mp (hF ℓ)).choose_spec
+  unfold faultedTwiddlesGen
+  simp [h₁, hg]
+
+/-- Gen: unfaulted and gen-faulted NTT prefixes agree on basis vectors
+    with small index (`p < L_k`). -/
+theorem runPrefix_eq_under_fault_gen
+    [CooleyTukeyLike spec] {Z Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (p : Fin spec.n) (hp_lt : ∀ k : Fin spec.N, p.val < spec.L k)
+    (k : ℕ) (hk : k ≤ spec.N) :
+    spec.runPrefix Z k hk (spec.basis p) =
+      spec.runPrefix (spec.faultedTwiddlesGen Z Z_repl F) k hk (spec.basis p) := by
+  induction k with
+  | zero => simp [runPrefix]
+  | succ k ih =>
+    rw [spec.runPrefix_succ Z k hk, spec.runPrefix_succ _ k hk]
+    simp only [LinearMap.comp_apply]
+    rw [ih (Nat.le_of_succ_le hk)]
+    set v := spec.runPrefix (spec.faultedTwiddlesGen Z Z_repl F) k _ (spec.basis p)
+    obtain ⟨g₀, hg₀⟩ := Finset.card_eq_one.mp (hF ⟨k, hk⟩)
+    refine spec.layer_agree_of_b_zero (ℓ := ⟨k, hk⟩) (g₀ := g₀) ?_ ?_
+    · intro g hg; unfold faultedTwiddlesGen; simp [hg₀, hg]
+    · intro j
+      exact spec.runPrefix_basis_bSide_zero (spec.faultedTwiddlesGen Z Z_repl F) p
+        ⟨k, hk⟩ (hp_lt ⟨k, hk⟩) g₀ j
+
+/-- Gen: `basis p ∈ ker(faultDiffGen)` when `p < L_k` for all layers. -/
+theorem basis_mem_ker_gen
+    [CooleyTukeyLike spec] {Z Z_repl : spec.Twiddles K} {F : spec.FaultSet}
+    (hF : spec.OneFaultPerLayer F)
+    (p : Fin spec.n) (hp_lt : ∀ k : Fin spec.N, p.val < spec.L k) :
+    spec.basis p ∈ LinearMap.ker (spec.faultDiffGen Z Z_repl F) := by
+  rw [LinearMap.mem_ker]
+  show (spec.faultDiffGen Z Z_repl F) (spec.basis p) = 0
+  unfold faultDiffGen nttFaultGen
+  rw [LinearMap.sub_apply, sub_eq_zero]
+  rw [spec.ntt_eq_runPrefix_last Z,
+      spec.ntt_eq_runPrefix_last (spec.faultedTwiddlesGen Z Z_repl F)]
+  exact spec.runPrefix_eq_under_fault_gen hF p hp_lt spec.N le_rfl
 
 end LayerSpec
 
@@ -376,6 +425,65 @@ theorem theorem2_kyber_supset
     intro k
     show 1 < kyberSpec.L k
     fin_cases k <;> decide
+
+/-- Gen ⊇: `span{e₀, e₁} ⊆ ker(faultDiffGen)` for Kyber. -/
+theorem theorem2_kyber_supset_gen
+    {Z Z_repl : kyberSpec.Twiddles K}
+    {F : kyberSpec.FaultSet}
+    (hF : kyberSpec.OneFaultPerLayer F) :
+    Submodule.span K
+        ({kyberSpec.basis ⟨0, by decide⟩, kyberSpec.basis ⟨1, by decide⟩} :
+          Set (Fin kyberSpec.n → K))
+      ≤ LinearMap.ker (kyberSpec.faultDiffGen Z Z_repl F) := by
+  rw [Submodule.span_le]
+  intro v hv
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+  rcases hv with rfl | rfl
+  · apply kyberSpec.basis_mem_ker_gen hF ⟨0, by decide⟩
+    intro k; show 0 < kyberSpec.L k; fin_cases k <;> decide
+  · apply kyberSpec.basis_mem_ker_gen hF ⟨1, by decide⟩
+    intro k; show 1 < kyberSpec.L k; fin_cases k <;> decide
+
+/-! ### Theorem 2 — (⊇) direction packaged for ML-DSA (complete NTT)
+
+  ML-DSA's complete NTT has 8 layers with `dsaL ⟨7,_⟩ = 1`. The
+  spec-generic `basis_mem_ker_gen` requires `p.val < dsaL k` at every
+  layer `k`; only `p = 0` satisfies this, since `1 < 1` fails at the
+  innermost layer. Hence the kernel ⊇ side is `span {e₀}` (1-dim),
+  versus Kyber's `span {e₀, e₁}` (2-dim).
+
+  The failure of the `p = 1` case is the formal embodiment of the paper's
+  observation that `e₁` is "ejected" at the innermost layer once the
+  complete NTT is enabled. -/
+
+/-- Gen ⊇: `span{e₀} ⊆ ker(faultDiffGen)` for ML-DSA (complete NTT).
+    The kernel is 1-dimensional because at the innermost layer
+    `dsaL ⟨7,_⟩ = 1`, so `1 < dsaL ⟨7,_⟩` fails — only `e₀` lies in
+    the kernel, not `e₁`. -/
+theorem theorem2_dsa_supset_gen
+    {Z Z_repl : dsaSpec.Twiddles K}
+    {F : dsaSpec.FaultSet}
+    (hF : dsaSpec.OneFaultPerLayer F) :
+    Submodule.span K
+        ({dsaSpec.basis ⟨0, by decide⟩} : Set (Fin dsaSpec.n → K))
+      ≤ LinearMap.ker (dsaSpec.faultDiffGen Z Z_repl F) := by
+  rw [Submodule.span_le]
+  intro v hv
+  simp only [Set.mem_singleton_iff] at hv
+  rcases hv with rfl
+  apply dsaSpec.basis_mem_ker_gen hF ⟨0, by decide⟩
+  intro k; show 0 < dsaSpec.L k; fin_cases k <;> decide
+
+/-- ⊇: `span{e₀} ⊆ ker(faultDiff)` for ML-DSA (zeroing-fault corollary). -/
+theorem theorem2_dsa_supset
+    {Z : dsaSpec.Twiddles K}
+    {F : dsaSpec.FaultSet}
+    (hF : dsaSpec.OneFaultPerLayer F) :
+    Submodule.span K
+        ({dsaSpec.basis ⟨0, by decide⟩} : Set (Fin dsaSpec.n → K))
+      ≤ LinearMap.ker (dsaSpec.faultDiff Z F) := by
+  have h := theorem2_dsa_supset_gen (Z := Z) (Z_repl := fun _ _ => 0) hF
+  rwa [dsaSpec.faultDiffGen_zero] at h
 
 end NttFaultRank
 
