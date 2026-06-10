@@ -3,7 +3,8 @@
 Reference code and Lean 4 formalisation for:
 
 > Gupta, C. *Rank Ceiling for Twiddle-Perturbation Faults on the
-> Forward NTT.* Cryptology ePrint Archive (2026).
+> Forward NTT.* Cryptology ePrint Archive, Report 2026/1188 (2026).
+> <https://eprint.iacr.org/2026/1188>
 
 The paper proves three properties of the information ceiling that
 twiddle-perturbation faults ($\zeta_k \mapsto \zeta'_k$,
