@@ -17,7 +17,7 @@ Implementations and supporting code for specific research papers.
 | Anchor | Description |
 |--------|-------------|
 | [sanadhya2008](cryptanalysis/sanadhya2008/) | 22- and 24-step SHA-256 collision attacks |
-| [mendel2011](cryptanalysis/mendel2011/) | 27-step and 32-step SFS SHA-256 collisions via SAT |
+| [mendel2011](cryptanalysis/mendel2011/) | 27/32-step SHA-256 collisions via SAT + [novel findings](cryptanalysis/mendel2011/README.md#additional-findings) (32K collision family, 10× phase-seed speedup, W[7] characterization) |
 | [mendel2013improving](cryptanalysis/mendel2013improving/) | 28/31/38-step SHA-256 collisions via SAT on dense characteristics |
 | [eichlseder2014](cryptanalysis/eichlseder2014/) | 38-step SHA-512 SFS collision via SAT + [GnD plateau analysis](cryptanalysis/eichlseder2014/PLATEAU-ANALYSIS.md) |
 | [de2006finding-workfactor](cryptanalysis/de2006finding-workfactor/) | SHA-1 work-factor calculator (De Cannière–Rechberger 2006 §III-C), first independent reimplementation |

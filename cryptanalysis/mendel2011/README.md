@@ -114,7 +114,67 @@ message-pair words ($M_1$ and $M_2$).
 | `search.hpp` | Guess-and-determine engine. Defines the `CharState` data type that the reproducers use to organize starting-point data; the search routine itself is not invoked by the SAT reproducers above. |
 | `propagate.hpp`, `twobit.hpp`, `alt_step.hpp`, `wordwise.hpp` | Headers transitively required by `search.hpp` |
 | `embedded_bcp.hpp` | Experimental 2-watched-literal BCP engine. Included transitively; not instantiated or called by the SAT reproducers. |
+| `collision_generator.cpp` | Algebraic completion: given $W_0, \dots, W_6$ from Table 8, finds all 32,762 distinct 27-step collisions |
+| `phase_seed.cpp` | Phase-seeded CaDiCaL: 10× speedup via VSIDS polarity biasing toward Table 8 values |
+| `find_viable_w7.py` | Enumerates all 16 viable $W_1[7]$ values satisfying joint EXP[22]+EXP[23] constraints |
 
 ## License
 
 See repository root [`LICENSE`](../../LICENSE).
+
+---
+
+## Additional findings
+
+Beyond the SAT reproductions above, the following are original findings
+from deeper investigation of the 27-step attack.
+
+### 32,762 verified collisions from a single starting point
+
+[`code/collision_generator.cpp`](code/collision_generator.cpp) implements
+the algebraic completion phase: given the 7 fixed message words
+$W_0, \dots, W_6$ from Table 8, it solves steps 7–15 by per-step
+E-enumeration and produces **every** distinct colliding message pair.
+Result: **32,762 verified 27-step SHA-256 collisions** from a single
+starting point. The solution space is 1-dimensional, parameterized by
+$W_{14}$.
+
+```bash
+g++ -std=c++17 -O3 -Wall -Wextra -Wno-trigraphs -I. \
+    -o collision_generator collision_generator.cpp
+./collision_generator --count    # prints 32762 (~27 s single-core)
+```
+
+### Phase-seed VSIDS polarity: 10× SAT speedup
+
+[`code/phase_seed.cpp`](code/phase_seed.cpp) demonstrates a zero-overhead
+technique for CaDiCaL: `solver.phase(lit)` seeds the initial VSIDS
+polarity toward the known Table 8 solution values. At `n_fixed = 11`
+(11 of 16 message words pinned), phase-seeding gives a **10.9× speedup**
+(mean conflicts and wall-clock). At `n_fixed = 10`: **9.8×**. The
+technique costs nothing (no extra propagations, no structural changes)
+and biases the search toward the neighborhood of known solutions.
+
+Requires [CaDiCaL](https://github.com/arminbiere/cadical).
+
+```bash
+g++ -std=c++17 -O2 -Wall -Wextra -Wno-trigraphs -I. \
+    -I/tmp/cadical/src \
+    -o phase_seed phase_seed.cpp \
+    /tmp/cadical/build/libcadical.a -pthread
+./phase_seed 11 1000000    # n_fixed=11, 1M conflict limit
+```
+
+### 16 viable W[7] targets (out of 2³²)
+
+[`code/find_viable_w7.py`](code/find_viable_w7.py) fully characterizes
+the joint expansion constraints EXP[22] and EXP[23] for the 27-step
+attack. Key structural result: $\sigma_0(W[8])$ has exactly 128 distinct
+difference values; $\Delta W[7]$ has 8192 arithmetic-difference candidates;
+the joint intersection yields exactly **16** viable $W_1[7]$ values out of
+$2^{32}$. This is a complete characterization of the message-expansion
+bottleneck at the boundary between free and constrained words.
+
+```bash
+python3 find_viable_w7.py    # prints all 16 viable W1[7] values (~10 s)
+```
