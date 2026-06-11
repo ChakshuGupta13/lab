@@ -20,6 +20,7 @@ Implementations and supporting code for specific research papers.
 | [mendel2011](cryptanalysis/mendel2011/) | 27-step and 32-step SFS SHA-256 collisions via SAT |
 | [mendel2013improving](cryptanalysis/mendel2013improving/) | 28/31/38-step SHA-256 collisions via SAT on dense characteristics |
 | [eichlseder2014](cryptanalysis/eichlseder2014/) | 38-step SHA-512 SFS collision via SAT + [GnD plateau analysis](cryptanalysis/eichlseder2014/PLATEAU-ANALYSIS.md) |
+| [de2006finding-workfactor](cryptanalysis/de2006finding-workfactor/) | SHA-1 work-factor calculator (De Cannière–Rechberger 2006 §III-C), first independent reimplementation |
 | [gupta2026rank](cryptanalysis/gupta2026rank/) | Rank ceiling for twiddle-perturbation faults on the forward NTT of ML-KEM and ML-DSA ([ePrint 2026/1188](https://eprint.iacr.org/2026/1188)) |
 | [zhang2026-verification](cryptanalysis/zhang2026-verification/) | SFS collision verification + corrected Table 8 characteristic for Zhang–Li–Gao–Wang, EUROCRYPT 2026 |
 
