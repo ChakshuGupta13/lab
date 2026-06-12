@@ -5,6 +5,51 @@ Code and paper for [arXiv:2604.23256](https://arxiv.org/abs/2604.23256)
 
 **Authors**: Chakshu Gupta, Theodore J. LaGrow (Georgia Institute of Technology)
 
+## Visualization
+
+![Loss landscape of EML input routing](code/landscape.png)
+
+The image above is generated from this paper's own operator and training data
+by [`code/viz_landscape.py`](code/viz_landscape.py). It is a **decorative
+visualization, not a figure from the paper.** It shows the loss landscape of a
+deliberately simplified toy problem: a single EML node,
+`eml(x, y) = exp(x) - ln(y)`, whose two inputs are blended between the
+variables `x` and `y` by a pair of logits `(a, b)`:
+
+```
+inL = sigmoid(a) * x + (1 - sigmoid(a)) * y      # left input  -> exp
+inR = sigmoid(b) * x + (1 - sigmoid(b)) * y      # right input -> ln
+loss(a, b) = mean over x, y in [1, 3] of (eml(inL, inR) - eml(x, y))^2
+```
+
+Brightness is closeness to the optimum; the `(a, b)` plane is the routing
+space.
+
+**What this is and is not.** This toy *shares the paper's operator and
+training data*, but its routing is **not** the paper's routing: the paper uses
+a 3-way softmax selection over `{1, x, child}` inside multi-level trees, while
+this uses a 2-way continuous blend between `x` and `y` with no constant
+channel and no tree. So it is "inspired by", not "a reduction of", the paper's
+mechanism. The visible large-scale asymmetry of the landscape is driven mostly
+by a simple fact — `exp` of a wrong input explodes while `ln` stays bounded on
+`[1, 3]` — i.e. the operator's *value* asymmetry; the *gradient* asymmetry
+that the paper studies (its factor F4) governs the fine basin curvature near
+the optimum, which is not resolvable at this scale. The image is meant to be
+pretty and made from real ingredients, nothing more — it is not evidence for
+any claim in the paper.
+
+It doubles as the paper's tile image on the author's site
+([haveli](https://haveli.dev-e79.workers.dev/people/chakshu/research/)); the
+motivation was to generate that tile from the paper's own operator rather than
+use stock imagery. (EML is the exp-minus-log operator of Odrzywolek 2026,
+arXiv:2603.21852, which this paper studies; the name "EML" is used there.)
+
+Regenerate:
+
+```bash
+cd code && python viz_landscape.py --out landscape.png
+```
+
 ## Key finding
 
 In gradient-based symbolic regression using parameterized binary trees,
@@ -54,6 +99,7 @@ code/
     plot_gradient_2panel.py Fig. 2 (gradient trajectories)
     plot_branchratio.py     Fig. 3 (branch-ratio vs rho_LR)
     plot_selector.py        Selector / supplementary
+    viz_landscape.py        Routing loss-landscape tile (README / website)
 ```
 
 ## Requirements
