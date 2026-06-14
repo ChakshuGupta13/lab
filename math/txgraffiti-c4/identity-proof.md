@@ -10,8 +10,8 @@ for **every** finite simple graph, which no amount of enumeration can establish.
 ## The theorem
 
 For every finite simple graph $G$,
-$$\mu^*(G) = i(L(G)),$$
-where $\mu^*(G)$ is the minimum size of a **maximal matching** of $G$, and
+$$\mu^\ast(G) = i(L(G)),$$
+where $\mu^\ast(G)$ is the minimum size of a **maximal matching** of $G$, and
 $i(L(G))$ is the minimum size of a **maximal independent set** of the line graph
 $L(G)$ (the independent domination number).
 
@@ -66,7 +66,7 @@ So the family $\mathcal{M} = \{\text{maximal matchings of } G\}$ and the family
 $\mathcal{S} = \{\text{maximal independent sets of } L(G)\}$ are **literally
 equal as collections of subsets of $E(G)$** — the bijection is the identity map.
 Taking the minimum cardinality over equal, nonempty, finite families:
-$$\mu^*(G) = \min_{M \in \mathcal{M}} |M| = \min_{S \in \mathcal{S}} |S| = i(L(G)). \qquad\blacksquare$$
+$$\mu^\ast(G) = \min_{M \in \mathcal{M}} |M| = \min_{S \in \mathcal{S}} |S| = i(L(G)). \qquad\blacksquare$$
 
 ## Why this holds for *any* graph
 
@@ -91,7 +91,7 @@ cross-check: it converts "true on 261,080 instances" into "true, period."
 ## Edge cases a correct proof (and formalization) must not skip
 
 - **No edges:** $E(G) = \emptyset$. The only matching is $\emptyset$, vacuously
-  maximal, so $\mu^* = 0$; $L(G)$ has no vertices, $\emptyset$ is the only
+  maximal, so $\mu^\ast = 0$; $L(G)$ has no vertices, $\emptyset$ is the only
   (vacuously dominating) maximal independent set, so $i = 0$. ✓ (the code
   special-cases this).
 - **Isolated vertices:** contribute no edges, never appear in $L(G)$; correctly
