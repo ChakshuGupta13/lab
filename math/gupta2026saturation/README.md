@@ -6,7 +6,7 @@ harmonic index"* (Chakshu Gupta, Georgia Institute of Technology), which refutes
 Years of Mathematical Discovery with a Machine Collaborator"*
 ([arXiv:2507.17780](https://arxiv.org/abs/2507.17780)).
 
-> The arXiv link for the note itself will be added here once it is announced.
+**Paper**: [arXiv:2606.15761](https://arxiv.org/abs/2606.15761) (math.CO, June 2026).
 
 ## The conjecture
 
