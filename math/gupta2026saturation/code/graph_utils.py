@@ -121,6 +121,20 @@ def generalized_windmill(m, k):
     return G
 
 
+def subdivided_star(k):
+    """S_k: the star K_{1,k} with every edge subdivided once (a spider with k
+    legs of length 2).  One hub of degree k, k middle vertices of degree 2,
+    k leaf vertices of degree 1.  n = 2k+1, m = 2k.  A tree, hence bipartite
+    and triangle-free."""
+    G = nx.Graph()
+    hub = "h"
+    for i in range(k):
+        mid, leaf = ("m", i), ("l", i)
+        G.add_edge(hub, mid)
+        G.add_edge(mid, leaf)
+    return G
+
+
 # ---------------------------------------------------------------------------
 # Closed-form harmonic indices
 # ---------------------------------------------------------------------------
@@ -133,6 +147,14 @@ def H_friendship_closed(k):
 def H_generalized_closed(m, k):
     """Closed form: H(G_{m,k}) = k/(m+1) + 4km/(2k+m+1)."""
     return Fraction(k, m + 1) + Fraction(4 * k * m, 2 * k + m + 1)
+
+
+def H_subdivided_star_closed(k):
+    """Closed form: H(S_k) = 2k/(k+2) + 2k/3.
+    The k hub-middle edges each join a degree-k hub to a degree-2 middle
+    (weight 2/(k+2)); the k middle-leaf edges each join degree 2 to degree 1
+    (weight 2/3)."""
+    return Fraction(2 * k, k + 2) + Fraction(2 * k, 3)
 
 
 # ---------------------------------------------------------------------------

@@ -17,7 +17,10 @@ number** (the minimum cardinality of a maximal matching) and $H(G) =
 
 ## The result
 
-The conjecture is **false**.
+The conjecture is **false**, as first shown by Bıyıkoğlu (*MATCH Commun. Math.
+Comput. Chem.* **96**(3):1097–1099, 2026). This note complements that
+refutation with a smallest counterexample, an exact separation rate, and a
+sharp tree bound.
 
 - The friendship graph $F_4$ (four triangles sharing one hub, $n = 9$) has
   $\mu^\ast = 4 > 18/5 = H$. An exhaustive search confirms nine vertices is the
@@ -25,7 +28,14 @@ The conjecture is **false**.
 - The harmonic index does not bound the saturation number up to **any**
   multiplicative constant: the family $G_{m,k} = K_{m,2k}$ plus a perfect
   matching on the $2k$-side has $\mu^\ast/H \to m+1$ as $k \to \infty$, which is
-  unbounded over $m$.
+  unbounded over $m$. This family coincides with Bıyıkoğlu's construction.
+- The conjecture fails even on **trees**. The subdivided star $S_k$ (a centre
+  joined to $k$ paths of length two) is a counterexample for every $k \ge 5$;
+  the smallest, $S_5$, has $n = 11$, is triangle-free and bipartite, and an
+  exhaustive search confirms eleven is the smallest triangle-free order. Yet
+  every nontrivial tree $T$ satisfies $\mu^\ast(T) < \frac{3}{2} H(T)$, with the
+  constant $3/2$ best possible — so on trees the failure is bounded, in
+  contrast to the unbounded windmill.
 - The conjecture **does** hold for every regular graph, where $H(G) = n/2 \ge
   \lfloor n/2 \rfloor \ge \mu^\ast(G)$.
 
@@ -40,6 +50,7 @@ every violation is decided exactly, without floating-point rounding.
 | [`code/verify_c4_exhaustive.py`](code/verify_c4_exhaustive.py) | Exhaustive check on all connected graphs $n \le 9$ |
 | [`code/verify_friendship.py`](code/verify_friendship.py) | Friendship family $F_k$ closed forms and crossover |
 | [`code/verify_unbounded.py`](code/verify_unbounded.py) | $G_{m,k}$ unbounded separation |
+| [`code/verify_subdivided_star.py`](code/verify_subdivided_star.py) | Subdivided star $S_k$, and the exhaustive tree bound $\mu^\ast(T) < \frac{3}{2} H(T)$ for $n \le 16$ |
 | [`code/verify_regular.py`](code/verify_regular.py) | Regular-graph lemma + Sumner equality |
 | [`code/verify_n9_characterization.py`](code/verify_n9_characterization.py) | Characterization of all eight counterexamples at $n=9$ |
 | [`code/verify_all.py`](code/verify_all.py) | Runner for all scripts (`--quick` skips the $n=9$ search) |
@@ -67,6 +78,6 @@ cd code
 # Full verification (includes the ~80s n=9 exhaustive search)
 python verify_all.py
 
-# Quick mode (constructive proofs only, ~5s)
+# Quick mode (skips the ~80s n=9 search; keeps the n<=16 tree enumeration, ~12s)
 python verify_all.py --quick
 ```
