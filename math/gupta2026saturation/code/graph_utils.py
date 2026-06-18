@@ -40,6 +40,20 @@ def geng_regular(n, r):
             yield g6, nx.from_graph6_bytes(g6.encode())
 
 
+def geng_maxdeg(n, D):
+    """Yield (graph6_string, nx.Graph) for all connected graphs on n vertices
+    with maximum degree at most D (nauty geng -D).  Used for the subquartic
+    (Delta <= 4) enumeration."""
+    out = subprocess.run(
+        ["geng", "-qc", f"-D{D}", str(n)],
+        capture_output=True, text=True,
+    )
+    for line in out.stdout.splitlines():
+        g6 = line.strip()
+        if g6:
+            yield g6, nx.from_graph6_bytes(g6.encode())
+
+
 # ---------------------------------------------------------------------------
 # Invariants
 # ---------------------------------------------------------------------------
@@ -135,6 +149,21 @@ def subdivided_star(k):
     return G
 
 
+def double_star(a, b):
+    """D(a,b): two adjacent centres, one carrying a pendant leaves and the
+    other b pendant leaves.  n = a+b+2, m = a+b+1.  A tree with mu* = 1 (the
+    central edge is a maximal matching).  The balanced D(k,k) drives the lower
+    bound: H(D(k,k)) -> 4 while mu* = 1, so H/mu* -> 4 from below."""
+    G = nx.Graph()
+    u, v = ("u",), ("v",)
+    G.add_edge(u, v)
+    for i in range(a):
+        G.add_edge(u, ("lu", i))
+    for j in range(b):
+        G.add_edge(v, ("lv", j))
+    return G
+
+
 # ---------------------------------------------------------------------------
 # Closed-form harmonic indices
 # ---------------------------------------------------------------------------
@@ -155,6 +184,15 @@ def H_subdivided_star_closed(k):
     (weight 2/(k+2)); the k middle-leaf edges each join degree 2 to degree 1
     (weight 2/3)."""
     return Fraction(2 * k, k + 2) + Fraction(2 * k, 3)
+
+
+def H_double_star_closed(k):
+    """Closed form: H(D(k,k)) = 4k/(k+2) + 1/(k+1).
+    The central edge joins two degree-(k+1) centres (weight 1/(k+1)); each of
+    the 2k leaf edges joins a degree-1 leaf to a degree-(k+1) centre (weight
+    2/(k+2)).  H -> 4 as k -> infinity, so the bound H < 4 mu* is best
+    possible."""
+    return Fraction(4 * k, k + 2) + Fraction(1, k + 1)
 
 
 # ---------------------------------------------------------------------------

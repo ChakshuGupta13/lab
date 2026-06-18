@@ -12,7 +12,9 @@ SCRIPTS = [
     ("Friendship family F_k", "verify_friendship.py"),
     ("Unbounded separation G_{m,k}", "verify_unbounded.py"),
     ("Subdivided star S_k + tree bound", "verify_subdivided_star.py"),
+    ("Lower bound H<4mu* + two-sided tree band", "verify_lower_bound.py"),
     ("Regular-graph lemma", "verify_regular.py"),
+    ("Subquartic enumeration Delta<=4", "verify_subquartic.py"),
     ("n=9 characterization", "verify_n9_characterization.py"),
     ("Exhaustive C4 check n=2..9", "verify_c4_exhaustive.py"),
 ]
