@@ -13,6 +13,7 @@ Implementations and supporting code for specific research papers.
 | [gupta2026architecture](math/gupta2026architecture/) | Architecture-induced recoverability bias in differentiable symbolic regression ([arXiv:2604.23256](https://arxiv.org/abs/2604.23256), MLSP 2026) |
 | [gupta2026origami](math/gupta2026origami/) | Degree sequence and diameter of the $m\times n$ Miura-ori origami flip graph, via height functions ([arXiv:2606.22614](https://arxiv.org/abs/2606.22614)) |
 | [gupta2026saturation](https://github.com/ChakshuGupta13/lab/blob/main/math/gupta2026saturation) | The saturation number is not bounded by the harmonic index ([arXiv:2606.15761](https://arxiv.org/abs/2606.15761)) — refutation of TxGraffiti Conjecture 4 ([arXiv:2507.17780](https://arxiv.org/abs/2507.17780)) |
+| [gupta2026annihilation](math/gupta2026annihilation/) | An annihilation-number Caro–Wei bound proves $\alpha \ge (a+R)/\Delta$ for every connected graph ([arXiv:2606.29553](https://arxiv.org/abs/2606.29553)) — proof of TxGraffiti Conjecture 1 ([arXiv:2507.17780](https://arxiv.org/abs/2507.17780)) |
 
 ### cryptanalysis
 
