@@ -102,9 +102,18 @@ python3 c1_delta3_proof.py 200        # Delta=3: closed form + a <= 2W (686,900 
 
 ## Lean formalization
 
-The `lean/` directory formalizes the paper's algebraic content (Theorem 1,
-Theorem 2, Corollaries 1–3) against **Mathlib v4.30.0-rc2**, axiom-clean. See
-[`lean/README.md`](lean/README.md) for the statement of each result.
+The `lean/` directory is a single Lake project that mechanizes the main result
+**directly over Mathlib's `SimpleGraph`** (Mathlib pinned in `lake-manifest.json`,
+toolchain `leanprover/lean4:v4.32.0-rc1`). It *proves* the vehicle (Theorem 1),
+Caro–Wei `W ≤ α`, the `Δ ≤ 2` branch, Favaron `R ≤ α`, and Theorem 2
+`a + R ≤ Δ·α`, plus the paper's Corollaries 1–3. The development is `sorry`-free;
+one classical input — the residue-monotonicity step behind `R ≤ α`
+(Favaron–Mahéo–Saclé 1991) — is isolated as a single **named, cited, and
+computationally-verified `axiom`** rather than re-proved, so
+`#print axioms txgraffiti_conjecture_1` names exactly that one axiom alongside the
+Lean/Mathlib defaults. See [`lean/README.md`](lean/README.md) for details and
+[`lean/axiom-verification/`](lean/axiom-verification/) for the axiom's numerical
+checks.
 
 ## Validation
 

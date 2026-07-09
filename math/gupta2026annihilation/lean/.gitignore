@@ -1,0 +1,3 @@
+# Lake build output + fetched dependencies (Mathlib oleans + source, ~6.5 GB).
+# Never commit: reproducibility is carried by lake-manifest.json + lean-toolchain.
+/.lake/

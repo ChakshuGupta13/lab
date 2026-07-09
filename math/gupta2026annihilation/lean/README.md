@@ -1,87 +1,69 @@
-# Lean formalization — Theorem 1 + Theorem 2 + Corollaries 1–3
+# Lean formalization — TxGraffiti Conjecture 1 over Mathlib `SimpleGraph`
 
-The two files in this directory formalize the algebraic content of the
-paper's Results section against Mathlib v4.30.0-rc2.
+A single Lake project that mechanizes the main result of *"An annihilation-number
+Caro–Wei bound"* (Gupta, [arXiv:2606.29553](https://arxiv.org/abs/2606.29553))
+directly over Mathlib's `SimpleGraph`, together with the paper's Corollaries 1–3.
 
-## `CaroWeiAnnihilation.lean` — Theorem 1
+Toolchain: `leanprover/lean4:v4.32.0-rc1`; Mathlib pinned by commit in
+`lake-manifest.json` (a CI'd `master` snapshot with a published olean cache).
 
-- `TxGraffitiC1.pointwise` — the pointwise inequality
-  `1/(k+1) + k/(Δ(Δ+1)) ≥ 2/(Δ+1)` over ℚ, for naturals `k ≤ Δ` with `1 ≤ Δ`.
-  Proved by clearing denominators and factoring as `(Δ-k)(Δ-k-1) ≥ 0`.
-
-- `TxGraffitiC1.annihilation_caroWei` — the main inequality
-  `|H| ≤ (Δ+1)/2 · Σ 1/(d_i+1)` over ℚ, given degrees `d : Fin n → ℕ` with
-  `d i ≤ Δ` and the head degree-sum bound `Σ_{i ∈ H} d i ≤ Δ(n − |H|)`.
-
-The hypothesis `Σ_{i ∈ H} d i ≤ Δ(n − |H|)` is exactly what the paper proves
-from "Σ_H d ≤ m" (definition of the annihilation number) and the handshake
-lemma "Σ d_i = 2m"; everything past that bound is the algebraic content the
-Lean file checks.
-
-## `MainAndCorollaries.lean` — Theorem 2 + Corollaries 1–3
-
-The graph-theoretic content (the Caro-Wei bound `α ≥ W`, Favaron's
-`α ≥ R`, Pepper's `α ≤ a`, and `a = α` for paths/cycles) is captured as
-hypotheses; the algebraic chains that combine them are kernel-checked here.
-
-- `TxGraffitiC1.vehicleToα_ge3` — From Theorem 1's vehicle `a ≤ (Δ+1)/2 · W`
-  and Caro-Wei `W ≤ α`, deduce `a ≤ (Δ-1)·α` for `Δ ≥ 3`. The arithmetic
-  step uses `(Δ+1)/2 ≤ Δ-1`.
-
-- `TxGraffitiC1.main` — Theorem 2's algebraic core: given the head bound
-  `(Δ-1)α ≥ a` and Favaron's `α ≥ R`, conclude `Δα ≥ a + R` via
-  `Δα = (Δ-1)α + α`.
-
-- `TxGraffitiC1.sharpness_iff` — Corollary 1: `Δα = a + R` if and only if
-  both summand inequalities are equalities, that is, `(Δ-1)α = a` and `α = R`.
-
-- `TxGraffitiC1.K4_attains_sharpness` — K_4 witness: with `Δ=3, α=1, a=2, R=1`,
-  both equality conditions hold.
-
-- `TxGraffitiC1.dominated_by_max` — Corollary 2: `(a + R)/Δ ≤ max(R, W)`
-  for `Δ ≥ 3`. Uses `(Δ+3)/2 ≤ Δ` together with the vehicle.
-
-- `TxGraffitiC1.bracketing` — Corollary 3: from the three classical bounds
-  on `α` and the vehicle, the bracket
-  `max(R, W) ≤ α ≤ a ≤ (Δ+1)/2 · max(R, W)` holds for every `Δ ≥ 1`.
-
-- `TxGraffitiC1.K_DeltaPlus1_attains_bracket` — K_{Δ+1} (odd Δ) witness:
-  with `α=1, a=(Δ+1)/2, R=W=1`, the upper bracket is tight.
-
-## Axiom guarantee
-
-All nine theorems depend only on Lean 4 / Mathlib defaults
-`[propext, Classical.choice, Quot.sound]`. No `sorry`, no `admit`, no
-`native_decide`.
-
-## How to verify
-
-Both files import Mathlib and are self-contained against any Lean 4 project
-with Mathlib at version `v4.30.0-rc2` (or compatible).
-
-A concrete recipe in this repository (using the Mathlib already pinned by
-the lean-decoder-correctness project):
-
-```
-cd domains/quantum/src/lean-decoder-correctness/lean
-lake env lean ../../../../math/src/txgraffiti-c1/lean/CaroWeiAnnihilation.lean
-lake env lean ../../../../math/src/txgraffiti-c1/lean/MainAndCorollaries.lean
+```bash
+lake exe cache get      # fetch the pinned Mathlib olean cache
+lake build              # kernel-check every module
 ```
 
-Each invocation should exit `0` with no diagnostics.
+## What is proved (over real `SimpleGraph`, not hypotheses)
 
-To check axiom dependencies, append `#print axioms` lines and re-run:
+An earlier revision of this formalization stated the graph theory as *hypotheses*
+over `ℚ`. This version **proves** it, on Mathlib's real invariants
+(`annihilationNumber`, `residue`, `indepNum`, `maxDegree`, `degree`):
+
+| Module | Result |
+|---|---|
+| `Invariants.lean` | `annihilationNumber`, `residue` (Havel–Hakimi via **well-founded** recursion), `degreeMultiset` |
+| `Vehicle.lean` | **Theorem 1** — the vehicle `a ≤ (Δ+1)/2 · W` over the real `annihilationNumber` |
+| `CaroWei.lean` | **Caro–Wei** `W ≤ α` (Wei's deletion induction, subtype-free) |
+| `Delta2.lean` | **Δ ≤ 2 branch** `a ≤ α` for connected graphs (bipartite *and* odd-cycle cases) |
+| `Favaron.lean` | **Favaron** `R ≤ α` (strong induction on `|V|` + edgeless base + α-bridge) |
+| `Conjecture.lean` | **Theorem 2** — `txgraffiti_conjecture_1 : a + R ≤ Δ·α` for connected `Δ ≥ 2` |
+| `Corollaries.lean` | **Corollaries 1–3** — sharpness, domination, bracketing (algebraic layer, over `ℚ`) |
+
+## The one cited axiom
+
+Everything above is proved **except** one classical input, isolated as a single
+named `axiom` in `Favaron.lean`:
 
 ```
-cat ../../../../math/src/txgraffiti-c1/lean/MainAndCorollaries.lean \
-    <(echo; echo '#print axioms TxGraffitiC1.vehicleToα_ge3'; \
-      echo '#print axioms TxGraffitiC1.main'; \
-      echo '#print axioms TxGraffitiC1.sharpness_iff'; \
-      echo '#print axioms TxGraffitiC1.K4_attains_sharpness'; \
-      echo '#print axioms TxGraffitiC1.dominated_by_max'; \
-      echo '#print axioms TxGraffitiC1.bracketing'; \
-      echo '#print axioms TxGraffitiC1.K_DeltaPlus1_attains_bracket') \
-  | lake env lean /dev/stdin
+axiom residue_le_residue_induce_compl_of_maxDegree :
+  (∀ w, G.degree w ≤ G.degree v) → 0 < G.degree v →
+  G.residue ≤ (G.induce {v}ᶜ).residue
 ```
 
-Each should print `[propext, Classical.choice, Quot.sound]`.
+This residue-monotonicity step is the graphical-majorization content underlying
+the classical bound `R ≤ α` first established by **Favaron, Mahéo & Saclé (1991)**;
+the paper *uses* that classical result rather than re-proving it, so it is assumed
+here as a named, cited axiom — **not** a `sorry`. The dependence is therefore
+explicit and machine-auditable:
+
+```
+#print axioms SimpleGraph.txgraffiti_conjecture_1
+-- [propext, Classical.choice, Quot.sound, residue_le_residue_induce_compl_of_maxDegree]
+```
+
+The axiom's *truth* is verified computationally in `axiom-verification/`, against
+the exact `residueAux` definition used here:
+
+- `favaron_verify.py` — `R(G) ≤ R(G−v)` for a max-degree `v` (and `R ≤ α`): **0 failures / 40k random graphs** (n ≤ 8), with the edgeless case correctly excluded by `0 < deg v`.
+- `favaron_majorize.py` — exhaustive over **all** graphical sequences `n ≤ 7`: *residue is Schur-convex on graphical sequences*, the precise lemma the axiom instantiates.
+- `favaron_seq_lemma.py`, `favaron_refined.py`, `favaron_ptwise.py` — rule out simpler majorization-free routes, documenting why a native Lean proof needs a graphical-majorization + degree-sequence library not yet in Mathlib.
+
+Replacing the axiom with a native proof is a self-contained (multi-week) project;
+the rest of the development is unconditional and `sorry`-free.
+
+## Corollaries (algebraic layer)
+
+`Corollaries.lean` keeps the paper's Corollaries 1–3 as self-contained algebraic
+lemmas over `ℚ` (their graph-theoretic inputs are exactly the bounds proved
+concretely above): `sharpness_iff`, `K4_attains_sharpness`, `dominated_by_max`,
+`bracketing`, `K_DeltaPlus1_attains_bracket`. These depend only on
+`[propext, Classical.choice, Quot.sound]`.

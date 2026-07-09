@@ -1,0 +1,16 @@
+name = "TxGraffitiC1FC"
+defaultTargets = ["TxGraffitiC1FC"]
+
+# Pinned to a fully-CI'd Mathlib master snapshot (has a published olean cache).
+# rev is the COMMIT HASH of the `master-2026-07-07` tag (2e09891) — pinned by hash,
+# not the tag, because daily `master-*` tags are GC'd on a rolling ~4-month window
+# (the tag would vanish ~Nov 2026; the commit stays reachable from master).
+# Toolchain in `lean-toolchain` matches this snapshot (leanprover/lean4:v4.32.0-rc1).
+# Reconcile with formal-conjectures' pin only at transplant time.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "2e09891a520feeea2194c3f33d57477eb814d7a8"
+
+[[lean_lib]]
+name = "TxGraffitiC1FC"
