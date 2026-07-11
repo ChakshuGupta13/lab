@@ -32,6 +32,12 @@ Implementations and supporting code for specific research papers.
 
 Stand-alone utilities not tied to a single paper. Organized by domain.
 
+### ai
+
+| Tool | Description |
+|------|-------------|
+| [learning-pipeline](tools/ai/learning-pipeline/) | Reference pipeline that improves an editor-embedded AI assistant's configuration from one user's implicit corrections — six structural detectors plus an L2 semantic miner, human-gated instruction edits, and effectiveness tracking |
+
 ### quantum
 
 | Tool | Description |
