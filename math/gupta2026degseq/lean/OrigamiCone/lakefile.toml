@@ -1,0 +1,16 @@
+name = "OrigamiCone"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["OrigamiCone"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.27.0"
+
+[[lean_lib]]
+name = "OrigamiCone"
