@@ -4,8 +4,8 @@ Verification code for the paper *"Domination versus edge domination in regular
 graphs of degree at least seven"* (Chakshu Gupta, Georgia Institute of
 Technology).
 
-**Paper**: submitted to *Graphs and Combinatorics* (Springer); arXiv preprint
-(math.CO) forthcoming.
+**Paper**: [arXiv:2608.22498](https://arxiv.org/abs/2608.22498) (math.CO);
+submitted to *Graphs and Combinatorics* (Springer).
 
 ## The conjecture
 

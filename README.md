@@ -15,7 +15,7 @@ Implementations and supporting code for specific research papers.
 | [gupta2026degseq](math/gupta2026degseq/) | One construction for the $m\times n$ Miura-ori flip-graph degree sequence, computing every degree via an envelope / lattice-point construction ([arXiv:2607.05567](https://arxiv.org/abs/2607.05567)) — sequel to [gupta2026origami](math/gupta2026origami/) |
 | [gupta2026saturation](https://github.com/ChakshuGupta13/lab/blob/main/math/gupta2026saturation) | The saturation number is not bounded by the harmonic index ([arXiv:2606.15761](https://arxiv.org/abs/2606.15761)) — refutation of TxGraffiti Conjecture 4 ([arXiv:2507.17780](https://arxiv.org/abs/2507.17780)) |
 | [gupta2026annihilation](math/gupta2026annihilation/) | An annihilation-number Caro–Wei bound proves $\alpha \ge (a+R)/\Delta$ for every connected graph ([arXiv:2606.29553](https://arxiv.org/abs/2606.29553)) — proof of TxGraffiti Conjecture 1 ([arXiv:2507.17780](https://arxiv.org/abs/2507.17780)) |
-| [gupta2026edgedomination](math/gupta2026edgedomination/) | Domination number at most edge domination number for regular graphs of degree at least seven, via the Lovász Local Lemma — the previously open range of a conjecture of Baste et al. ([arXiv:1906.10420](https://arxiv.org/abs/1906.10420)); submitted to *Graphs and Combinatorics* |
+| [gupta2026edgedomination](math/gupta2026edgedomination/) | Domination number at most edge domination number for regular graphs of degree at least seven, via the Lovász Local Lemma ([arXiv:2608.22498](https://arxiv.org/abs/2608.22498)) — the previously open range of a conjecture of Baste et al. ([arXiv:1906.10420](https://arxiv.org/abs/1906.10420)); submitted to *Graphs and Combinatorics* |
 
 ### cryptanalysis
 
