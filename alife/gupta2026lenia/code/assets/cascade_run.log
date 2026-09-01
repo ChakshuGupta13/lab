@@ -1,0 +1,27 @@
+2-gate cascade  out should = S AND NOT C1 AND NOT C2:
+  S=0 C1=0 C2=0 -> out=0  (expect 0)  ok
+  S=0 C1=0 C2=1 -> out=0  (expect 0)  ok
+  S=0 C1=1 C2=0 -> out=0  (expect 0)  ok
+  S=0 C1=1 C2=1 -> out=0  (expect 0)  ok
+  S=1 C1=0 C2=0 -> out=1  (expect 1)  ok
+  S=1 C1=0 C2=1 -> out=0  (expect 0)  ok
+  S=1 C1=1 C2=0 -> out=0  (expect 0)  ok
+  S=1 C1=1 C2=1 -> out=0  (expect 0)  ok
+>>> cascade I/O CHAIN CORRECT (out = S AND NOT C1 AND NOT C2)
+    NOTE: an AND-NOT chain emits 1 only when no survivor exists, so this
+    DODGES (does not solve) survivor-absorption (adversary_cascade.md).
+
+phase robustness (both controls share one phi; diagonal only, coarse):
+  phi= 0: 8/8 rows correct
+  phi= 4: 8/8 rows correct
+  phi= 8: 8/8 rows correct
+  phi=12: 8/8 rows correct
+  phi=16: 8/8 rows correct
+  phi=20: 8/8 rows correct
+
+gap robustness (truth table at each inter-gate spacing):
+  GAP= 60: 8/8 rows correct
+  GAP= 80: 8/8 rows correct
+  GAP=110: 8/8 rows correct
+  GAP=140: 8/8 rows correct
+saved assets/orbium_cascade.png

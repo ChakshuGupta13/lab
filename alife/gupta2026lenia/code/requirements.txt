@@ -1,0 +1,5 @@
+# Tested 2026-06-25 on macOS / Python 3.14 (CPU)
+jax==0.10.2
+numpy>=2.0
+scipy>=1.13
+matplotlib>=3.8
