@@ -6,6 +6,12 @@ Public code artifacts from research work.
 
 Implementations and supporting code for specific research papers.
 
+### alife
+
+| Anchor | Description |
+|--------|-------------|
+| [gupta2026lenia](alife/gupta2026lenia/) | Collision-based logic in Lenia and its composition boundary — an emergent INHIBIT gate and AND-NOT cascade from Orbium glider collisions, plus the measured boundary to general composition (preprint submitted to arXiv) |
+
 ### math
 
 | Anchor | Description |
