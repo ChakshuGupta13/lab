@@ -3,7 +3,7 @@
 Accompanying code for the paper *"Collision-based logic in Lenia and its
 composition boundary"* (Chakshu Gupta, Georgia Institute of Technology).
 
-**Preprint**: submitted to arXiv (identifier to be added once assigned).
+**Preprint**: [arXiv:2609.01348](https://arxiv.org/abs/2609.01348).
 
 ## Overview
 
@@ -89,10 +89,13 @@ code/
 
 ```bibtex
 @misc{gupta2026lenia,
-  author = {Gupta, Chakshu},
-  title  = {Collision-based logic in Lenia and its composition boundary},
-  year   = {2026},
-  note   = {Preprint; submitted to arXiv}
+  author        = {Gupta, Chakshu},
+  title         = {Collision-based logic in Lenia and its composition boundary},
+  year          = {2026},
+  eprint        = {2609.01348},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.ET},
+  doi           = {10.48550/arXiv.2609.01348}
 }
 ```
 
