@@ -12,6 +12,12 @@ Implementations and supporting code for specific research papers.
 |--------|-------------|
 | [gupta2026lenia](alife/gupta2026lenia/) | Collision-based logic in Lenia and its composition boundary — an emergent INHIBIT gate and AND-NOT cascade from Orbium glider collisions, plus the measured boundary to general composition ([arXiv:2609.01348](https://arxiv.org/abs/2609.01348)) |
 
+### energy
+
+| Anchor | Description |
+|--------|-------------|
+| [gupta2026exergy](energy/gupta2026exergy/) | Numerical verification of sharp exergy-correction bounds for selective absorbers under linear allocation |
+
 ### math
 
 | Anchor | Description |

@@ -76,4 +76,4 @@ The program prints both message blocks (W and W'), their differential, and the m
 
 ## License
 
-MIT
+See the repository [CC BY 4.0 license](https://github.com/ChakshuGupta13/lab/blob/main/LICENSE).

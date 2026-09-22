@@ -47,7 +47,7 @@ page. Expected sections (vary by entry type):
 - **Non-goals / disclaimers** — what the artifact does NOT do.
 - **Attribution / prior art** — cite the foundational papers the artifact
   builds on. If the underlying idea is well established, say so explicitly.
-- **License** — link to `LICENSE` in the entry directory.
+- **License** — link to the repository's CC BY 4.0 license, unless an explicitly approved per-entry exception applies.
 
 ## Public-artifact hygiene
 
@@ -63,8 +63,7 @@ Before committing any file into this repo, strip:
 
 ## License
 
-Each entry carries its own `LICENSE` file. MIT is the default; departures
-must be documented per-entry.
+Entries use the repository's [CC BY 4.0 license](https://github.com/ChakshuGupta13/lab/blob/main/LICENSE) unless the user explicitly approves a different license. A departure needs an entry-local `LICENSE` file and documented rationale.
 
 ## Commits
 
