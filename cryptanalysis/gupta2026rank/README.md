@@ -6,14 +6,14 @@ Reference code and Lean 4 formalisation for:
 > Forward NTT.* Cryptology ePrint Archive, Report 2026/1188 (2026).
 > <https://eprint.iacr.org/2026/1188>
 
-The paper proves three properties of the information ceiling that
-twiddle-perturbation faults ($\zeta_k \mapsto \zeta'_k$,
-$\zeta'_k \ne \zeta_k$) can reach against the forward NTT of
-ML-KEM key generation and ML-DSA signing:
+The programs compute ranks of the correct-minus-faulted linear maps
+under static twiddle replacements. Rank counts independent linear
+combinations, not individually recovered secret coefficients.
+The forward results cover these two butterfly shapes:
 
-1. **Theorem 1 (single-fault rank).** Each single-twiddle fault leaks
-   exactly $\mathrm{len}_\ell = n/2^{\ell+1}$ secret coefficients,
-   where $\ell$ is the transform layer at which the twiddle sits.
+1. **Theorem 1 (single-fault rank).** Each single-twiddle difference
+  map has rank $\mathrm{len}_\ell = n/2^{\ell+1}$, where $\ell$
+  is the transform layer at which the twiddle sits.
 2. **Theorem 2 (one-per-layer rank and kernel).**
    - **ML-KEM** (incomplete NTT, $m = 7$ layers):
      $\mathrm{rank}\,D_K = n-2$ and
@@ -34,6 +34,7 @@ ML-KEM key generation and ML-DSA signing:
 | Arbitrary-perturbation sweep, ML-KEM (§6) | [code/python/generalization_check.py](code/python/generalization_check.py) |
 | ML-DSA rank verification (§6) | [code/python/dsa_rank_check.py](code/python/dsa_rank_check.py) |
 | ML-DSA single-fault exhaustive sweep (§6) | [code/python/dsa_single_fault_sweep.py](code/python/dsa_single_fault_sweep.py) |
+| Complete-shape C zeroing cross-check (§6) | [code/c/ntt_fault_rank.c](code/c/ntt_fault_rank.c) |
 | Universal kernel inclusion check (§5) | [code/python/single_fault_universal.py](code/python/single_fault_universal.py) |
 | One-per-layer exhaustive sweeps (§6) | [code/python/telescope_independence.py](code/python/telescope_independence.py) |
 | Telescope decomposition sanity check | [code/python/telescope_decomp.py](code/python/telescope_decomp.py) |
@@ -45,18 +46,20 @@ ML-KEM key generation and ML-DSA signing:
 
 ## Lean 4 formalisation
 
-Both headline theorems are parametric over a single `CooleyTukeyLike`
-type-class (in `Basic.lean`) instantiated by `kyberSpec` (incomplete
-NTT, $m=7$) and `dsaSpec` (complete NTT, $m=8$).
+The two general forward kernel declarations use concrete $n=256$
+specifications. The incomplete shape `kyberSpec` has seven layers;
+the complete shape `dsaSpec` has eight. Their common hypotheses
+require a field with $2\ne0$, nonzero original twiddles, and one
+changed twiddle per layer. Replacements may be zero or nonzero.
 
 - `theorem2_kyber_final_gen` in
   [Theorem2Final.lean](code/lean/NttFaultRank/Theorem2Final.lean):
-  rank $n-2$, kernel $\mathrm{span}(\mathbf{e}_0, \mathbf{e}_1)$
-  for ML-KEM under arbitrary twiddle perturbation.
+  kernel $\mathrm{span}(\mathbf{e}_0, \mathbf{e}_1)$ for the
+  incomplete shape; rank $254$ follows by rank-nullity.
 - `theorem2_dsa_final_gen` in
   [Theorem2DsaFinal.lean](code/lean/NttFaultRank/Theorem2DsaFinal.lean):
-  rank $n-1$, kernel $\mathrm{span}(\mathbf{e}_0)$ for ML-DSA
-  under arbitrary twiddle perturbation.
+  kernel $\mathrm{span}(\mathbf{e}_0)$ for the complete shape;
+  rank $255$ follows by rank-nullity.
 
 ### Reproducing the build
 
@@ -109,6 +112,29 @@ python3 telescope_independence.py  # §6 one-per-layer sweeps
 ```
 
 Requirements: Python 3.10+, NumPy. No other dependencies.
+
+## C cross-check
+
+From this artifact directory, compile and run with a C11 compiler.
+
+```sh
+cc -std=c11 -O2 -Wall -Wextra -Wpedantic code/c/ntt_fault_rank.c -o /tmp/ntt_fault_rank
+/tmp/ntt_fault_rank
+```
+
+The program uses plain modular arithmetic at $n=256$, $q=8380417$
+and root $1753$, with bit-reversed twiddle exponents as in
+[FIPS 204, Algorithm 41](https://doi.org/10.6028/NIST.FIPS.204).
+It checks 12 selected single-twiddle zeroings, one first-twiddle-per-layer
+selection and the pair $\{2,3\}$ in layer 1, plus a no-fault control.
+The final output is `ALL CHECKS PASSED` when all 14 fault-case ranks
+match their expected values. The no-fault difference has rank zero;
+that control alone does not establish transform invertibility.
+
+These are finite zeroing rank checks, not a kernel-basis computation,
+optimized-code equivalence test, firmware reproduction or physical
+fault experiment. Python small-field sweeps and the concrete Lean
+certificate have different coverage and should not be conflated.
 
 ## License
 
