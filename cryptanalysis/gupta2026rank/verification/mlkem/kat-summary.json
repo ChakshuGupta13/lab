@@ -1,0 +1,12 @@
+{
+  "status": "KNOWN_ANSWER_TESTS_PASSED",
+  "pin": "d1b2fe782888bdb761a50336012923180be7f502",
+  "levels": [
+    512,
+    768,
+    1024
+  ],
+  "katSha256Ok": 3,
+  "faultHookCompiled": false,
+  "reasonHookExcluded": "PQC_FAULT_VALIDATION is not defined by the upstream KAT build"
+}

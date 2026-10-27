@@ -1,0 +1,46 @@
+{
+  "status": "FULL_KEYGEN_ONE_PER_LAYER_MODEL_MATCH",
+  "parameterSet": "ML-KEM-512",
+  "forwardNttCalls": 4,
+  "faultedForwardCall": 0,
+  "declaredFaultIndices": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "cachedRegisters": {
+    "s8": 1,
+    "s9": 2,
+    "s11": 4,
+    "s15": 8
+  },
+  "pointerLoadedRegisters": {
+    "r10AfterFirstLength8Load": 16,
+    "r10AfterFirstLength4Load": 32,
+    "r10AfterFirstLength2Load": 64
+  },
+  "loadedWords": [
+    381889553,
+    372858381,
+    21932846
+  ],
+  "interventionCount": 7,
+  "unchangedSecondSecretPolynomialNtt": true,
+  "targetNttMatchesDeclaredMap": true,
+  "publicKeysDiffer": true,
+  "publicObserverMatchesInternalDifference": true,
+  "rank": 254,
+  "unresolvedCoordinates": [
+    0,
+    1
+  ],
+  "instructionSkipDemonstrated": false,
+  "physicalFaultDemonstrated": false,
+  "allInputsProved": false,
+  "runtimeFaultRepeatabilityMeasured": false,
+  "singletonResultPreserved": true
+}

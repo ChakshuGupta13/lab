@@ -35,6 +35,7 @@ The forward results cover these two butterfly shapes:
 | ML-DSA rank verification (§6) | [code/python/dsa_rank_check.py](code/python/dsa_rank_check.py) |
 | ML-DSA single-fault exhaustive sweep (§6) | [code/python/dsa_single_fault_sweep.py](code/python/dsa_single_fault_sweep.py) |
 | Complete-shape C zeroing cross-check (§6) | [code/c/ntt_fault_rank.c](code/c/ntt_fault_rank.c) |
+| Verification configurations and implementation records (§6) | [verification/](verification/) |
 | Universal kernel inclusion check (§5) | [code/python/single_fault_universal.py](code/python/single_fault_universal.py) |
 | One-per-layer exhaustive sweeps (§6) | [code/python/telescope_independence.py](code/python/telescope_independence.py) |
 | Telescope decomposition sanity check | [code/python/telescope_decomp.py](code/python/telescope_decomp.py) |

@@ -1,0 +1,7 @@
+{
+  "implementation": "pqclean-ml-dsa-44-clean",
+  "fault": "first_s1_polynomial_one_power_of_two_twiddle_per_layer",
+  "seedPrefixEqual": true,
+  "publicKeysDiffer": true,
+  "changedPublicKeyBytes": 1275
+}

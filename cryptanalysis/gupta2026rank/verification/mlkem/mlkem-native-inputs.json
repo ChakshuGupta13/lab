@@ -1,0 +1,12 @@
+{
+  "startedAt": "2026-10-25T04:53:03.186Z",
+  "upstreamCommit": "d1b2fe782888bdb761a50336012923180be7f502",
+  "sourceHashes": {
+    "producer.c": "ce0bfb06cc38985d646d25983fcbca78e6254d41bd172565ddff4bfe21bf526e",
+    "fault_hooks.h": "e556060abd468649adbb73f421bc17669a91b30691aeb15edfec591c04283e5d",
+    "experiment_config.h": "3712af0b076f2ca9d7ccfe6b2ce6ad56a88865b01d669e3e1da0506435d74fe2",
+    "observer.mjs": "af955d198e3e02beef37f565188f05a120f53c5384055cf93b1740460f7283a2",
+    "run_native.mjs": "8ee053a82df34a27e93c33d6345cdf8edf7549b8467d738c9338805655fc19e4"
+  },
+  "upstreamPatch": "diff --git a/mlkem/src/poly.c b/mlkem/src/poly.c\nindex edc17a2..aa98021 100644\n--- a/mlkem/src/poly.c\n+++ b/mlkem/src/poly.c\n@@ -412,6 +412,9 @@ __contract__(\n     decreases(MLKEM_N - start))\n   {\n     int16_t zeta = mlk_zetas[k++];\n+#if defined(PQC_FAULT_VALIDATION)\n+    zeta = pqc_twiddle(k - 1, zeta);\n+#endif\n     mlk_ntt_butterfly_block(r, zeta, start, len, layer * MLKEM_Q);\n   }\n }\n@@ -443,6 +446,9 @@ __contract__(\n \n   r = p->coeffs;\n \n+#if defined(PQC_FAULT_VALIDATION)\n+  pqc_ntt_begin(r);\n+#endif\n   for (layer = 1; layer <= 7; layer++)\n   __loop__(\n     invariant(1 <= layer && layer <= 8)\n@@ -454,6 +460,9 @@ __contract__(\n \n   /* Check the stronger bound */\n   mlk_assert_abs_bound(p, MLKEM_N, MLK_NTT_BOUND);\n+#if defined(PQC_FAULT_VALIDATION)\n+  pqc_ntt_end(r);\n+#endif\n }\n \n MLK_INTERNAL_API\n"
+}

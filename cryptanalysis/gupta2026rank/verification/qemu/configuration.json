@@ -1,0 +1,15 @@
+{
+  "pqm4Commit": "6ff2be970f6f4592b341d432042063ceacf424a2",
+  "mupqCommit": "981df31b84585df097333a9d2319ec0d6e357fee",
+  "machine": "mps2-an386",
+  "parameterSet": "ML-KEM-512",
+  "implementation": "crypto_kem/ml-kem-512/m4fspeed",
+  "degree": 256,
+  "modulus": 3329,
+  "root": 17,
+  "expectedForwardCalls": 4,
+  "targetForwardCall": 0,
+  "faultIndices": [1, 2, 4, 8, 16, 32, 64],
+  "replacement": 0,
+  "intervention": "debugger-imposed register state changes"
+}

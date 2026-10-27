@@ -1,0 +1,482 @@
+[
+  {
+    "level": 512,
+    "coinSha256": "a611cb7617729c0a67609925f4b805b8775409460349df790079a020c227480d",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "927efcf8bab48d090781f0987e0f9d0c1b22734aefce91ed57f09c25c4d2fd3a",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "26156ba2a434c127b481eba31c6840fadc0c29213b81167ffd39d5b0fcf41600",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "c34f1b5c52ca15db636b5f59edb99ee304db3e9f850c669a1039f442ff9853fa",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "d3a14c20a190c0b74e55fb9f84c7b38c03514901dd6fd6dbe2d14b19b2924c0d",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "c2de659150ba50246c13930a34487c451cebd784e7f7d88926be9678077a65be",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "847d4dea3b143fe391c4d8ae28b6332e1ad402329271bed4715a8c1ecfab9a5b",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "174e755a5706d6d03e78d2d099be52250978eca68db7272e1dc80b7d14d84895",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "7e447b4632b4f00f7ebcda9d6847aeb2d6e6fd90486105623a9051aee60a73d5",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 512,
+    "coinSha256": "4bf7e27150087b64eb4324f1f4712c6cf8bcd4363592425195723f972df76b97",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 49,
+    "sameDifferenceCount": 49,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "8ffdc2e2db73b9de11456d0ad6f175d0a2eb48af10c5777f63351f8b8f2c1bff",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "23903ea8f75db6c5adfffbb31176c1e827d771b2ae8094c2dd94a05d50b6fc3c",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "c34e3964c17fdf06abf20550a3c5d152e3ca926f3d8181b84b6a4ff5b15f8076",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "994600670ca1f1cc85a92b1b90fd81a3a8423c045f8738c8648d61a500271c6f",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "d85830a55f016aba28dc5184d855cedd713af2e2fe104f7000c9bbb0d52f5d9c",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "5170fe515c15cc23ae72c2117f84ffb8092634f1bf7227ab886afff0ea87f4de",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "1e02300e536167225692419d44682dbbc09f46c34e1f68dc99c1f997020ee7d3",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "44fe97c1a0594b989d2e5fadc53537fce5e343614135c45f18a5c0267cc1ad5f",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "010fbb3d9f9cb3d1b07041a9c5939ffccfbd66a282b11b6631d86fe3b9096a93",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 768,
+    "coinSha256": "c52e00cb1772990203a910c53a004fcf8280744282a05736f6eb768a19b1361e",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "643572b24825e2e5e5ebb0c9d801139c0efbc904c3af164e8fc1ca345497cbd6",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "de52553601c02b071a372754353123de864e2b82867538a3f2fc8e96e7cd2fa7",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "4e02d7c0874c9585dda86cf3f9736f368a45a0cd25bcd6762aef0eff9715f974",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "cca74b0dc10c356c1c6e9a83813062f2f7780f0e824e654506b1242667c69715",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "71f0116bf5eb4d90c816230acc4713f34aec0dbf4abfdd72e9655a727e627903",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "a9bacebf5a118322b572fbfe9237583fc338cec8ead6c0ec5a854cc87ccf859d",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "462e88415386042d1c984e7a77ea651ce6a7994061a152fb05837e2c5a57b407",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "6d1cc590443ecd20a8a4b06550efe73b3743a9c900b68d6b663a4c4adeb39cc6",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "bcc2530d494b145b9c54c418ffb2d043921e8ce5f7d510c82ca41b2de063b9a1",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  },
+  {
+    "level": 1024,
+    "coinSha256": "f97aa98ddcc8c68ee91ea3084954c75da2f7d4258b8a46d2090187a03a4d162b",
+    "rank": 254,
+    "freeColumns": [
+      0,
+      1
+    ],
+    "unchangedOtherOutputs": true,
+    "alphabetCandidates": 25,
+    "sameDifferenceCount": 25,
+    "samePublicKeyCount": 1,
+    "truePairSeen": true,
+    "truePairMatchesAbsoluteKey": true,
+    "selectedPairIsTrue": true
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "status": "REPEAT_AND_FREE_COORDINATE_FILTER",
+  "seedsPerLevel": 10,
+  "levels": [
+    {
+      "level": 512,
+      "seeds": 10,
+      "rank254": 10,
+      "freeColumns01": 10,
+      "otherOutputsUnchanged": 10,
+      "alphabetCandidates": 49,
+      "pairedDifferenceInvariant": 10,
+      "absoluteKeySelectsOne": 10,
+      "truePairIncluded": 10,
+      "selectedPairIsTrue": 10
+    },
+    {
+      "level": 768,
+      "seeds": 10,
+      "rank254": 10,
+      "freeColumns01": 10,
+      "otherOutputsUnchanged": 10,
+      "alphabetCandidates": 25,
+      "pairedDifferenceInvariant": 10,
+      "absoluteKeySelectsOne": 10,
+      "truePairIncluded": 10,
+      "selectedPairIsTrue": 10
+    },
+    {
+      "level": 1024,
+      "seeds": 10,
+      "rank254": 10,
+      "freeColumns01": 10,
+      "otherOutputsUnchanged": 10,
+      "alphabetCandidates": 25,
+      "pairedDifferenceInvariant": 10,
+      "absoluteKeySelectsOne": 10,
+      "truePairIncluded": 10,
+      "selectedPairIsTrue": 10
+    }
+  ],
+  "coinsRetainedPrivately": false,
+  "perSeedRecords": "seeds-public.json",
+  "replayOf": "test-coins.json",
+  "publicOnlySolver": false,
+  "absoluteKeySelectionHoldsOtherInputsFixed": true,
+  "knownAnswerTestsRun": false
+}
