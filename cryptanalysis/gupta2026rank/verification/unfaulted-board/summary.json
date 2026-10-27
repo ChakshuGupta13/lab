@@ -1,0 +1,20 @@
+{
+  "status": "PASS_UNFAULTED_MLKEM512_PHYSICAL_ROUNDTRIP",
+  "parameterSet": "ML-KEM-512",
+  "board": "nrf52840dk",
+  "cases": 3,
+  "successfulRoundtrips": 3,
+  "fixedPublicTestCoins": true,
+  "apiReturnChecksPassed": true,
+  "sharedSecretEqualityChecksPassed": true,
+  "mlkemNativeCommit": "d1b2fe782888bdb761a50336012923180be7f502",
+  "riotCommit": "62d0a88708b036bda687f33aacf7862450b6ef7f",
+  "firmwareSha256": "0c1de81ad7351a0ab021fbeffa22899bf61fa5d4b3381816ddfd12169763f9da",
+  "knownAnswerTest": false,
+  "productionRandomnessTest": false,
+  "performanceBenchmark": false,
+  "fipsValidation": false,
+  "faultInjection": false,
+  "rankMeasurement": false,
+  "secretRecovery": false
+}

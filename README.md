@@ -39,7 +39,7 @@ Implementations and supporting code for specific research papers.
 | [eichlseder2014](cryptanalysis/eichlseder2014/) | 38-step SHA-512 SFS collision via SAT + [GnD plateau analysis](cryptanalysis/eichlseder2014/PLATEAU-ANALYSIS.md) |
 | [lamberger2011](cryptanalysis/lamberger2011/) | 46-step SHA-256 second-order differential: [message-modification analysis](cryptanalysis/lamberger2011/MSG-MOD-ANALYSIS.md) (two-layer decomposition, revised 2⁴⁷·⁶ complexity) |
 | [de2006finding-workfactor](cryptanalysis/de2006finding-workfactor/) | SHA-1 work-factor calculator (De Cannière–Rechberger 2006 §III-C), first independent reimplementation |
-| [gupta2026rank](cryptanalysis/gupta2026rank/) | Rank ceiling for twiddle-perturbation faults on the forward NTT of ML-KEM and ML-DSA ([ePrint 2026/1188](https://eprint.iacr.org/2026/1188)) |
+| [gupta2026rank](cryptanalysis/gupta2026rank/) | Rank ceiling for twiddle-perturbation faults on the forward NTT of ML-KEM and ML-DSA ([ePrint 2026/1188](https://eprint.iacr.org/2026/1188), [arXiv:2610.30383](https://arxiv.org/abs/2610.30383)) |
 | [zhang2026-verification](cryptanalysis/zhang2026-verification/) | SFS collision verification + corrected Table 8 characteristic for Zhang–Li–Gao–Wang, EUROCRYPT 2026 |
 
 ## Tools

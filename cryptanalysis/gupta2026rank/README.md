@@ -6,6 +6,8 @@ Reference code and Lean 4 formalisation for:
 > Forward NTT.* Cryptology ePrint Archive, Report 2026/1188 (2026).
 > <https://eprint.iacr.org/2026/1188>
 
+Also available as [arXiv:2610.30383](https://arxiv.org/abs/2610.30383).
+
 The programs compute ranks of the correct-minus-faulted linear maps
 under static twiddle replacements. Rank counts independent linear
 combinations, not individually recovered secret coefficients.
@@ -36,6 +38,7 @@ The forward results cover these two butterfly shapes:
 | ML-DSA single-fault exhaustive sweep (§6) | [code/python/dsa_single_fault_sweep.py](code/python/dsa_single_fault_sweep.py) |
 | Complete-shape C zeroing cross-check (§6) | [code/c/ntt_fault_rank.c](code/c/ntt_fault_rank.c) |
 | Verification configurations and implementation records (§6) | [verification/](verification/) |
+| Ancillary unfaulted physical-board baseline | [verification/unfaulted-board/](verification/unfaulted-board/) |
 | Universal kernel inclusion check (§5) | [code/python/single_fault_universal.py](code/python/single_fault_universal.py) |
 | One-per-layer exhaustive sweeps (§6) | [code/python/telescope_independence.py](code/python/telescope_independence.py) |
 | Telescope decomposition sanity check | [code/python/telescope_decomp.py](code/python/telescope_decomp.py) |

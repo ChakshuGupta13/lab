@@ -13,6 +13,7 @@ They are experiment fixtures, not production credentials.
 | ML-KEM thirty-case replay and KAT record | [`mlkem/`](mlkem/) |
 | Cortex-M4 QEMU record | [`qemu/`](qemu/) |
 | ML-DSA-44 public-key change | [`mldsa/`](mldsa/) |
+| Ancillary unfaulted physical-board baseline | [`unfaulted-board/`](unfaulted-board/) |
 | Exact algebraic configurations | [`configurations.md`](configurations.md) |
 
 ## Quick Checks
