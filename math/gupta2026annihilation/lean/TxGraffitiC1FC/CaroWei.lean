@@ -1,16 +1,6 @@
 import Mathlib
 import TxGraffitiC1FC.Invariants
 
-/-!
-# Item 5 — Caro–Wei bound `W ≤ α` via a subtype-free (Finset-relative) Wei induction
-
-Formalizes `∑_v 1/(deg v + 1) ≤ α` (Caro–Wei; not in Mathlib). To avoid
-induced-subgraph-over-subtype bookkeeping, everything is relativized to a
-`Finset V` `s`: `degIn s v` = number of `s`-neighbours of `v`, `alphaIn s` = max
-card of an independent subset of `s`. Wei's induction (delete a min-degree closed
-neighbourhood) runs over Finsets of `V`; the `s = univ` case is Caro–Wei.
--/
-
 open Finset
 open scoped Classical
 
@@ -141,8 +131,6 @@ theorem caroWei_finset (s : Finset V) :
       rw [hsplit]
       linarith [hNpart, hs'part, hext, hcardQ]
 
-/-- **Caro–Wei bound** (`W ≤ α`): `∑_v 1/(deg v + 1) ≤ indepNum`. Discharges the
-C1 hole `caroWei_le_indepNum` (modulo the `caroWeiWeight` unfolding, item 7). -/
 theorem caroWei_bound :
     (∑ v : V, 1 / ((G.degree v : ℚ) + 1)) ≤ (G.indepNum : ℚ) := by
   have h := G.caroWei_finset Finset.univ

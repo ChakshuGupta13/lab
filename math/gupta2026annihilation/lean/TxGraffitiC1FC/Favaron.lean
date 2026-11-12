@@ -1,14 +1,14 @@
 import Mathlib
 import TxGraffitiC1FC.Invariants
+import TxGraffitiC1FC.ResidueMonotonicity
 
 /-!
-# Favaron's residue bound conditional on residue monotonicity
+# Favaron's residue bound
 
-Strong induction on the vertex count reduces `R(G) ≤ α(G)` to deletion of a
-positive-maximum-degree vertex. The inequality `R(G) ≤ R(G−v)` is assumed as
-`residue_le_residue_induce_compl_of_maxDegree`; the remaining induction and
-independent-set steps are proved here. The resulting theorem retains that
-custom axiom. Finite tests of the assumption are not a formal proof.
+Deleting a positive-maximum-degree vertex does not decrease the residue, by
+the native proof in `ResidueMonotonicity`. Strong induction on the vertex count
+then proves `R(G) ≤ α(G)`, using monotonicity of the independence number under
+induced subgraphs. No custom axiom is used.
 -/
 
 namespace SimpleGraph
@@ -99,26 +99,18 @@ theorem indepNum_eq_card_of_degree_zero (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [h a] at hpos; exact absurd hpos (lt_irrefl 0)
   calc Fintype.card V = (Finset.univ : Finset V).card := (Finset.card_univ).symm
     _ ≤ G.indepNum := huniv.card_le_indepNum
-/-! ## The residue-monotonicity crux (assumed as a cited classical axiom) -/
+/-! ## Residue monotonicity under maximum-degree vertex deletion -/
 
-/-- Assumed residue monotonicity under deletion of a positive-maximum-degree
-vertex. This unproved input supplies the classical residue bound used below.
-It remains a custom axiom in `#print axioms SimpleGraph.txgraffiti_conjecture_1`.
-
-The positive-degree hypothesis excludes edgeless graphs, where the proposed
-inequality would read `n ≤ n-1`. The scripts in `axiom-verification/` are finite
-probes, not a proof of this axiom; `favaron_verify.py` uses random sampling.
--/
-axiom residue_le_residue_induce_compl_of_maxDegree
+/-- Deleting a positive-maximum-degree vertex does not decrease the residue. -/
+theorem residue_le_residue_induce_compl_of_maxDegree
     (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
     (hv : ∀ w, G.degree w ≤ G.degree v) (hpos : 0 < G.degree v) :
-    G.residue ≤ (G.induce ({v}ᶜ : Set V)).residue
+    G.residue ≤ (G.induce ({v}ᶜ : Set V)).residue :=
+  residue_le_residue_induce_compl_of_maxDegree' G hv hpos
 
-/-! ## Main theorem: `R ≤ α` (modulo the crux above) -/
+/-! ## Main theorem: `R ≤ α` -/
 
-/-- Residue bound conditional on the custom residue-monotonicity axiom.
-Strong induction proves `R(G) ≤ R(G−v) ≤ α(G−v) ≤ α(G)` after assuming its
-first link for a positive-maximum-degree vertex. -/
+/-- Favaron's residue bound, proved by strong induction and residue monotonicity. -/
 theorem residue_le_indepNum (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.residue ≤ G.indepNum := by
   suffices h : ∀ (n : ℕ) (W : Type _) [Fintype W] [DecidableEq W]

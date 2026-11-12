@@ -2,16 +2,6 @@ import Mathlib
 import TxGraffitiC1FC.Invariants
 import TxGraffitiC1FC.Vehicle
 
-/-!
-# Item 3 — the Δ≤2 branch: connected `Δ ≤ 2 ⟹ a ≤ α`
-
-For a connected graph with maximum degree `≤ 2` (a path or a cycle) the
-annihilation number `a` equals the independence number `α`; in particular
-`a ≤ α`. This file builds the bound from the ground up (no Mathlib support:
-Mathlib has no path/cycle independence, no Δ≤2 classification, no annihilation
-lemmas). Structural facts first, then the two bounds.
--/
-
 open Finset
 open scoped Classical
 
@@ -36,9 +26,6 @@ theorem card_edges_le_of_maxDeg_le_two (hΔ : G.maxDegree ≤ 2) :
   rw [Finset.sum_const, Finset.card_univ, smul_eq_mul] at hb
   omega
 
-/-- **a-side** (uses only `Δ ≤ 2`, via item 2's `exists_annih_head`):
-`2·a ≤ 2n − m`. The annihilation head-set `H` (`|H| = a`, `Σ_H deg ≤ m`) has
-complement degree-sum `2m − Σ_H deg ≥ m` and `≤ 2(n − a)`, so `m ≤ 2(n − a)`. -/
 theorem two_mul_annihilationNumber_le (hΔ : G.maxDegree ≤ 2) :
     2 * G.annihilationNumber ≤ 2 * Fintype.card V - G.edgeFinset.card := by
   obtain ⟨H, hHcard, hHsum⟩ := G.exists_annih_head
@@ -87,9 +74,6 @@ theorem card_le_two_mul_indepNum_of_colorable_two (hcol : G.Colorable 2) :
   have h1 := hind 1
   omega
 
-/-- **Item 3 main bound**: connected `Δ ≤ 2 ⟹ a ≤ α`. Combines the a-side
-(`2a ≤ 2n − m`), connectivity (`m ≥ n − 1`), and the α-side (`n ≤ 2α` when
-2-colourable; the odd-cycle case handled separately). -/
 theorem annih_le_indepNum_of_maxDegree_le_two
     (hconn : G.Connected) (hΔ : G.maxDegree ≤ 2) :
     (G.annihilationNumber : ℚ) ≤ (G.indepNum : ℚ) := by

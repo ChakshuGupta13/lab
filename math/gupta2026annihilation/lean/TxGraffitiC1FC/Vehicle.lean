@@ -15,8 +15,6 @@ namespace TxGraffitiC1FC
 
 open Finset
 
-/-- Pointwise Caro–Wei estimate (ported verbatim from the lab core):
-`2/(Δ+1) ≤ 1/(k+1) + k/(Δ(Δ+1))` for `1 ≤ Δ`, `k ≤ Δ`. -/
 theorem pointwise (Δ k : ℕ) (hΔ : 1 ≤ Δ) (hk : k ≤ Δ) :
     (2 : ℚ) / ((Δ : ℚ) + 1)
       ≤ 1 / ((k : ℚ) + 1) + (k : ℚ) / ((Δ : ℚ) * ((Δ : ℚ) + 1)) := by
@@ -46,10 +44,6 @@ theorem pointwise (Δ k : ℕ) (hΔ : 1 ≤ Δ) (hk : k ≤ Δ) :
     rw [h_id]; exact div_nonneg h_core h_denom.le
   linarith
 
-/-- **Annihilation Caro–Wei bound (algebraic core), over an arbitrary finite
-vertex type.** Ported from the lab `annihilation_caroWei` (`Fin n → V`). Given a
-degree function `d : V → ℕ` with every value `≤ Δ` (`1 ≤ Δ`) and a head set `H`
-with `Σ_{i∈H} d i ≤ Δ·(|V| − |H|)`, one has `|H| ≤ (Δ+1)/2 · Σ_i 1/(d i + 1)`. -/
 theorem caroWei_abstract {V : Type*} [Fintype V] [DecidableEq V]
     (Δ : ℕ) (d : V → ℕ) (hΔ : 1 ≤ Δ) (hd_le : ∀ i, d i ≤ Δ)
     (H : Finset V)

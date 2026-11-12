@@ -73,15 +73,18 @@ are retained as supplementary investigations, not prerequisites for this run.
 
 The pinned [Lean project](lean/README.md) proves the core inequality
 $a\le(\Delta+1)W/2$ over Mathlib's `SimpleGraph` without custom axioms.
-It also proves the Caro-Wei lower bound and the connected maximum-degree-two
-annihilation estimate. The residue bound and graph-level TxGraffiti theorem
-depend on one explicitly named residue-monotonicity axiom.
+It also proves the Caro-Wei and residue lower bounds, $\alpha\le a$,
+the graph-level TxGraffiti inequality, its full eight-graph equality
+classification, and strictness for connected graphs of maximum degree at
+least four. The residue-deletion monotonicity step is proved, not assumed.
+These results depend only on `propext`, `Classical.choice` and `Quot.sound`.
 
 The rational-arithmetic lemmas in `Corollaries.lean` take their invariant
 inequalities as hypotheses. They do not formalize the revised five-term
-bracket, the connected sharpness family for every maximum degree, or the
-explicit eight-graph equality classification. The full revised paper is not
-claimed to be kernel-verified. Finite tests of a custom axiom do not prove it.
+bracket or the connected sharpness family for every maximum degree.
+The classical graph inequality $W\le R$ and domination of the TxGraffiti
+estimate by $R$ are also outside the formalization. The full revised paper
+is not claimed to be kernel-verified.
 
 ## Attribution
 

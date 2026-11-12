@@ -6,7 +6,6 @@ defaultTargets = ["TxGraffitiC1FC"]
 # not the tag, because daily `master-*` tags are GC'd on a rolling ~4-month window
 # (the tag would vanish ~Nov 2026; the commit stays reachable from master).
 # Toolchain in `lean-toolchain` matches this snapshot (leanprover/lean4:v4.32.0-rc1).
-# Reconcile with formal-conjectures' pin only at transplant time.
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"

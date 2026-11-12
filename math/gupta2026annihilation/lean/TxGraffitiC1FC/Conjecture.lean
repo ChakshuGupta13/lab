@@ -6,7 +6,7 @@ import TxGraffitiC1FC.Delta2
 import TxGraffitiC1FC.Favaron
 
 /-!
-# TxGraffiti Conjecture 1 conditional on residue monotonicity
+# TxGraffiti Conjecture 1
 
 Source: Davila–Brimkov–Pepper, *In Reverie Together* (arXiv:2507.17780), Conjecture 1;
 proved in Gupta, arXiv:2606.29553.
@@ -14,12 +14,10 @@ proved in Gupta, arXiv:2606.29553.
   Every connected graph with `Δ ≥ 2` satisfies `α ≥ (a + R) / Δ`, i.e. `a + R ≤ Δ · α`,
   where α = independence number, Δ = max degree, a = annihilation number, R = residue.
 
-The Caro-Wei and annihilation bounds and the connected maximum-degree-two
-branch are proved over the graph invariants. The residue bound used in the
-assembly depends on `residue_le_residue_induce_compl_of_maxDegree` in
-`Favaron.lean`. Consequently `#print axioms txgraffiti_conjecture_1` lists
-that custom assumption alongside the standard Lean/Mathlib axioms. The finite
-probes do not discharge it.
+The graph-level theorem combines the annihilation bound, the Caro-Wei bound,
+the connected maximum-degree-two branch and Favaron's residue bound. All four
+inputs are proved natively; the final theorem uses only the standard
+Lean/Mathlib axioms.
 -/
 
 namespace SimpleGraph

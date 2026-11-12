@@ -3,3 +3,9 @@ import TxGraffitiC1FC.Conjecture
 import TxGraffitiC1FC.Vehicle
 import TxGraffitiC1FC.Favaron
 import TxGraffitiC1FC.Corollaries
+import TxGraffitiC1FC.Majorization
+import TxGraffitiC1FC.ResidueLemmas
+import TxGraffitiC1FC.Graphical
+import TxGraffitiC1FC.Assemble
+import TxGraffitiC1FC.HavelHakimi
+import TxGraffitiC1FC.Classification
