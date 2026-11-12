@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fast exhaustive check of Theorem 1 (Delta*alpha >= a + R) computing the
+Fast exhaustive check of the TxGraffiti inequality (Delta*alpha >= a + R), computing the
 independence number directly, over all connected graphs in a given order range.
 
 The vetted reference `c1_verify.py` computes alpha via networkx max-clique of the
@@ -10,7 +10,7 @@ computation with an in-house g6 parser plus a bitset maximum-independent-set
 recursion (vertices <= 10 fit in a machine word), and avoids networkx in the hot
 loop entirely.
 
-Scope of Theorem 1: nontrivial connected graphs other than K_2, i.e. every
+Scope of the inequality: nontrivial connected graphs other than K_2, i.e. every
 connected graph with Delta >= 2, i.e. every connected graph on >= 3 vertices.
 
 Modes
@@ -20,7 +20,7 @@ Modes
                  (a and R are byte-identical copies of the vetted functions, so
                  their --check comparison is a consistency check, not an
                  independent oracle.)
-  (default)      run the Theorem-1 check; report per-order counts (compare to
+    (default)      run the inequality check; report per-order counts (compare to
                  OEIS A001349) and total violations (expected 0).
 
 Usage:
@@ -124,7 +124,9 @@ def geng_stream(n):
         g6 = line.strip()
         if g6:
             yield g6
-    proc.wait()
+    exit_code = proc.wait()
+    if exit_code:
+        raise subprocess.CalledProcessError(exit_code, proc.args)
 
 
 def run_check(nmin, nmax):
@@ -159,8 +161,21 @@ def run_check(nmin, nmax):
     return bad == 0
 
 
+def violates_inequality(maximum, independence, annihilation, graph_residue):
+    return maximum * independence < annihilation + graph_residue
+
+
 def run_theorem(nmin, nmax):
-    """Direct Theorem-1 check computing alpha; report counts and violations."""
+    """Check the TxGraffiti inequality; report counts and violations."""
+    control_order, control_adjacency = parse_g6("A_")
+    control_degrees = [bin(row).count("1") for row in control_adjacency]
+    if not violates_inequality(
+        max(control_degrees),
+        alpha_bitset(control_order, control_adjacency),
+        annihilation_number(control_degrees, sum(control_degrees) // 2),
+        residue(control_degrees),
+    ):
+        raise RuntimeError("K_2 positive control failed")
     grand = 0
     viol = 0
     viol_examples = []
@@ -176,7 +191,7 @@ def run_theorem(nmin, nmax):
             a = annihilation_number(degs, m)
             R = residue(degs)
             al = alpha_bitset(nn, adj)
-            if Delta * al < a + R:
+            if violates_inequality(Delta, al, a, R):
                 viol += 1
                 if len(viol_examples) < 10:
                     viol_examples.append((g6, Delta, al, a, R))
@@ -185,10 +200,10 @@ def run_theorem(nmin, nmax):
         print(f"  n={n}: {cnt} connected graphs with Delta>=2 checked "
               f"(cumulative {grand})", flush=True)
     print(f"TOTAL connected graphs Delta>=2, order {nmin}..{nmax}: {grand}")
-    print(f"Theorem 1 violations (Delta*alpha < a+R): {viol}")
+    print(f"TxGraffiti inequality violations (Delta*alpha < a+R): {viol}")
     for e in viol_examples:
         print("  VIOL", e)
-    print("VERDICT:", "THEOREM 1 HOLDS (0 violations)" if viol == 0
+    print("VERDICT:", "TXGRAFFITI INEQUALITY HOLDS (0 violations)" if viol == 0
           else f"FAILS ({viol})")
 
 

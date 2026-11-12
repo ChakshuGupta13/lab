@@ -1,126 +1,102 @@
-# An annihilation-number Caro–Wei bound: a TxGraffiti conjecture and an independence-number bracket
+# An annihilation-number Caro-Wei bound
 
-Verification code and Lean formalization for the paper *"An annihilation-number
-Caro–Wei bound: a TxGraffiti conjecture and an independence-number bracket"*
-(Chakshu Gupta, Georgia Institute of Technology).
+Exact-arithmetic verification code and a partial Lean formalization accompanying
+Chakshu Gupta's paper, *An annihilation-number Caro-Wei bound: a TxGraffiti
+conjecture and an independence-number bracket*.
 
-**Paper**: [arXiv:2606.29553](https://arxiv.org/abs/2606.29553) (math.CO, 2026).
+**Paper:** [arXiv:2606.29553](https://arxiv.org/abs/2606.29553).
 
-## The conjecture
+## Mathematical Results
 
-For a graph $G$ write $\alpha(G)$ for the independence number, $\Delta(G)$ for
-the maximum degree, $a(G)$ for the **annihilation number** (the largest $j$ such
-that the $j$ smallest vertex degrees sum to at most the number of edges), and
-$R(G)$ for the **residue** (the number of zeros left when the Havel–Hakimi
-process is run on the degree sequence to termination). The automated conjecturing
-program **TxGraffiti** (Davila–Brimkov–Pepper,
-[arXiv:2507.17780](https://arxiv.org/abs/2507.17780)) produced, as its oldest
-open conjecture (open since 2016):
+For a finite simple graph, let $\alpha$ be its independence number, $a$ its
+annihilation number, $R$ its Havel-Hakimi residue, $\Delta$ its maximum degree
+and $W=\sum_v 1/(d(v)+1)$ its Caro-Wei sum.
 
-$$\alpha(G) \;\ge\; \frac{a(G) + R(G)}{\Delta(G)} \qquad\text{for every nontrivial connected graph } G.$$
+The main estimate holds for every graph with at least one edge:
 
-Prior work established it only for two special families (regular bipartite graphs
-and cubic König–Egerváry graphs). This paper proves it for **every** nontrivial
-connected graph; the single edge $K_2$ is the only counterexample, and the bound
-is sharp, with equality at the complete graph $K_4$.
+$$a\le\frac{\Delta+1}{2}W.$$
 
-## The method
+Equality is attained by regular graphs of positive degree and even order.
+The proof combines the annihilation degree-sum estimate with the classical
+reciprocal-degree estimate:
 
-Let $W(G) = \sum_{v} 1/(\deg(v)+1)$ be the Caro–Wei sum. Substituting the
-Caro–Wei bound $\alpha \ge W$ for the residue bound $\alpha \ge R$ reduces the
-conjecture to a structure-free degree-sequence inequality, the **vehicle**
+$$a\le n-\frac m\Delta\le\frac{\Delta+1}{2}W.$$
 
-$$a \;\le\; (\Delta - 1)\,W \qquad (\Delta \ge 3),$$
+Together with the classical bounds, this gives
 
-with a direct argument for $\Delta = 2$ (where $a = \alpha$). Combined with the
-classical lower bounds $\alpha \ge R$ and $\alpha \ge W$, the vehicle gives
-$\Delta\alpha \ge a + R$ for every connected graph of maximum degree at least
-three.
+$$W\le R\le\alpha\le a\le\frac{\Delta+1}{2}W.$$
 
-The vehicle itself splits by maximum degree:
+Thus $[R,a]$ is contained in $[W,(\Delta+1)W/2]$. Both endpoints improve
+strictly on $K_{1,3}$, where the intervals are $[3,3]$ and $[7/4,7/2]$.
+The sharp worst-case ratio $a/R=(\Delta+1)/2$ is still attained by connected
+graphs of every positive maximum degree.
 
-- **$\Delta \ge 4$** — via AM–HM and the coupling $m \le (n - a)\Delta$, the
-  inequality reduces to a quadratic $N(t)$ whose discriminant factor
-  $E(\Delta) = -3\Delta^4 + 8\Delta^3 + 6\Delta^2 - 8\Delta + 1$ is negative.
-- **$\Delta = 3$** — degrees lie in $\{1,2,3\}$, where the annihilation number
-  has a closed form in the degree counts $(n_1, n_2, n_3)$ that yields
-  $a \le 2W$ in three regimes.
+The TxGraffiti inequality
 
-## Results
+$$\Delta\alpha\ge a+R$$
 
-| Result | Statement |
-|---|---|
-| Theorem 1 | $a \le \tfrac{\Delta+1}{2}\,W$ — the annihilation–Caro–Wei vehicle |
-| Theorem 2 | $\Delta\alpha \ge a + R$ for every connected graph with $\Delta \ge 2$ (the conjecture for $\Delta \ge 2$) |
-| Corollary 1 | sharpness: $\Delta\alpha = a + R$ iff $(\Delta-1)\alpha = a$ and $\alpha = R$; attained at $K_4$ |
-| Corollary 2 | $a \le (\Delta - 1)\alpha$ for $\Delta \ge 3$ |
-| Corollary 3 | the independence-number bracket between the polynomial-time computable $R$ and $a$ |
+holds for every connected graph with at least three vertices. The single edge
+$K_2$ is the only nontrivial connected exception. Equality holds exactly for
+$P_3$, $P_4$, $P_6$, $C_3$, $C_4$, $C_5$, $C_7$ and $K_4$.
+For $\Delta\ge3$, the estimate $(a+R)/\Delta$ never exceeds the residue $R$.
 
-The only nontrivial connected graph for which the bound fails is the single edge
-$K_2$ (maximum degree one).
+## Quick Start
 
-## Code
-
-Pure Python with [NetworkX](https://networkx.org) and `geng` from
-[`nauty`](https://pallini.di.uniroma1.it/); exact integer/rational arithmetic
-throughout. Every script runs in seconds to minutes on a laptop.
+Install Python 3, [NetworkX](https://networkx.org) and `geng` from
+[`nauty`](https://pallini.di.uniroma1.it/). On macOS, `brew install nauty`
+provides `geng`. Run from this directory:
 
 ```sh
-pip install networkx          # and: brew install nauty   (for geng)
-cd code
-
-# Theorem 2 directly (Delta*alpha >= a+R), all connected graphs n = 3..10
-python3 c1_verify_fast.py 3 10        # 11,989,762 graphs (Delta>=2), 0 violations
-python3 c1_verify_fast.py --check 3 8 # gate: alpha cross-validated vs NetworkX
-
-# Theorem 1 + the vehicle a <= (Delta-1)*alpha, all connected graphs n = 3..9
-python3 c1_verify.py 3 9
-
-# the case split, the reduction to the vehicle, and the vehicle's proof
-python3 c1_subclass.py 3 9            # Delta=2 ; Delta>=3, alpha>=n/2 ; residual
-python3 c1_decompose.py 3 9           # reduction to L': a <= (Delta-1)W
-python3 c1_lprime.py 4 13             # L' over all graphic degree sequences
-python3 c1_ratio_proof_check.py       # step-by-step proof of a <= (Delta+1)/2 W
-python3 c1_ratio_sup.py               # the uniform bound a/W <= (Delta+1)/2
-
-# the two maximum-degree regimes
-python3 c1_delta4.py 14               # Delta>=4: graphs + sequences + symbolic E(Delta)<0
-python3 c1_delta3_proof.py 200        # Delta=3: closed form + a <= 2W (686,900 multisets)
+python3 -m pip install networkx
+python3 code/c1_verify_fast.py 3 9
+python3 code/c1_verify_fast.py --check 3 8
 ```
 
-| File | What it verifies |
-|---|---|
-| `c1_verify.py` | the conjecture and $a \le (\Delta-1)\alpha$ on all connected graphs (NetworkX $\alpha$) |
-| `c1_verify_fast.py` | Theorem 2 directly to order ten (bitset $\alpha$; `--check` vs reference) |
-| `c1_subclass.py` | the $\alpha \ge n/2$ case split and its load-bearing facts |
-| `c1_decompose.py` | the reduction to the vehicle $L'\!: a \le (\Delta-1)W$, stratified |
-| `c1_lprime.py` | $L'$ over all graphic degree sequences (Erdős–Gallai) |
-| `c1_ratio_proof_check.py` | the step-by-step proof of $a \le \tfrac{\Delta+1}{2}W$ |
-| `c1_ratio_sup.py` | the uniform bound $a/W \le \tfrac{\Delta+1}{2}$ |
-| `c1_delta4.py` | the $\Delta \ge 4$ proof: graphs + sequences + symbolic discriminant |
-| `c1_delta3_proof.py` | the $\Delta = 3$ regime closed form and $a \le 2W$ |
+The first command checks all 273,191 connected graphs of orders 3 through 9
+and reports zero violations. The per-order counts are
+`2, 6, 21, 112, 853, 11117, 261080`, matching
+[OEIS A001349](https://oeis.org/A001349).
+The second command cross-checks the bitset independence-number computation
+against NetworkX on all 12,111 connected graphs of orders 3 through 8.
+Its annihilation-number and residue functions are copied from the reference
+implementation, so those comparisons are consistency checks, not independent
+oracles. The verifier checks generator exit status and includes $K_2$ as a
+positive control for detecting a violated inequality.
 
-## Lean formalization
+These commands reproduce the finite check reported in the revised manuscript.
+They are not a proof of the general statements and do not certify an order-ten
+or a separate degree-sequence census. Use the explicit order ranges above;
+the verifier's no-argument default requests order ten. The remaining scripts
+are retained as supplementary investigations, not prerequisites for this run.
 
-The `lean/` directory is a single Lake project that mechanizes the main result
-**directly over Mathlib's `SimpleGraph`** (Mathlib pinned in `lake-manifest.json`,
-toolchain `leanprover/lean4:v4.32.0-rc1`). It *proves* the vehicle (Theorem 1),
-Caro–Wei `W ≤ α`, the `Δ ≤ 2` branch, Favaron `R ≤ α`, and Theorem 2
-`a + R ≤ Δ·α`, plus the paper's Corollaries 1–3. The development is `sorry`-free;
-one classical input — the residue-monotonicity step behind `R ≤ α`
-(Favaron–Mahéo–Saclé 1991) — is isolated as a single **named, cited, and
-computationally-verified `axiom`** rather than re-proved, so
-`#print axioms txgraffiti_conjecture_1` names exactly that one axiom alongside the
-Lean/Mathlib defaults. See [`lean/README.md`](lean/README.md) for details and
-[`lean/axiom-verification/`](lean/axiom-verification/) for the axiom's numerical
-checks.
+## Lean Coverage And Limits
 
-## Validation
+The pinned [Lean project](lean/README.md) proves the core inequality
+$a\le(\Delta+1)W/2$ over Mathlib's `SimpleGraph` without custom axioms.
+It also proves the Caro-Wei lower bound and the connected maximum-degree-two
+annihilation estimate. The residue bound and graph-level TxGraffiti theorem
+depend on one explicitly named residue-monotonicity axiom.
 
-The exhaustive search is cross-validated: `c1_verify_fast.py --check` confirms the
-bitset independence number against NetworkX on every graph up to order eight, and
-the annihilation number and residue are computed two independent ways. No
-violation occurs anywhere in the search — the conjecture holds on all
-$11{,}989{,}762$ connected graphs of order at most ten, and the vehicle holds on
-all graphic degree sequences up to order fourteen ($\Delta \ge 4$) and order two
-hundred ($\Delta = 3$).
+The rational-arithmetic lemmas in `Corollaries.lean` take their invariant
+inequalities as hypotheses. They do not formalize the revised five-term
+bracket, the connected sharpness family for every maximum degree, or the
+explicit eight-graph equality classification. The full revised paper is not
+claimed to be kernel-verified. Finite tests of a custom axiom do not prove it.
+
+## Attribution
+
+The annihilation-number definition and the bound $\alpha\le a$ appear in Pepper's
+[*Binding Independence*](https://www.proquest.com/docview/305196562).
+The reciprocal-degree estimate and residue inequalities are from Favaron,
+Maheo and Sacle, [*On the residue of a graph*](https://doi.org/10.1002/jgt.3190150107).
+The known Caro-Wei approximation estimate is presented by Boppana,
+Halldorsson and Rawitz, [*Simple and local independent set approximation*](https://doi.org/10.1016/j.tcs.2020.09.018).
+The conjecture is from Davila, Brimkov and Pepper's
+[2025 preprint](https://arxiv.org/abs/2507.17780v1).
+Kadrawi and Levit [refine the annihilation bound](https://arxiv.org/abs/2607.01438v1)
+to an exact slack identity and give an independent proof of the TxGraffiti
+inequality. Graph generation uses McKay and Piperno's `nauty`/`geng`.
+
+## License
+
+The code is distributed under the repository's [CC BY 4.0 license](../../LICENSE).

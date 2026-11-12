@@ -2,22 +2,13 @@ import Mathlib
 import TxGraffitiC1FC.Invariants
 
 /-!
-# Item 2 — the annihilation-number Caro–Wei vehicle over the real invariants
+# The annihilation-number Caro-Wei bound over graph invariants
 
-Ports the lab's abstract algebraic core (`annihilation_caroWei`,
-`domains/math/src/txgraffiti-c1/lean/CaroWeiAnnihilation.lean`) from a degree
-vector `Fin n → ℕ` to an arbitrary finite vertex type `V`, then proves the
-graph-level vehicle `a ≤ (Δ+1)/2 · W` (Conjecture.lean's `annih_vehicle`) over
-the real `annihilationNumber`. Three lemmas, all proved and kernel-checked:
-
-* `caroWei_abstract` (A): the ported algebraic core over `V`.
-* `exists_annih_head` (B): the annihilation number is the cardinality of a vertex
-  head-set whose degree sum is `≤ #edges` (attained-sup + multiset realizability).
-* `head_sum_le_maxDegree` (C): such a head-set has `Σ_{v∈H} deg v ≤ Δ·(n−|H|)`.
-
-`vehicle_bound` wires A+B+C over the real `annihilationNumber`; it is
-`Conjecture.annih_vehicle` modulo the definitional unfolding of `caroWeiWeight`
-(wired at cleanup, item 7). Axioms: `[propext, Classical.choice, Quot.sound]`.
+The algebraic core `caroWei_abstract` bounds a feasible vertex head-set using
+its degree sum. The lemmas `exists_annih_head` and `head_sum_le_maxDegree`
+supply that set and bound from `annihilationNumber`. Their assembly in
+`vehicle_bound` proves `a ≤ (Δ+1)/2 · W` over a finite `SimpleGraph`, using
+only `propext`, `Classical.choice` and `Quot.sound`.
 -/
 
 namespace TxGraffitiC1FC
@@ -182,7 +173,7 @@ namespace SimpleGraph
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
   [DecidableRel G.Adj]
 
-/-- **(B) Greedy/prefix (item 2, the crux).** The annihilation number is the
+/-- The annihilation number is the
 cardinality of some vertex head-set whose degree sum is at most the edge count.
 The filtered finset of feasible sub-multisets is nonempty (contains `0`), so its
 `sup` over `Multiset.card` is attained at some `S`; `S ≤ degreeMultiset =
@@ -222,7 +213,7 @@ theorem exists_annih_head :
     rw [hdef, hTval, hTmap]
     exact hSsum
 
-/-- **(C) Head-sum bound (item 2, tractable).** A vertex head-set whose degree
+/-- A vertex head-set whose degree
 sum is `≤ #edges` has degree sum `≤ Δ·(n − |H|)`. Chain
 `Σ_H d ≤ m ≤ Σ_T d ≤ Δ(n−|H|)` (T = complement) via the handshake `Σ_v d = 2m`
 and `d v ≤ Δ`. -/
@@ -253,9 +244,8 @@ theorem head_sum_le_maxDegree (H : Finset V)
   -- Σ_H d ≤ m and m ≤ Σ_T d ≤ Δ(n−|H|), so Σ_H d ≤ Δ(n−|H|).
   omega
 
-/-- **Vehicle bound over the real annihilation number** (item 2 assembly): A+B+C
-compose to `a ≤ (Δ+1)/2 · Σ_v 1/(deg v + 1)`. This is `Conjecture.annih_vehicle`
-modulo the definitional unfolding of `caroWeiWeight` (wired at cleanup, item 7). -/
+/-- Annihilation-number bound `a ≤ (Δ+1)/2 · Σ_v 1/(deg v + 1)`, obtained
+from the algebraic core and the feasible head-set lemmas. -/
 theorem vehicle_bound (hΔ : 1 ≤ G.maxDegree) :
     (G.annihilationNumber : ℚ)
       ≤ ((G.maxDegree : ℚ) + 1) / 2 * ∑ v : V, 1 / ((G.degree v : ℚ) + 1) := by

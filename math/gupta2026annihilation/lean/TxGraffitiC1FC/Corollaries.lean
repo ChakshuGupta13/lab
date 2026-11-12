@@ -1,22 +1,20 @@
 import Mathlib
 
 /-!
-# Corollaries 1–3 (algebraic layer)
+# Rational arithmetic consequences
 
-The paper's three corollaries are algebraic consequences of the two summand
-bounds (`a ≤ (Δ−1)·α` and `R ≤ α`) and the vehicle `a ≤ (Δ+1)/2·W`. They are
-stated here over `ℚ`, parametric in the invariants, exactly as in the paper —
-the graph-theoretic inputs they consume are the ones proved concretely over
-`SimpleGraph` elsewhere in this project (`annih_le_predMaxDegree_indepNum`,
-`caroWei_le_indepNum`, `residue_le_indepNum`, and Pepper's `α ≤ a`).
+These lemmas take invariant inequalities as hypotheses. They do not instantiate
+the parameters on `SimpleGraph`, prove the graph bound `α ≤ a`, or formalize
+the revised paper's full interval and equality-classification results.
+The numerical witness lemmas check literal arithmetic, not graph invariants.
 
-Kept as a self-contained algebraic module so the arithmetic is auditable in
-isolation. Axioms: only `propext`, `Classical.choice`, `Quot.sound`.
+This self-contained algebraic module depends only on `propext`,
+`Classical.choice` and `Quot.sound`.
 -/
 
 namespace TxGraffitiC1FC
 
-/-- **Corollary 1 (Sharpness).** Equality `Δα = a + R` holds iff both summand
+/-- Equality `Δα = a + R` holds iff both summand
 inequalities are equalities, `(Δ−1)α = a` and `α = R`. -/
 theorem sharpness_iff
     (Δ α a R : ℚ)
@@ -35,7 +33,7 @@ theorem K4_attains_sharpness :
     ((3 : ℚ) - 1) * 1 = 2 ∧ (1 : ℚ) = 1 ∧ (3 : ℚ) * 1 = 2 + 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> norm_num
 
-/-- **Corollary 2 (Domination by `max(R, W)`).** For `Δ ≥ 3`,
+/-- For `Δ ≥ 3`,
 `(a + R)/Δ ≤ max(R, W)`, from the vehicle and `R ≤ max(R, W)`. -/
 theorem dominated_by_max
     (Δ : ℕ) (a R W : ℚ) (hΔ : 3 ≤ Δ)
@@ -61,7 +59,7 @@ theorem dominated_by_max
   rw [div_le_iff₀ hΔ_pos]
   linarith
 
-/-- **Corollary 3 (Bracketing).** Given the three classical bounds on `α`
+/-- Given the three classical bounds on `α`
 (`R ≤ α`, `W ≤ α`, `α ≤ a`) and the vehicle, the bracket
 `max(R, W) ≤ α ≤ a ≤ (Δ+1)/2·max(R, W)` holds for every `Δ ≥ 1`. -/
 theorem bracketing

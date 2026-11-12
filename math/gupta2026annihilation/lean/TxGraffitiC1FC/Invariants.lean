@@ -6,16 +6,10 @@ import Mathlib.Data.Multiset.Interval
 /-!
 # Local copies of the two invariants not in Mathlib
 
-`annihilationNumber` and `residue` live in `FormalConjecturesForMathlib`, which
-we do not depend on during development (see repo memory: version-decision).
-These are faithful copies from that source (module-system boilerplate stripped),
-to be reconciled with upstream at transplant time.
-
-`residueAux` was FC's `partial def`; refactored here (item 4) to well-founded
-recursion (`termination_by l.length` via `havelHakimiStep_length_cons`) so
-Favaron's `R ≤ α` (item 6) can reason about it inductively. The computed function
-is unchanged; this refactored definition is the version to contribute upstream at
-transplant (item 8).
+The degree-multiset, annihilation-number and residue definitions are adapted
+from `FormalConjecturesForMathlib`. This project does not import that library.
+The local `residueAux` uses well-founded recursion on list length;
+`havelHakimiStep_length_cons` supplies the termination argument.
 -/
 
 namespace SimpleGraph
@@ -56,10 +50,8 @@ theorem havelHakimiStep_length_cons (d : ℕ) (rest : List ℕ) :
     List.length_append, List.length_map, List.length_take, List.length_drop]
   omega
 
-/-- Residue via iterated Havel–Hakimi until all-zero. (FC `Residue.lean`, refactored
-from a `partial def` to well-founded recursion — item 4 — via
-`havelHakimiStep_length_cons`, so it admits equational/inductive reasoning; the
-computed function is unchanged.) -/
+/-- Residue via iterated Havel-Hakimi on a descending list, using list length
+as the termination measure. -/
 def residueAux : List ℕ → ℕ
   | [] => 0
   | 0 :: s => 1 + s.length

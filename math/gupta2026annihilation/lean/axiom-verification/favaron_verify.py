@@ -106,10 +106,8 @@ def main():
             if len(worst) < 5:
                 worst.append(("MAIN", degrees_desc(adj, n), R, A))
         # deletion step: the crux R(G) <= R(G-v) for a max-degree v.
-        # NOTE (adversary 2026-07-08): the crux is FALSE on edgeless graphs
-        # (max degree 0): there R(G)=n but R(G-v)=n-1, so n<=n-1 fails. The Lean
-        # statement therefore requires 0 < G.degree v; the branch guard below
-        # (max degree >= 1) tests EXACTLY that positive-degree region.
+        # On an edgeless graph R(G)=n but R(G-v)=n-1, so the deletion bound fails.
+        # The positive-degree guard matches the Lean statement's hypothesis.
         degs = [sum(adj[i]) for i in range(n)]
         if max(degs, default=0) >= 1:
             v = max(range(n), key=lambda i: degs[i])  # a max-degree vertex, deg v >= 1

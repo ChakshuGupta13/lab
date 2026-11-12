@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TxGraffiti Conjecture 1 deep-scope verification.
+TxGraffiti Conjecture 1 graph verification.
 
 C1 (Davila-Brimkov-Pepper, arXiv:2507.17780, open since 2016):
   G nontrivial connected, Delta>=2  =>  Delta*alpha >= a + R   (integer form of
@@ -14,10 +14,9 @@ Invariants (all exact integers):
 
 Reduction lemma under test:
   L:  a <= (Delta-1)*alpha
-  Fact: C1 holds via the known alpha>=R (Favaron 1991) iff L holds, because
-        Delta*alpha = (Delta-1)alpha + alpha >= a + alpha >= a + R  <=  L and alpha>=R.
-  So this script also records where L holds / fails: the L-FAIL set is exactly the
-  set of graphs whose C1 truth needs strictly more than alpha>=R.
+  The known alpha>=R bound and L imply C1, because
+      Delta*alpha = (Delta-1)alpha + alpha >= a + alpha >= a + R.
+  This script also records where the sufficient inequality L holds or fails.
 
 For each n it reports:
   - #connected graphs
@@ -45,7 +44,9 @@ def geng_stream(n, connected=True):
         g6 = line.strip()
         if g6:
             yield g6, nx.from_graph6_bytes(g6.encode())
-    proc.wait()
+    exit_code = proc.wait()
+    if exit_code:
+        raise subprocess.CalledProcessError(exit_code, proc.args)
 
 
 def independence_number(G):

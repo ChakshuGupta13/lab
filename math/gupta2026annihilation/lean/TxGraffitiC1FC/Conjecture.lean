@@ -6,7 +6,7 @@ import TxGraffitiC1FC.Delta2
 import TxGraffitiC1FC.Favaron
 
 /-!
-# TxGraffiti Conjecture 1 — statement + assembly (modulo four named lemmas)
+# TxGraffiti Conjecture 1 conditional on residue monotonicity
 
 Source: Davila–Brimkov–Pepper, *In Reverie Together* (arXiv:2507.17780), Conjecture 1;
 proved in Gupta, arXiv:2606.29553.
@@ -14,44 +14,32 @@ proved in Gupta, arXiv:2606.29553.
   Every connected graph with `Δ ≥ 2` satisfies `α ≥ (a + R) / Δ`, i.e. `a + R ≤ Δ · α`,
   where α = independence number, Δ = max degree, a = annihilation number, R = residue.
 
-This file states the theorem over the real invariants and assembles it from four
-named lemmas, each discharged by a plan item:
-  * `caroWei_le_indepNum`                    (Caro–Wei `W ≤ α`; item 5, done)
-  * `annih_vehicle`                          (paper Theorem 1 `a ≤ (Δ+1)/2·W`; item 2, done)
-  * `annih_le_indepNum_of_maxDegree_le_two`  (Δ≤2 branch `a ≤ α`; item 3, done in Delta2.lean)
-  * `residue_le_indepNum_rat`                (Favaron `R ≤ α`; item 6, in Favaron.lean)
-
-Item 6 is fully assembled in `Favaron.lean` (strong induction + base case + α-bridge),
-reducing to a single named, cited AXIOM — the residue monotonicity under max-degree vertex
-deletion (`residue_le_residue_induce_compl_of_maxDegree`, Favaron–Mahéo–Saclé 1991, verified
-computationally). So `#print axioms txgraffiti_conjecture_1` names that one axiom explicitly
-(no `sorryAx`) alongside the Lean/Mathlib defaults.
+The Caro-Wei and annihilation bounds and the connected maximum-degree-two
+branch are proved over the graph invariants. The residue bound used in the
+assembly depends on `residue_le_residue_induce_compl_of_maxDegree` in
+`Favaron.lean`. Consequently `#print axioms txgraffiti_conjecture_1` lists
+that custom assumption alongside the standard Lean/Mathlib axioms. The finite
+probes do not discharge it.
 -/
 
 namespace SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
-/-- Caro–Wei weight `W(G) = ∑_v 1/(deg v + 1)` over ℚ. (Conceptually an invariant;
-kept here for now to avoid touching `Invariants.lean`'s targeted imports; move to
-`Invariants.lean` at transplant.) -/
+/-- Caro-Wei weight `W(G) = ∑_v 1/(deg v + 1)` over ℚ. -/
 def caroWeiWeight : ℚ := ∑ v : V, 1 / ((G.degree v : ℚ) + 1)
 
 set_option linter.unusedSectionVars false in
 lemma caroWeiWeight_nonneg : 0 ≤ G.caroWeiWeight := by
   unfold caroWeiWeight; positivity
 
-/-- **Caro–Wei bound** (item 5): `W ≤ α`. Discharged by `caroWei_bound`
-(CaroWei.lean), proved by Wei's Finset-relative deletion induction. -/
+/-- Caro-Wei bound `W ≤ α`, proved by Finset-relative deletion induction. -/
 theorem caroWei_le_indepNum : G.caroWeiWeight ≤ (G.indepNum : ℚ) := by
   unfold caroWeiWeight
   exact G.caroWei_bound
 
-/-- **Annihilation vehicle** (paper Theorem 1; item 2): for `1 ≤ Δ`,
-`a ≤ (Δ+1)/2 · W`. Discharged by `vehicle_bound` (Vehicle.lean), which proves the
-bound over the real `annihilationNumber` via the ported algebraic core plus the
-greedy head-set and head-sum lemmas; `caroWeiWeight` is definitionally the sum in
-`vehicle_bound`. -/
+/-- Annihilation-number bound `a ≤ (Δ+1)/2 · W` for positive maximum degree,
+obtained from `vehicle_bound` by unfolding the Caro-Wei weight. -/
 theorem annih_vehicle (hΔ : 1 ≤ G.maxDegree) :
     (G.annihilationNumber : ℚ) ≤ ((G.maxDegree : ℚ) + 1) / 2 * G.caroWeiWeight := by
   unfold caroWeiWeight

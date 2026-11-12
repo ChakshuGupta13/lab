@@ -2,26 +2,13 @@ import Mathlib
 import TxGraffitiC1FC.Invariants
 
 /-!
-# Favaron's residue bound `R ≤ α` (item 6)
+# Favaron's residue bound conditional on residue monotonicity
 
-Target: `residue_le_indepNum : (G.residue : ℚ) ≤ (G.indepNum : ℚ)`.
-
-**Proof structure** (computationally verified, `axiom-verification/favaron_verify.py`, 0 failures
-/ 40k random graphs):
-strong induction on `Fintype.card V`; delete a maximum-degree vertex `v`, then
-`R(G) ≤ R(G−v) ≤ α(G−v) ≤ α(G)`. The two easy links are `α(G−v) ≤ α(G)` (an
-independent set of `G−v` is one of `G`) and the IH `R(G−v) ≤ α(G−v)`. The hard link
-is the **residue monotonicity** `R(G) ≤ R(G−v)` for a max-degree `v`, which is the
-graphical-majorization content of Favaron–Mahéo–Saclé (1991): NOT a pure-sequence
-fact (`axiom-verification/favaron_seq_lemma.py`: the naive "decrement-largest is minimal" claim
-has 17k counterexamples; even full graphicality of `(Δ::tail)` leaves 4.5k — the
-decremented sequences themselves must be graphical). This monotonicity is assumed as a
-single named, computationally-verified, cited AXIOM
-(`residue_le_residue_induce_compl_of_maxDegree`); everything else is proved here, so the
-whole theorem depends only on that one named classical axiom (no `sorry`/`sorryAx`).
-
-This file builds bottom-up: sequence lemmas about `residueAux` first (no graph, no
-subtypes), then the graph base case, then the induction, then the cited axiom.
+Strong induction on the vertex count reduces `R(G) ≤ α(G)` to deletion of a
+positive-maximum-degree vertex. The inequality `R(G) ≤ R(G−v)` is assumed as
+`residue_le_residue_induce_compl_of_maxDegree`; the remaining induction and
+independent-set steps are proved here. The resulting theorem retains that
+custom axiom. Finite tests of the assumption are not a formal proof.
 -/
 
 namespace SimpleGraph
@@ -114,32 +101,14 @@ theorem indepNum_eq_card_of_degree_zero (G : SimpleGraph V) [DecidableRel G.Adj]
     _ ≤ G.indepNum := huniv.card_le_indepNum
 /-! ## The residue-monotonicity crux (assumed as a cited classical axiom) -/
 
-/-- **AXIOM — cited classical input.** The residue monotonicity `R(G) ≤ R(G − v)` for a
-maximum-degree vertex `v` **of positive degree**. This is the graphical-majorization step
-underlying the classical bound `R ≤ α` first established by Favaron, Mahéo & Saclé (1991); the
-paper being formalized (Gupta, arXiv:2606.29553) *uses* that classical bound rather than
-re-proving it, so it is assumed here as a named, cited axiom rather than re-derived. It is NOT
-`sorry`: `#print axioms` shows it by name, so the dependence is explicit and auditable.
+/-- Assumed residue monotonicity under deletion of a positive-maximum-degree
+vertex. This unproved input supplies the classical residue bound used below.
+It remains a custom axiom in `#print axioms SimpleGraph.txgraffiti_conjecture_1`.
 
-Computationally verified: for all graphs with an edge up to 8 vertices
-(`axiom-verification/favaron_verify.py`, guarded by `max degree ≥ 1`, 0 failures). The `0 < G.degree v`
-hypothesis is essential — on an edgeless graph `R(G) ≤ R(G−v)` reads `n ≤ n−1` and is false;
-that case is discharged separately (`residue_eq_card_of_degree_zero`).
-
-**Precise content** (`axiom-verification/favaron_majorize.py`, exhaustive over all graphical sequences
-`n ≤ 7`): *residue is Schur-convex on graphical sequences* — if `a, b` are both graphical of
-equal length and `a` majorizes `b`, then `residue a ≥ residue b`. The axiom is this applied to
-`σ := sort(deg(G−v))` (decrement `v`'s neighbours) which majorizes `π' := HH(sort(deg G))`
-(decrement the `Δ` largest), both graphical, giving `R(G−v) = residue σ ≥ residue π' = R(G)`.
-
-A native Lean proof needs a combinatorial majorization + graphical-sequence library Mathlib
-lacks (Muirhead unit-transfer decomposition + graphicality preservation + per-transfer residue
-monotonicity). Six computational probes rule out every shortcut: the pure-sequence form
-(`favaron_seq_lemma.py`, 17k counterexamples), graphicality of `(Δ::tail)` alone
-(`favaron_refined.py`, 4.5k), pointwise monotonicity of `residueAux` and pointwise-minimality of
-decrement-largest (`favaron_ptwise.py`, both false), and the inductive-via-HH route (HH on
-majorization-comparable sequences diverges: different heads ⟹ different sums ⟹ no longer
-comparable). Replacing this axiom with a native proof is a self-contained multi-week project. -/
+The positive-degree hypothesis excludes edgeless graphs, where the proposed
+inequality would read `n ≤ n-1`. The scripts in `axiom-verification/` are finite
+probes, not a proof of this axiom; `favaron_verify.py` uses random sampling.
+-/
 axiom residue_le_residue_induce_compl_of_maxDegree
     (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
     (hv : ∀ w, G.degree w ≤ G.degree v) (hpos : 0 < G.degree v) :
@@ -147,12 +116,9 @@ axiom residue_le_residue_induce_compl_of_maxDegree
 
 /-! ## Main theorem: `R ≤ α` (modulo the crux above) -/
 
-/-- **Favaron's residue bound** `R(G) ≤ α(G)`, assembled by strong induction on
-`|V|`: delete a maximum-degree vertex `v`; then
-`R(G) ≤ R(G−v) ≤ α(G−v) ≤ α(G)` via the residue monotonicity crux, the IH, and the
-α-bridge. Every link is proved here except the monotonicity crux, which is the named,
-computationally-verified cited axiom `residue_le_residue_induce_compl_of_maxDegree`
-(Favaron–Mahéo–Saclé 1991) — so `#print axioms` names it explicitly, no `sorry`. -/
+/-- Residue bound conditional on the custom residue-monotonicity axiom.
+Strong induction proves `R(G) ≤ R(G−v) ≤ α(G−v) ≤ α(G)` after assuming its
+first link for a positive-maximum-degree vertex. -/
 theorem residue_le_indepNum (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.residue ≤ G.indepNum := by
   suffices h : ∀ (n : ℕ) (W : Type _) [Fintype W] [DecidableEq W]
