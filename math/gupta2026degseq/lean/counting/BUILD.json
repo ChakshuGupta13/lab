@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-11-18T19:30:32.671Z",
+  "scope": "Partial canonical-height counting formalization",
+  "leanToolchain": "leanprover/lean4:v4.27.0",
+  "mathlibRevision": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
+  "sourceCount": 94,
+  "initialLocalProofObjects": "absent",
+  "proofObjectsImportedFromOtherLocalProjects": false,
+  "thirdPartyDependencyCacheReused": true,
+  "dependencyDownloadsPerformed": false,
+  "buildContinuation": "Resumed after a resource-limit failure and explicit legacy-lint reporting adjustment; all local proof objects were produced from this exported source tree.",
+  "resumedBuildElapsedMs": 1283118,
+  "libraryBuild": "pass",
+  "standardAxiomsOnly": true,
+  "axiomTraces": [
+    {
+      "name": "OrigamiCone.Sequel.SmallDegreePolynomials.Ed_full_totalDegree_and_leading",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "OrigamiCone.Sequel.DegreeTwoCounts.Ed_two",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "OrigamiCone.Sequel.DegreeTwoCounts.degree_two_iff_gradient",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "OrigamiCone.Sequel.SignedPathCounts.canonical_path_signed_binomial",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "OrigamiCone.Sequel.SignedSideCounts.canonicalSplit_signed_side_decomposition",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "OrigamiCone.Sequel.SignedSideCounts.signedSidePolynomial_leading",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "retainedLegacyWarnings": [
+    "OrigamiCone/SequelEdBoundary.lean:86:52: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdBoundary.lean:87:45: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdBoundary.lean:94:31: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdBoundary.lean:108:52: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdBoundary.lean:109:45: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdBoundary.lean:146:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdBoundary.lean:153:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdBoundary.lean:160:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdBoundary.lean:196:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdBoundary.lean:203:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdBoundary.lean:210:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdFrozenBridge.lean:24:45: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdFrozenBridge.lean:25:52: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdFrozenBridge.lean:74:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdFrozenSlope.lean:46:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractAt.lean:55:26: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractAt.lean:80:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractAt.lean:86:35: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractAt.lean:100:5: unused variable `hp1v`",
+    "OrigamiCone/SequelEdContractAt.lean:110:33: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractAt.lean:126:33: This simp argument is unused:",
+    "OrigamiCone/SequelEdCellExpand.lean:15:49: unused variable `hj0`",
+    "OrigamiCone/SequelEdCellExpand.lean:15:67: unused variable `hj1`",
+    "OrigamiCone/SequelEdCellExpand.lean:87:47: This simp argument is unused:",
+    "OrigamiCone/SequelEdCellExpand.lean:137:30: This simp argument is unused:",
+    "OrigamiCone/SequelEdCellExpand.lean:140:30: This simp argument is unused:",
+    "OrigamiCone/SequelEdCellExpand.lean:158:30: This simp argument is unused:",
+    "OrigamiCone/SequelEdCellExpand.lean:161:30: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:67:15: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:72:15: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:198:19: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:198:29: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:198:39: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:209:19: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:209:29: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:209:39: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:230:19: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:230:29: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:230:39: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:241:19: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:241:29: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:241:39: This simp argument is unused:",
+    "OrigamiCone/SequelEdContractExtremum.lean:200:62: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:211:59: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:232:62: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:243:59: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:271:52: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:280:10: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:292:52: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:303:10: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:338:52: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:347:10: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:359:52: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdContractExtremum.lean:370:10: 'push_cast' tactic does nothing",
+    "OrigamiCone/SequelEdColumnPartition.lean:36:26: This simp argument is unused:",
+    "OrigamiCone/SequelEdStarsBars.lean:44:16: this tactic is never executed",
+    "OrigamiCone/SequelEdStarsBars.lean:44:16: 'omega' tactic does nothing",
+    "OrigamiCone/SequelEdStarsBars.lean:77:10: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice",
+    "OrigamiCone/SequelEdStarsBars.lean:83:10: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice"
+  ],
+  "newCountingModuleWarnings": 0,
+  "files": {
+    "sources.json": "46efd8e78cf5d7dcc855d50abf08ce4fd4d466b9a7368f1b28656450aeef9c36",
+    "lean-toolchain": "d55ca0039a5479db5b38919d005b2c427b89b3be4f0184a20f2f4eae931f5bdb",
+    "lake-manifest.json": "a9e58783b05def7da83721a1c13f830f37e7143b38906e30e0ea591b9c5ff32e",
+    "lakefile.toml": "4c26d25c258986cbe0482bd49e77e60c94c8013c0c06dc19934731d7d40c30eb",
+    "MiuraCounting.lean": "a6974968a8d9ea0b7da9584ca2fdef6d3cc6810684f3213f4b3793604a7dc160",
+    "Check.lean": "b82c4140175c8f2b9cecf1117549e9c7f321efa6f47b89c221aece5cc966f7ac",
+    "verify.mjs": "9935e16a49a0cd3f4a6fc060868afc3a65c40664b250cb21986ecd04b3e1f0fc"
+  },
+  "wholePaperFormalized": false,
+  "fullBuildValidatorSha256": "3c9ef2158697938a734388e2258445d92384df3abafda0bb9a32bd21d7aa7450",
+  "releaseValidatorChecks": {
+    "validatorSha256": "9935e16a49a0cd3f4a6fc060868afc3a65c40664b250cb21986ecd04b3e1f0fc",
+    "sourceIntegrity": "pass",
+    "negativeControls": "pass",
+    "existingObjectTheoremCheckSha256": "b73435484c1f8a45ad07e14bf9d44d1306456ab617452a65066a78055796af12",
+    "standardAxiomDeclarations": 6
+  }
+}

@@ -12,6 +12,24 @@ code at [`gupta2026origami`](../gupta2026origami)), which resolved the degree
 sequence up to degree five. The present paper gives **one construction** that
 computes the number of degree-`d` vertices for **every** degree `d`, uniformly.
 
+## Current Proof Release
+
+[The portable counting project](lean/counting/) adds source-rebuilt Lean
+proofs of the all-degree total-degree theorem, the explicit degree-three/four
+polynomials, the four degree-two gradients, the full signed path-count formula
+and the prescribed signed side decomposition. It retains Lean 4.27.0 and pins
+Mathlib by immutable commit.
+
+This is a partial formalization in the canonical-height model, not verification
+of the entire papers. The new project declares no custom axioms and checks the
+public theorem closures against Lean's three standard axioms. The older
+[historical project](lean/OrigamiCone/) remains available separately with its
+original assumptions disclosed below.
+
+The external dispersion formalization is linked in the
+[counting project's attribution section](lean/counting/#related-formalization).
+It does not replace Simon Watts's attribution for the exact diameter.
+
 ## The problem
 
 The **origami flip graph** `OFG(C)` of a flat-foldable crease pattern `C` has the
@@ -49,14 +67,14 @@ transfer-matrix DP** (`column_dp.Ed_DP`). They agree everywhere.
 | Polynomiality on the high region | `E_d = p_d`, a single symmetric polynomial, on `m, n ≥ max(d-1, 2)`; existence, symmetry, region, per-axis degree unconditional | proved + verified | `verify_claims.py`, `column_dp.py` |
 | Closed forms | `p_d` computed explicitly through `d = 10` | computed | `extract_pd.py` (`d ≤ 7`), `compute_p10.py` (`d = 9, 10`) |
 | Top-degree part | `4/(d-2)! · (m^{d-2} + n^{d-2})` for `d ≥ 5` | proved + verified | `verify_claims.py` |
-| Degree bound | total degree of `p_d` is `d - 2` | conjectured; **proved for the separable case**; verified through `d = 7` | `verify_separable.py`, `confirm_d7.py`, `d8_leading_check.py` |
+| Degree bound | total degree of `p_d` is `d - 2` for every `d >= 3` | proved in the canonical-height model | [Lean counting proofs](lean/counting/) |
 | Boundary correction | one step below threshold, leading coefficient `-4·Bax(d-3)` (Baxter numbers) | conjectured; verified through `d = 11` | `verify_claims.py`, `d8_leading_check.py` |
 
-The existence, symmetry, region, and per-axis degree of `p_d` are unconditional.
-Two features rest on conjecture: whether the total degree stays `d - 2` for every
-`d` (the degree bound), and the exact form of the boundary correction below
-threshold. The construction settles the degree bound where the count factors into
-independent row and column contributions (the separable case).
+The existence, symmetry, region, per-axis degree and total degree of `p_d` are
+proved. The new Lean release covers the total-degree theorem for all `d >= 3`
+in the canonical-height model. It does not formalize the remaining boundary
+correction claims. The Python scripts retain their original numerical scope;
+finite cross-checks should not be read as universal proofs.
 
 ## Code
 
@@ -103,9 +121,9 @@ Christensen–Hull et al. (vertex count `2·3^{n-1}`), and the two independent
 engines agree on `E_d(m, n)` for every degree and grid tested — the cross-check
 that justifies trusting the closed forms.
 
-## Lean formalization
+## Historical Lean Formalization
 
-`lean/` contains the Lean 4 formalization (Lean `v4.27.0` + Mathlib), a shared
+`lean/OrigamiCone/` contains the earlier Lean 4 formalization (Lean `v4.27.0` + Mathlib), a shared
 `OrigamiCone` project covering both this paper and its companion. The sequel
 modules are the `OrigamiCone/Sequel*.lean` files (envelope structure, the
 transfer-matrix / rational generating function chain, separability, and the
@@ -129,6 +147,10 @@ proved on paper, assumed in Lean — and are disclosed here:
 
 Every other sequel theorem is proved from Mathlib plus these three axioms; check
 any result with `#print axioms <name>`.
+
+The separate [current counting project](lean/counting/) does not import these
+three custom axioms. It replaces the relevant counting assumptions with the
+concrete contraction-fiber and signed-count proofs needed by its public results.
 
 ## License
 

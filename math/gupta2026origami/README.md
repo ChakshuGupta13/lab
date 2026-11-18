@@ -6,6 +6,26 @@ Technology).
 
 **Paper**: [arXiv:2606.22614](https://arxiv.org/abs/2606.22614) (math.CO, 2026).
 
+## Subsequent Results and Formal Proofs
+
+The exact rectangular diameter is credited to Simon Watts in
+[The Slowest-Chain Conjecture and the Exact Diameter of Rectangular Miura-Ori Flip Graphs](https://doi.org/10.5281/zenodo.22019186).
+The results table below records the original artifact's scope; its formerly
+open general-diameter entry is historical, not the current problem status.
+
+The Omega Institute's [merged Lean formalization](https://github.com/the-omega-institute/trureturing/pull/21588)
+closes [issue #19839](https://github.com/the-omega-institute/trureturing/issues/19839)
+for the rectangular-grid dispersion inequality. Its
+[pinned source](https://github.com/the-omega-institute/trureturing/blob/92b6f950ddee9e1601f4808a66bdccba2b315605/D5/S3/Combinatorics/Geometry/GuptaMiuraGridDispersion.lean)
+does not formalize the origami distance and lower-bound reductions or the
+farthest-pair classification. It is linked, not vendored, and has not been
+rebuilt as part of this artifact.
+
+[The sequel's current Lean counting release](../gupta2026degseq/lean/counting/)
+contains selected canonical-height counting theorems without the historical
+custom counting axioms. Neither project claims the whole combined paper is
+Lean-verified.
+
 ## The problem
 
 The **origami flip graph** $\mathrm{OFG}(C)$ of a flat-foldable crease pattern $C$

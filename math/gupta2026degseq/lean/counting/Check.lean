@@ -1,0 +1,8 @@
+import MiuraCounting
+
+#print axioms OrigamiCone.Sequel.SmallDegreePolynomials.Ed_full_totalDegree_and_leading
+#print axioms OrigamiCone.Sequel.DegreeTwoCounts.Ed_two
+#print axioms OrigamiCone.Sequel.DegreeTwoCounts.degree_two_iff_gradient
+#print axioms OrigamiCone.Sequel.SignedPathCounts.canonical_path_signed_binomial
+#print axioms OrigamiCone.Sequel.SignedSideCounts.canonicalSplit_signed_side_decomposition
+#print axioms OrigamiCone.Sequel.SignedSideCounts.signedSidePolynomial_leading

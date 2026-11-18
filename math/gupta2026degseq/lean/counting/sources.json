@@ -1,0 +1,682 @@
+{
+  "schema": 1,
+  "leanToolchain": "leanprover/lean4:v4.27.0",
+  "mathlibRevision": "a3a10db0e9d66acbebf76c5e6a135066525ac900",
+  "entryPoints": [
+    "MiuraCounting.ConcreteSmallDegreePolynomials",
+    "MiuraCounting.ConcreteSignedSideCounts",
+    "MiuraCounting.ConcreteDegreeTwoCounts"
+  ],
+  "checkedDeclarations": [
+    "OrigamiCone.Sequel.SmallDegreePolynomials.Ed_full_totalDegree_and_leading",
+    "OrigamiCone.Sequel.DegreeTwoCounts.Ed_two",
+    "OrigamiCone.Sequel.DegreeTwoCounts.degree_two_iff_gradient",
+    "OrigamiCone.Sequel.SignedPathCounts.canonical_path_signed_binomial",
+    "OrigamiCone.Sequel.SignedSideCounts.canonicalSplit_signed_side_decomposition",
+    "OrigamiCone.Sequel.SignedSideCounts.signedSidePolynomial_leading"
+  ],
+  "transformations": [
+    "Lean comments replaced by whitespace",
+    "Standalone module imports namespaced under MiuraCounting"
+  ],
+  "sources": [
+    {
+      "module": "MiuraCounting.ConcreteSmallDegreePolynomials",
+      "file": "MiuraCounting/ConcreteSmallDegreePolynomials.lean",
+      "sha256": "0e936f6a27f1f3cb6d0fc920e073f1a9b7fffe75c6d3f52f5cb8e27f866cd56e",
+      "originalModule": "ConcreteSmallDegreePolynomials",
+      "originalSha256": "2c0fbbac3d8e11dde493bdad6962951f6f1390d45c56ab626ded6168fa3177f2"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSignedSideCounts",
+      "file": "MiuraCounting/ConcreteSignedSideCounts.lean",
+      "sha256": "b4abec8b3bca4b67c4144436b945f18a5e9280fd5e955a834400304bdb3e83ab",
+      "originalModule": "ConcreteSignedSideCounts",
+      "originalSha256": "5b9eba4f76ee837201ea907fd9733a9a8d2f4b7377bbf4425f61ffec19c4f04e"
+    },
+    {
+      "module": "MiuraCounting.ConcreteDegreeTwoCounts",
+      "file": "MiuraCounting/ConcreteDegreeTwoCounts.lean",
+      "sha256": "590a95b46c638a684dd404fd7cc587e275899fa4ea778f792462b2b1c008577b",
+      "originalModule": "ConcreteDegreeTwoCounts",
+      "originalSha256": "7e85417af1e27b28b8c02673bfdf67307fc326b8f3040394929692689ff5b3c9"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSparseTransferCounts",
+      "file": "MiuraCounting/ConcreteSparseTransferCounts.lean",
+      "sha256": "aa924f13e924542ef3675cfa84314fe812794ba867e4e8555e5bf64f58061b39",
+      "originalModule": "ConcreteSparseTransferCounts",
+      "originalSha256": "1b16cb4897f1b387d48a29dc5e80aaa7f1c1a258151abf9e6746e8e8ea889ccc"
+    },
+    {
+      "module": "MiuraCounting.ConcreteUniformOnset",
+      "file": "MiuraCounting/ConcreteUniformOnset.lean",
+      "sha256": "0d56f850b6477578b1f1f9decf6a6f250d21949fbf2efe8538e6a3e9a5d630af",
+      "originalModule": "ConcreteUniformOnset",
+      "originalSha256": "c07a5dd94925766ec97f1d3659ac1bbf80443d77d95c167b49e7fbbee922560b"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSmallDegrees",
+      "file": "MiuraCounting/ConcreteSmallDegrees.lean",
+      "sha256": "ad92d2d9609ae22986cebc1df46026dcbbea164d7ca63eb85ffd1ad3f313eb01",
+      "originalModule": "ConcreteSmallDegrees",
+      "originalSha256": "3dd715567f1c754add668c980f93cc4d38ce376c5bd49b8c231f15ce9613cbd4"
+    },
+    {
+      "module": "MiuraCounting.ConcreteTotalLeading",
+      "file": "MiuraCounting/ConcreteTotalLeading.lean",
+      "sha256": "48ea2031a2d18997bda4f4350935cf8265e7a0a9452fa97379e9f383879201f9",
+      "originalModule": "ConcreteTotalLeading",
+      "originalSha256": "9b947ed0abfb79c89ef80df8b2edc78003bdc04c55f2035df66b35f39733bab8"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSignedPathCounts",
+      "file": "MiuraCounting/ConcreteSignedPathCounts.lean",
+      "sha256": "62b2af0948171c770fc232076902d21bcbb02c5fa6b8851337054d14f15c4e5f",
+      "originalModule": "ConcreteSignedPathCounts",
+      "originalSha256": "99ed021316eb2381811e847ea2ca4fc8ac5556fea3b005b6425ebb3a773c9876"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSideDecomposition",
+      "file": "MiuraCounting/ConcreteSideDecomposition.lean",
+      "sha256": "1b40eceddd7239359878792ae11d9d3e8ffc0041f2d87210384767a1abc4fb9d",
+      "originalModule": "ConcreteSideDecomposition",
+      "originalSha256": "9d4870a4bc6364032b09594cfa6258c44fe18051264bf8af690ef3ba3af9c891"
+    },
+    {
+      "module": "OrigamiCone.CornerCount",
+      "file": "OrigamiCone/CornerCount.lean",
+      "sha256": "128be431f9a247b9343275813b08e72538dc3e55104dff252efdab18506160e0",
+      "originalModule": "OrigamiCone.CornerCount",
+      "originalSha256": "52ad215d47a4124ad94a7fd89ba6c3c97ebfb67d2eee8d15f1fc5032ef667928"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSmallCountChecks",
+      "file": "MiuraCounting/ConcreteSmallCountChecks.lean",
+      "sha256": "27851597c6160137a7bb07d7226fcf4292f27588a3978357f4ee1487d2de4ebc",
+      "originalModule": "ConcreteSmallCountChecks",
+      "originalSha256": "98dcc7a4d7b6c32603090dba8436bc0c3bd053ce8352dab2fc36ef4ee13db949"
+    },
+    {
+      "module": "MiuraCounting.ConcreteCoefficientSeries",
+      "file": "MiuraCounting/ConcreteCoefficientSeries.lean",
+      "sha256": "ad96ca39bd208b45414941c7be70f2f1f6c5720c0ae6850b00233f595e2f664d",
+      "originalModule": "ConcreteCoefficientSeries",
+      "originalSha256": "e6bd714e7b37813123205c9680e506e0573a99d37bf9adf59fa1a9adecc20d27"
+    },
+    {
+      "module": "MiuraCounting.CoefficientOnset",
+      "file": "MiuraCounting/CoefficientOnset.lean",
+      "sha256": "2f2a9c572a411238edfdd4b3bfad93a9fe4fb22d92bf17b54895213e1c468d23",
+      "originalModule": "CoefficientOnset",
+      "originalSha256": "a4b1defaf96f1758fbb10706002c7acf769474296e7589cd2f118f9599f9f4ad"
+    },
+    {
+      "module": "OrigamiCone.SequelPolyAssembly",
+      "file": "OrigamiCone/SequelPolyAssembly.lean",
+      "sha256": "d29bef20dbf2b468edbb473b555bdcc0a251164d791c5f3e8a1bcefea3b8e0ea",
+      "originalModule": "OrigamiCone.SequelPolyAssembly",
+      "originalSha256": "31e1949aa5f700d27ed728f00804bab632885e845f3097a5ca1db0a354636228"
+    },
+    {
+      "module": "MiuraCounting.ConcreteDegreeRemainder",
+      "file": "MiuraCounting/ConcreteDegreeRemainder.lean",
+      "sha256": "7d217be9549cb14952c08b7542a8f7201b075555e7c8b322c6d357a433a78658",
+      "originalModule": "ConcreteDegreeRemainder",
+      "originalSha256": "1d99d133c2f8bd9fe7e005ecdd6ba74628277f3689ea58d21781bc43788a6e69"
+    },
+    {
+      "module": "OrigamiCone.Degree3",
+      "file": "OrigamiCone/Degree3.lean",
+      "sha256": "f61d62f81cc90041374ae8c7d0e137958ab94b5bd50516d8ce42630e07e54596",
+      "originalModule": "OrigamiCone.Degree3",
+      "originalSha256": "000592519cdee21b3d34d502944b60e5f89a8b352211926e3a1d331109793c37"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSignedPathWalks",
+      "file": "MiuraCounting/ConcreteSignedPathWalks.lean",
+      "sha256": "119435d3c9ba38f954cd5c04ce55bbadc97f66a30680c572a08f3e9b7bdb2f65",
+      "originalModule": "ConcreteSignedPathWalks",
+      "originalSha256": "a37bb9dbb8e3f9d702bbdcf4a47e30d9a88bcf6ac00fe41814ee04f65ae6119e"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSideWalkCounts",
+      "file": "MiuraCounting/ConcreteSideWalkCounts.lean",
+      "sha256": "09aadbbb1366a7f6139b2f2cf132b151133a2d156e629642bd561c6be2dbcb3d",
+      "originalModule": "ConcreteSideWalkCounts",
+      "originalSha256": "b4251158e39e0a8701a15d27c9970d8f5451c454b9fe80cf91342275de91e43b"
+    },
+    {
+      "module": "OrigamiCone.Degree2",
+      "file": "OrigamiCone/Degree2.lean",
+      "sha256": "3743af75f748f9d4dbb65b5a2252dc3ab867853514461958269b0355fd9e3614",
+      "originalModule": "OrigamiCone.Degree2",
+      "originalSha256": "9e4fcad12563efec456aefc4f1cc5015cc2bccf75a80ab0226c1ce50cf14cf41"
+    },
+    {
+      "module": "OrigamiCone.BoundaryNonCornerCount",
+      "file": "OrigamiCone/BoundaryNonCornerCount.lean",
+      "sha256": "eeb5fb7f1516e61dc7295015c487037e2aa7c2b1c0db27b7e22277dcb23c0d43",
+      "originalModule": "OrigamiCone.BoundaryNonCornerCount",
+      "originalSha256": "f0ca7267a71c4a73cb167ca780104ece818877e354cc4a465400f4566f416d2b"
+    },
+    {
+      "module": "OrigamiCone.SequelEdMatrixPower",
+      "file": "OrigamiCone/SequelEdMatrixPower.lean",
+      "sha256": "f073f76df360876a0116de946dbb6cb33b17cd0cf1de0632b699b5f24e7ebf06",
+      "originalModule": "OrigamiCone.SequelEdMatrixPower",
+      "originalSha256": "be0e404d38be7af3ce13645e31b2f77e06ba5d673e620371a0ee0e7fb046f7c5"
+    },
+    {
+      "module": "MiuraCounting.ConcreteRotation",
+      "file": "MiuraCounting/ConcreteRotation.lean",
+      "sha256": "cfbefb4fed8c1a022ae9ff9dc0a6acce5058900108a4e9309a23583e87d90020",
+      "originalModule": "ConcreteRotation",
+      "originalSha256": "c27dae13d087631ba0fe77bcd0e67253064dbeb68415cde67d785d1e49a300b7"
+    },
+    {
+      "module": "MiuraCounting.ConcreteEndpointCancellation",
+      "file": "MiuraCounting/ConcreteEndpointCancellation.lean",
+      "sha256": "25d020c1eed284286970b94272893db27f990a8c8f08e8c175c70fefb6c3b110",
+      "originalModule": "ConcreteEndpointCancellation",
+      "originalSha256": "0760f4d604f480280cd6f3edb7313d357e5965ed079a9c8ce9d409f6cafbc12e"
+    },
+    {
+      "module": "MiuraCounting.ResolventNumerator",
+      "file": "MiuraCounting/ResolventNumerator.lean",
+      "sha256": "ed70f3d810a980faefccf60796fae16cb9e5b72a9a5ebab10aeab3026f50b6be",
+      "originalModule": "ResolventNumerator",
+      "originalSha256": "992f3f4d69dfdd7d5eaf922b01d21baae3ae1a39415246ed19012f9d953ff13d"
+    },
+    {
+      "module": "OrigamiCone.SequelInterp",
+      "file": "OrigamiCone/SequelInterp.lean",
+      "sha256": "07c020e5de24af07b504c5acdb05610a28ad1aae6f253698912358fd052f6679",
+      "originalModule": "OrigamiCone.SequelInterp",
+      "originalSha256": "7fec57710f957347559b115881d409c8c7a80d221b2661557fc048e1fe9d71bd"
+    },
+    {
+      "module": "OrigamiCone.Dual",
+      "file": "OrigamiCone/Dual.lean",
+      "sha256": "a92dc42f53bfc8714a5729662e757c2f0e1943e1ae6588fafe81b4233ee46638",
+      "originalModule": "OrigamiCone.Dual",
+      "originalSha256": "dd37730c5b1da25e9f7d6071ab3e2136893103aa7ec594df9c7c8a09bb719aea"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSeparableProducts",
+      "file": "MiuraCounting/ConcreteSeparableProducts.lean",
+      "sha256": "bb44c19ac57947679cb8cf349da756a7179f413d1a8fd61f54579f79983840bb",
+      "originalModule": "ConcreteSeparableProducts",
+      "originalSha256": "ba0394dfff9eb9b81a2d024a96a93cbc6f169af7a5b7cbdc6ea689c1a2d8a9f2"
+    },
+    {
+      "module": "MiuraCounting.ConcretePathWalks",
+      "file": "MiuraCounting/ConcretePathWalks.lean",
+      "sha256": "03ae4c67474954e04fbf46fa249aba73937424b0663fd5dc08b3f912151a4c95",
+      "originalModule": "ConcretePathWalks",
+      "originalSha256": "ad5499b09c764a3805e899d39586e7de84ff9d43e09d8753942ab3a760242325"
+    },
+    {
+      "module": "MiuraCounting.ConcreteRemainderPolynomials",
+      "file": "MiuraCounting/ConcreteRemainderPolynomials.lean",
+      "sha256": "dda961db6f68af8f6de09922186a3ef06bd3d09136240ac060208fd7940483aa",
+      "originalModule": "ConcreteRemainderPolynomials",
+      "originalSha256": "7ca8c0cb44bc33e17c4c223b12df327e9a9cfa3aa9d9cf362a254da4c3469631"
+    },
+    {
+      "module": "OrigamiCone.Envelope",
+      "file": "OrigamiCone/Envelope.lean",
+      "sha256": "2b5012fffa651d9670eb37f251dc06a1da7a53f54df40b8d31378849d356c94b",
+      "originalModule": "OrigamiCone.Envelope",
+      "originalSha256": "fcdfaf0013312002609106d220de0cf0c502afbb7800c54ad170714817cdcee2"
+    },
+    {
+      "module": "OrigamiCone.RowReflectTransport",
+      "file": "OrigamiCone/RowReflectTransport.lean",
+      "sha256": "18056b335f13b5fa2b99466b5e8cb60477a386abcfe1fd9c9d043bdfb06863fd",
+      "originalModule": "OrigamiCone.RowReflectTransport",
+      "originalSha256": "611fa7d5f062d68a50647f183e05976b42c8b7a672d7ceac8da7d26653958d6d"
+    },
+    {
+      "module": "OrigamiCone.ConeClassification",
+      "file": "OrigamiCone/ConeClassification.lean",
+      "sha256": "0b955be84827ac853aa8e682fed1b31e73f7d3fd941328a19ac861f89e1fea0b",
+      "originalModule": "OrigamiCone.ConeClassification",
+      "originalSha256": "39e3903cdba4864f55420d42c4c6f153f1150b5f5a9329361a069f10ec1a4b1b"
+    },
+    {
+      "module": "OrigamiCone.SequelEdTransfer",
+      "file": "OrigamiCone/SequelEdTransfer.lean",
+      "sha256": "889a3a0aab547dd35ef9930cc15cde5068aff5ff02928999baa239ec97973356",
+      "originalModule": "OrigamiCone.SequelEdTransfer",
+      "originalSha256": "1c0d344d501da2063385095d51af2e2081018483d077a0942b18fad59c26c7d1"
+    },
+    {
+      "module": "MiuraCounting.ConcreteFrozenTransfer",
+      "file": "MiuraCounting/ConcreteFrozenTransfer.lean",
+      "sha256": "c96792d218e562d627989a9b40c776d57905a6b1e03a4b4a272a24398bacc162",
+      "originalModule": "ConcreteFrozenTransfer",
+      "originalSha256": "17c54cefde530d181904f1e388fa6483ccf4996d2d34c85d971a5b324016b57c"
+    },
+    {
+      "module": "MiuraCounting.ConcreteBoundaryBlocks",
+      "file": "MiuraCounting/ConcreteBoundaryBlocks.lean",
+      "sha256": "4d833940a89c3ef0e6389818911d4f2325dc1718a68da63b7acb26b60eea3281",
+      "originalModule": "ConcreteBoundaryBlocks",
+      "originalSha256": "591e9151b19679488302188d2cf90bba059bae351b12f349b27ab68f30b91c4b"
+    },
+    {
+      "module": "OrigamiCone.DegreeExtrema",
+      "file": "OrigamiCone/DegreeExtrema.lean",
+      "sha256": "b33262794f377bb10d6c7e15987170de0bdff6bd2c5b71657f411caa6c69d3e0",
+      "originalModule": "OrigamiCone.DegreeExtrema",
+      "originalSha256": "2f87884e2c325724447857c2e58d9574bbc772bf53680d3f7623a8111f7e3c9e"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSingleSideFamilies",
+      "file": "MiuraCounting/ConcreteSingleSideFamilies.lean",
+      "sha256": "097dbc9345833bacbe1d17e56c5f52bb439c41df3ab68bce29954953c467cdb4",
+      "originalModule": "ConcreteSingleSideFamilies",
+      "originalSha256": "c2edae27e3786b9c52b1060afaf51c0bb0c97f11e97e46fd86200ccc53b6cb1b"
+    },
+    {
+      "module": "OrigamiCone.SequelEd",
+      "file": "OrigamiCone/SequelEd.lean",
+      "sha256": "ed01de00fb293528498301d0f21597cde8c034bbcafa75e67abd892133ce1117",
+      "originalModule": "OrigamiCone.SequelEd",
+      "originalSha256": "9d411b4c50457671f7846b00c1e280e8b0f1dfd393bfa02a2ec7971be4f26f5c"
+    },
+    {
+      "module": "OrigamiCone.SequelBinom",
+      "file": "OrigamiCone/SequelBinom.lean",
+      "sha256": "6d2c77407be7f9cb76a714f7155aef0f3ff6169ef60a21353bbe2d7810da0432",
+      "originalModule": "OrigamiCone.SequelBinom",
+      "originalSha256": "54e6a2a57a690fa37515834a8cfcff59b9e169a4d202f120df758c4730b1e38c"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSeparableRunBound",
+      "file": "MiuraCounting/ConcreteSeparableRunBound.lean",
+      "sha256": "8b8421b91de8e3acc5337d1859e02b7f3f768c99936247399a64d7a9eb2bb67a",
+      "originalModule": "ConcreteSeparableRunBound",
+      "originalSha256": "183a7544a2af14bbd726599856bf71ce961ffab449c7297b109d55c6b7738e21"
+    },
+    {
+      "module": "OrigamiCone.Cone",
+      "file": "OrigamiCone/Cone.lean",
+      "sha256": "e8942f1249a302b1d6668fbc1c95a9314011eff6423a0dedea419bba0884dca2",
+      "originalModule": "OrigamiCone.Cone",
+      "originalSha256": "d386d76889e8939e02a83654c32b0c83f44c09b4093fe2a8f4eb6ecd4f96ca1b"
+    },
+    {
+      "module": "OrigamiCone.Basic",
+      "file": "OrigamiCone/Basic.lean",
+      "sha256": "d932bc9db1509ecee6a20b66e02b7f3a5d3f3dce45449fcb5697e260da5798ce",
+      "originalModule": "OrigamiCone.Basic",
+      "originalSha256": "1464ef8f7668e3ab0367b0ee70dc771acf8684279c0b3735e0f142145c6421f8"
+    },
+    {
+      "module": "OrigamiCone.ConePair",
+      "file": "OrigamiCone/ConePair.lean",
+      "sha256": "e600199be9c937f043835d616beaa9c81e703ee527696863a191d1350f056e88",
+      "originalModule": "OrigamiCone.ConePair",
+      "originalSha256": "f873d86a84b492764722e56953436f2600676635a62d53d61210752164ff2bf4"
+    },
+    {
+      "module": "OrigamiCone.Boundary",
+      "file": "OrigamiCone/Boundary.lean",
+      "sha256": "1a1cf70fa4c160c123e263f5f06988205bd7b6434f97adcdead89b8eca53c670",
+      "originalModule": "OrigamiCone.Boundary",
+      "originalSha256": "3cb45fb24b7414762053429d989465b8687e2b5a72c70957c8341718f83698dc"
+    },
+    {
+      "module": "OrigamiCone.ConeDegree",
+      "file": "OrigamiCone/ConeDegree.lean",
+      "sha256": "da47eff704e2676d0317fd60d44152b05c95a84af7944411990dba75f305e471",
+      "originalModule": "OrigamiCone.ConeDegree",
+      "originalSha256": "c55c702eeccefb5826055238582cfeb3bb8927c2e5c70d06723cccb706ba2c6b"
+    },
+    {
+      "module": "OrigamiCone.SequelCascade",
+      "file": "OrigamiCone/SequelCascade.lean",
+      "sha256": "0037ac37678ac986eb31cd52b02ab772c65cbea8a73281f11a40603639098c9a",
+      "originalModule": "OrigamiCone.SequelCascade",
+      "originalSha256": "f1e6b77a97d7e209e61c83d2fb702f7caa806efefd8e3d412949343cc6f4982c"
+    },
+    {
+      "module": "OrigamiCone.SequelFrozen",
+      "file": "OrigamiCone/SequelFrozen.lean",
+      "sha256": "a2b0f16f5bce3d1ec0dc98e210180f70ce2b25d6c52fe28750a99979aebde70e",
+      "originalModule": "OrigamiCone.SequelFrozen",
+      "originalSha256": "654e80cd907df75c663d1e83f9f55e51586d75c0bff1d8b2347c3bdfdf10b6ae"
+    },
+    {
+      "module": "OrigamiCone.SequelEdBoundary",
+      "file": "OrigamiCone/SequelEdBoundary.lean",
+      "sha256": "5a2516e36b1bfcf627914c6529737a5eb5f3277b0dd4be7c86a6d1e3c1f3acfe",
+      "originalModule": "OrigamiCone.SequelEdBoundary",
+      "originalSha256": "5617d2951d2e046f3eccf7c769f14c0f446893e858b1a507ca3e65f8923af50a"
+    },
+    {
+      "module": "OrigamiCone.ColReflectTransport",
+      "file": "OrigamiCone/ColReflectTransport.lean",
+      "sha256": "df5851eb9f2354593b458c2f72b8bc51d96a433210a53e946a7068cd58c1bd94",
+      "originalModule": "OrigamiCone.ColReflectTransport",
+      "originalSha256": "8b6928276f063d60fd672188aece0d60b426b51dbbc0d1cfa84f65145d07d879"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSignedHeightCounts",
+      "file": "MiuraCounting/ConcreteSignedHeightCounts.lean",
+      "sha256": "13a7c96b4137afaf1f1e3dcc92532f6a00129335467eccc3ae9ffb2acb468d31",
+      "originalModule": "ConcreteSignedHeightCounts",
+      "originalSha256": "4d7f344ce3ce220f6c59871729bc19f99c9c665e7609dd6edf94d377b83dbb2d"
+    },
+    {
+      "module": "OrigamiCone.SequelSplitEdge",
+      "file": "OrigamiCone/SequelSplitEdge.lean",
+      "sha256": "7045d1853cf8c2d2cdac30664b65c822ce1fee27d807d4a5cdcc3c1872e130e0",
+      "originalModule": "OrigamiCone.SequelSplitEdge",
+      "originalSha256": "02cbfd28c7b638121cb729158f7bdc5d039b2805509962ede07ddd6bac0ce5a1"
+    },
+    {
+      "module": "OrigamiCone.QuotientDegree",
+      "file": "OrigamiCone/QuotientDegree.lean",
+      "sha256": "6fd277b4eee1d8fed181a23c1bacc86315f87fe5e24521b3b16770cf156a8cfe",
+      "originalModule": "OrigamiCone.QuotientDegree",
+      "originalSha256": "150366ad434756c12bfb950f003fb4625cd6f989f67d47abaf0b18b14255cf79"
+    },
+    {
+      "module": "OrigamiCone.SequelSepDim",
+      "file": "OrigamiCone/SequelSepDim.lean",
+      "sha256": "39227c6e03aaaf078dac6db1d5c48e85837b71b79dacb1cedd5b97d5e3a3c4d3",
+      "originalModule": "OrigamiCone.SequelSepDim",
+      "originalSha256": "abce7e216368f7b4dc15bcb0ea0734a0b62cc70b75bb2cd97379551416e8161f"
+    },
+    {
+      "module": "OrigamiCone.Parity",
+      "file": "OrigamiCone/Parity.lean",
+      "sha256": "d6f8590a0084a888516414bcf77794edc9153e82372f366c467f4d2960302c33",
+      "originalModule": "OrigamiCone.Parity",
+      "originalSha256": "95e6a51cb4ef075f2e9e0a9399c89731f42f8ee9187fc1cd7ff4b4f5afb418fb"
+    },
+    {
+      "module": "OrigamiCone.RidgeMax",
+      "file": "OrigamiCone/RidgeMax.lean",
+      "sha256": "301e31d2ac40ad7e31cbcb2082d1b20ef6d926c6b3e1bddf5701935118371c15",
+      "originalModule": "OrigamiCone.RidgeMax",
+      "originalSha256": "d0fb6d068afbd435f7cc01f44db6e3bb019988b1b4efd85fcd37a1bf179aead4"
+    },
+    {
+      "module": "OrigamiCone.MinDegree",
+      "file": "OrigamiCone/MinDegree.lean",
+      "sha256": "b8fc5c320e45272469f9db4a9f07569d2479402114d0233ec7008eeb1d33407c",
+      "originalModule": "OrigamiCone.MinDegree",
+      "originalSha256": "713d2e1a8beb4cabfb0628d465bcc86a3636cfe9b82b725f26af1665ed8cc8b2"
+    },
+    {
+      "module": "OrigamiCone.SequelEdActiveCol",
+      "file": "OrigamiCone/SequelEdActiveCol.lean",
+      "sha256": "a2c18239674d6a40ea85169ebb41c18c234303392bbf3f39592541759294de88",
+      "originalModule": "OrigamiCone.SequelEdActiveCol",
+      "originalSha256": "8ac8e34983244ba5d1b04f1c8098e563c86d3d048c35cc34c8a606d784fa89d0"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSplitPolynomials",
+      "file": "MiuraCounting/ConcreteSplitPolynomials.lean",
+      "sha256": "e7af72a7a7adbb6f3dd8f53d4e9d55ae18f5a03b434d58c5c933156572ab8111",
+      "originalModule": "ConcreteSplitPolynomials",
+      "originalSha256": "008e5e52fbdc1a424e05c527e84105e6adf80a0ac65cc53b60ffcca63c789707"
+    },
+    {
+      "module": "OrigamiCone.SequelEdge",
+      "file": "OrigamiCone/SequelEdge.lean",
+      "sha256": "7987c05ef469b5d13a1f7956dd4149612f382abbc00a80b070eaebfef613e206",
+      "originalModule": "OrigamiCone.SequelEdge",
+      "originalSha256": "c502a502f5b161ba83d7992fb105dbc2f923c31a40c11eeb6681421905590586"
+    },
+    {
+      "module": "OrigamiCone.Ridge",
+      "file": "OrigamiCone/Ridge.lean",
+      "sha256": "aaddd46937ba57697400e84f9565558ec44623a1cd200bd10601981379976649",
+      "originalModule": "OrigamiCone.Ridge",
+      "originalSha256": "4218b458b4dd43097c8fb91820470b0ff1531535e8bc0b4071cbd73d060ffd80"
+    },
+    {
+      "module": "MiuraCounting.ConcreteJointTypePartition",
+      "file": "MiuraCounting/ConcreteJointTypePartition.lean",
+      "sha256": "21e2decb391ad356324ec8d444e59cc8bc4487600425239e4d54c1e386d4f297",
+      "originalModule": "ConcreteJointTypePartition",
+      "originalSha256": "d22c4b867c107af4cc53874e67c1a05c1a9062cf9ed0e2004c9c645b286f7d55"
+    },
+    {
+      "module": "MiuraCounting.ConcreteUniformRunBound",
+      "file": "MiuraCounting/ConcreteUniformRunBound.lean",
+      "sha256": "8d653904ecd68b08de3b74629a1111d535584ef416298f9152940790c181172a",
+      "originalModule": "ConcreteUniformRunBound",
+      "originalSha256": "274ee586b24a123b5164f4b88d7b3efdbb7b9b7a7f06b359c3786afbc6c1b522"
+    },
+    {
+      "module": "MiuraCounting.ConcreteJointFibers",
+      "file": "MiuraCounting/ConcreteJointFibers.lean",
+      "sha256": "debcfdae74d5943d426ae5d22f0fa08c598b5c35444d54989f358eae4ef72865",
+      "originalModule": "ConcreteJointFibers",
+      "originalSha256": "0dff2e8428c866e5c51cad24c58c144c61f2aefe21639b5ab3e1561e8aa95e64"
+    },
+    {
+      "module": "MiuraCounting.ConcreteOppositeAxisTrees",
+      "file": "MiuraCounting/ConcreteOppositeAxisTrees.lean",
+      "sha256": "a6c0a6529c56de8702576068a95d11a6e26ad8bb8a67c3946d80dfbdbaf0436d",
+      "originalModule": "ConcreteOppositeAxisTrees",
+      "originalSha256": "b538e8b336485a3341574dded661b52cb9217cc980b4b50a8f94f730ad33b646"
+    },
+    {
+      "module": "MiuraCounting.ConcreteTreeCases",
+      "file": "MiuraCounting/ConcreteTreeCases.lean",
+      "sha256": "92f34c1d967e2e00c770fd52919ddab7c007aa6f009066776b1ad952e02b97e7",
+      "originalModule": "ConcreteTreeCases",
+      "originalSha256": "b9596d62c3be54c81b7686e5bef99ac191a737b3d8e4a373d545937190599f3c"
+    },
+    {
+      "module": "MiuraCounting.ConcreteJointNormalForm",
+      "file": "MiuraCounting/ConcreteJointNormalForm.lean",
+      "sha256": "d39c68e6ae338e62df42457c6f737263a6f149342e654671b91b682b333f74fa",
+      "originalModule": "ConcreteJointNormalForm",
+      "originalSha256": "a33a2bef24d9e214af7dd7634d5620a241afc8ad73c979105de86f994ef59759"
+    },
+    {
+      "module": "MiuraCounting.ConcreteRunFiberEquivalence",
+      "file": "MiuraCounting/ConcreteRunFiberEquivalence.lean",
+      "sha256": "e4888c6cacc8b03c5a900bf5b9edd02ccae9702b3ceb316dce72b3b20bbb65bf",
+      "originalModule": "ConcreteRunFiberEquivalence",
+      "originalSha256": "9c779bcd2c694397a477c77fdc83facdb4825af3247da18942113f0c5844c9f5"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSignedExtrema",
+      "file": "MiuraCounting/ConcreteSignedExtrema.lean",
+      "sha256": "2bb77fee3ddfdbf792983cdb2171bd501af3080e61ac8f3ce44b5bedcca499a7",
+      "originalModule": "ConcreteSignedExtrema",
+      "originalSha256": "a8115083585f0c6ee68360f72db152d21b2b1014f39a426616e1518769b4bf2f"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSameAxisTrees",
+      "file": "MiuraCounting/ConcreteSameAxisTrees.lean",
+      "sha256": "2f94929707611b7431e34109b76465311406be6bada2f58ed541034dd4e04da7",
+      "originalModule": "ConcreteSameAxisTrees",
+      "originalSha256": "6529091547e9694827e3ca005e7973235295417fbc4456281d0f47985e25daf5"
+    },
+    {
+      "module": "MiuraCounting.ConcreteOccupiedBlocks",
+      "file": "MiuraCounting/ConcreteOccupiedBlocks.lean",
+      "sha256": "dd97a7d81cdf1ac9833ac5dd184f91283e18745400ea0c271597a4d0986d86fe",
+      "originalModule": "ConcreteOccupiedBlocks",
+      "originalSha256": "9a330bd6a062f3f101f8ccc1f0c81adb706063435d2233371a976d79d3be70aa"
+    },
+    {
+      "module": "MiuraCounting.ConcreteGridRestrictions",
+      "file": "MiuraCounting/ConcreteGridRestrictions.lean",
+      "sha256": "408c5248c39f27447becafded70bab71d52dc65a2ef60d8636ff07953241838a",
+      "originalModule": "ConcreteGridRestrictions",
+      "originalSha256": "ae3d7e3641f2486410779f6d4f254ad88d6a576a3917d8e3748e444da53bd901"
+    },
+    {
+      "module": "MiuraCounting.ConcreteGridReflection",
+      "file": "MiuraCounting/ConcreteGridReflection.lean",
+      "sha256": "002f17cf940a216d605a342cf286a05b9e8c08567309e3216bd7f42cc6f21b98",
+      "originalModule": "ConcreteGridReflection",
+      "originalSha256": "7690e9f5e0370ebb06cf56f765818f15b87cc4f548b3fc59f6d9da6908a27fea"
+    },
+    {
+      "module": "MiuraCounting.ConcreteBlockTranspose",
+      "file": "MiuraCounting/ConcreteBlockTranspose.lean",
+      "sha256": "b85300d4a8670bab4d55a0a131f0674e5770e473f75189b038dd666d026a43ae",
+      "originalModule": "ConcreteBlockTranspose",
+      "originalSha256": "fc8ed5a04b65916f04a051545ac21cd57ae2a0eabaef000ba3c48ed0a2c261ea"
+    },
+    {
+      "module": "MiuraCounting.ConcreteRunLengthFibers",
+      "file": "MiuraCounting/ConcreteRunLengthFibers.lean",
+      "sha256": "10adf7e2c760b273a400db3ab0095c32fab5dae54fcf4dcbf0312fe4d4eb8ff7",
+      "originalModule": "ConcreteRunLengthFibers",
+      "originalSha256": "ec5b2b1ac951c3fe69d96f0a5cc2883aab2daa12ef677f18d52f6e638da803fa"
+    },
+    {
+      "module": "OrigamiCone.SequelEdStarsBars",
+      "file": "OrigamiCone/SequelEdStarsBars.lean",
+      "sha256": "2eeb9346d037535e8f7dde5e1a0ec71744c7687c7cb79c6f7604a30d71bc31e0",
+      "originalModule": "OrigamiCone.SequelEdStarsBars",
+      "originalSha256": "54e938261037fdd5d0d2f9bf4a4c3022206ac8b8cab48b98519fc01f38bf9d41"
+    },
+    {
+      "module": "MiuraCounting.ConcreteTreeStars",
+      "file": "MiuraCounting/ConcreteTreeStars.lean",
+      "sha256": "a1c70ffe494b2244dc6906a0bc9fba20eae31117ffaf15ec82e4822ea938275b",
+      "originalModule": "ConcreteTreeStars",
+      "originalSha256": "c6cab6661e268e9f19fb49ac122e0fb2c2f0235e701f7b6dd78e77f7bd38764f"
+    },
+    {
+      "module": "MiuraCounting.ConcreteBoundaryComparison",
+      "file": "MiuraCounting/ConcreteBoundaryComparison.lean",
+      "sha256": "28c139a49f330ada28c3163bee3ee19a814d0c82961a9814c58ff31c0acd34ce",
+      "originalModule": "ConcreteBoundaryComparison",
+      "originalSha256": "a80c0bc8553c6bbd42e137d6b4d215ef95880c7baba8f811bad349d305fc5504"
+    },
+    {
+      "module": "MiuraCounting.ConcreteGridNegation",
+      "file": "MiuraCounting/ConcreteGridNegation.lean",
+      "sha256": "d0e8cb08e6103a31b511f2522f618ce66aaf653057f5618c8a8ed086758e8616",
+      "originalModule": "ConcreteGridNegation",
+      "originalSha256": "b538af70f25fe92041e0ce10fd61ac6403f7fb7b235ca4b0ca431c693e595ebb"
+    },
+    {
+      "module": "MiuraCounting.ConcreteBlockGraph",
+      "file": "MiuraCounting/ConcreteBlockGraph.lean",
+      "sha256": "942dccc427ed6eedba7100e088a72af5286e4fbe740fd938dab5e407319367dc",
+      "originalModule": "ConcreteBlockGraph",
+      "originalSha256": "caa65e9fc84b7a55d9cd75b9aee6efb5601b84a689de3c39df1f732659456186"
+    },
+    {
+      "module": "MiuraCounting.ConcreteLeafProfiles",
+      "file": "MiuraCounting/ConcreteLeafProfiles.lean",
+      "sha256": "86ca826bb7436ff846aa1ec7bc2fbe998ea1b6adc3df1784c8d05c9a486dd1c7",
+      "originalModule": "ConcreteLeafProfiles",
+      "originalSha256": "6e889d65061341345a0e56906a3b434fcb1de82718c0b93905eaa02a3bac9ff7"
+    },
+    {
+      "module": "MiuraCounting.ConcreteTreeInventory",
+      "file": "MiuraCounting/ConcreteTreeInventory.lean",
+      "sha256": "7c52e3dfef22f54df2835a780286394f8247eb5fdb1b324e16100df93b82fddc",
+      "originalModule": "ConcreteTreeInventory",
+      "originalSha256": "90f15fde922060014f2462563c5fc38f4e65f96bfb0a6235d2c0c98b417a76e8"
+    },
+    {
+      "module": "MiuraCounting.ConcreteSaturation",
+      "file": "MiuraCounting/ConcreteSaturation.lean",
+      "sha256": "dfe456dcb471c2251e2fcae73694c571fad99442b54332ff11c089c2acc431a9",
+      "originalModule": "ConcreteSaturation",
+      "originalSha256": "9800d3ea45c381f515e1048fe7e11885d1e38b469647476aeca4610e946ca1ef"
+    },
+    {
+      "module": "MiuraCounting.ConcreteReductionNormalForm",
+      "file": "MiuraCounting/ConcreteReductionNormalForm.lean",
+      "sha256": "8257ac7331340f446918f3b15f0e6f4718f23c2d121bda9f1ded490068885fc4",
+      "originalModule": "ConcreteReductionNormalForm",
+      "originalSha256": "34e1340f156bf2de3e72f3e4a67513c7981ff82b342f02e01a2bbb3a9a2b9a39"
+    },
+    {
+      "module": "MiuraCounting.ConcreteFrozenExpansion",
+      "file": "MiuraCounting/ConcreteFrozenExpansion.lean",
+      "sha256": "ba6b3107d288e800164fe4e79900e8e190ac7d9e30e384578d02831114e30fcc",
+      "originalModule": "ConcreteFrozenExpansion",
+      "originalSha256": "c1d98731ed9126d794184f6cfa1851673f4fdadac3c5f4c41ccc0824bbbc8f9c"
+    },
+    {
+      "module": "OrigamiCone.SequelEdReducedHF",
+      "file": "OrigamiCone/SequelEdReducedHF.lean",
+      "sha256": "ffcbac2a69f7c2e91598f647de0212212bc67663d8e087306432cacc0089ae94",
+      "originalModule": "OrigamiCone.SequelEdReducedHF",
+      "originalSha256": "3a449ca77febd0725a197c25915f2abbcfeeaf057baa8d1b366dc6b0c259b6a2"
+    },
+    {
+      "module": "MiuraCounting.AtomicReconstruction",
+      "file": "MiuraCounting/AtomicReconstruction.lean",
+      "sha256": "559ee15a845271d6765dadc32e8c66a445d88d828eca81020d7c4ecabdac98d8",
+      "originalModule": "AtomicReconstruction",
+      "originalSha256": "878a8b6a3f0b8e297d2be530f5adde81bb86501594a41295ca1510ad3175afde"
+    },
+    {
+      "module": "OrigamiCone.SequelEdContractExtremum",
+      "file": "OrigamiCone/SequelEdContractExtremum.lean",
+      "sha256": "9771049105adbf0f78b53e3cb8ff43d51398ae29a10033416ef7e1df8f043dac",
+      "originalModule": "OrigamiCone.SequelEdContractExtremum",
+      "originalSha256": "4ea4e8bcfe0485e193594d6754e5d655d4d751cc556d384fc7b942a330207369"
+    },
+    {
+      "module": "OrigamiCone.SequelEdFrozenBridge",
+      "file": "OrigamiCone/SequelEdFrozenBridge.lean",
+      "sha256": "a109be9d2bcc194101b4c0ed188c5357d5eaf616c62adeaf30df66b64542c18d",
+      "originalModule": "OrigamiCone.SequelEdFrozenBridge",
+      "originalSha256": "3d8e4f0a7c7064ba80f59469d7c9ea506d477d9c4582fbd235786ee7e9d22dbb"
+    },
+    {
+      "module": "OrigamiCone.SequelEdColumnPartition",
+      "file": "OrigamiCone/SequelEdColumnPartition.lean",
+      "sha256": "bea55388daff637b8708ca5f4968f0f24c8ac8a6cea3e4415018ecff9f8f89f3",
+      "originalModule": "OrigamiCone.SequelEdColumnPartition",
+      "originalSha256": "195dff7ff63675fec29ac18972c8460575d1d54f75a6f2b57efe596c220df8fd"
+    },
+    {
+      "module": "OrigamiCone.SequelEdCellExpand",
+      "file": "OrigamiCone/SequelEdCellExpand.lean",
+      "sha256": "81ff93c72c5ceb8ca3a6fc89cb0b8d870dd4f3fb7be8a7e6c0dfc5d58828993b",
+      "originalModule": "OrigamiCone.SequelEdCellExpand",
+      "originalSha256": "602b8ec243130231f326a9e887d2b1fbc1629dc04224f00cd36a5e11213e8cf7"
+    },
+    {
+      "module": "OrigamiCone.SequelEdFrozenForward",
+      "file": "OrigamiCone/SequelEdFrozenForward.lean",
+      "sha256": "baec5207c5bb8ff7a1828099bdc461b579928293b254624011af2ba5fbf84f37",
+      "originalModule": "OrigamiCone.SequelEdFrozenForward",
+      "originalSha256": "09b37c80bfb51407a854466bfc9acc180c2dc46aa4449e8203fef9e5422ed50c"
+    },
+    {
+      "module": "OrigamiCone.SequelEdFrozenCol",
+      "file": "OrigamiCone/SequelEdFrozenCol.lean",
+      "sha256": "69f703001b07bfdb0799d16ad3491624d14f0e8a90d5eb9beffbecbc0ab9ec31",
+      "originalModule": "OrigamiCone.SequelEdFrozenCol",
+      "originalSha256": "c48e735d9e03e895eacea99e93b818b87c7bca3a9fba811b14536bdbc9cef865"
+    },
+    {
+      "module": "OrigamiCone.SequelEdContractAt",
+      "file": "OrigamiCone/SequelEdContractAt.lean",
+      "sha256": "eba73c814fd1e8bc088165a71711239f483444100ab3b0fb0e2b86c9dc5f2936",
+      "originalModule": "OrigamiCone.SequelEdContractAt",
+      "originalSha256": "114cd6505ecddc71daad06a4cddf8a523126f5c29bc2653061488f131092cadc"
+    },
+    {
+      "module": "OrigamiCone.SequelEdFrozenSlope",
+      "file": "OrigamiCone/SequelEdFrozenSlope.lean",
+      "sha256": "07a899cb8c032cf84a97804bf8a535f085217434c27c65ee993456b5eddc3e57",
+      "originalModule": "OrigamiCone.SequelEdFrozenSlope",
+      "originalSha256": "8278f81f4ed139a50164ba4ede29d90d4ca1ef779fa3a2c586ef28c4e24933a5"
+    }
+  ]
+}
